@@ -21,8 +21,8 @@ const props = defineProps({
 })
 
 const getSrc = (src) => {
-	// let formattedSrc =`./../assets/images/${src}`
-	return require(`@/assets/images/${src}`)
+	let formattedSrc =`./../assets/images/${src}`
+	return new URL(formattedSrc, import.meta.url).href
 }
 
 </script>
