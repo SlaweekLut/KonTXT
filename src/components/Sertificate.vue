@@ -1,6 +1,6 @@
 <template>
 	<div class="sertificate">
-		<img class="sertificate__img" :src="srcImg" :alt="sertificate.title"/>
+		<img class="sertificate__img" :src="getSrc(sertificate.src)" :alt="sertificate.title"/>
 		<div class="sertificate__info" v-if="!grid">
 			<p class="sertificate__title text-main">{{ sertificate.title }}</p>
 			<p class="sertificate__organisation text-main-small">{{ $t('sertificates.company') }}: {{ sertificate.company }}</p>
@@ -10,8 +10,6 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-
 const props = defineProps({
 	sertificate: {
 		type: Object,
@@ -20,20 +18,9 @@ const props = defineProps({
 	grid: Boolean
 })
 
-
-const srcImg = ref()
-
-onMounted(() => {
-	loadImage()
-})
-
-const loadImage = () => {
-	fetch(`/src/${props.sertificate.src}`)
-		.then(response => response.blob())
-		.then(blob => {
-			const objectURL = URL.createObjectURL(blob)
-			srcImg.value = objectURL
-		})
+const getSrc = (src) => {
+	let formattedSrc =`./../assets/images/${src}`
+	return new URL(formattedSrc, import.meta.url).href
 }
 </script>
 

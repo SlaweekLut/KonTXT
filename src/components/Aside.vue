@@ -1,11 +1,11 @@
 <template>
 	<aside class="aside">
 		<div class="aside-item" :class="{'router-link-active': path === '/' || path === '/reputation'}">
-			<div class="aside-item__header">
+			<RouterLink to="/" class="aside-item__header">
 				<Icon :name="IconCircle" class="aside-item__icon" />
 				<p class="aside-item__title">{{$t('header.profile')}}</p>
-			</div>
-			<div class="aside-item__sublist">
+			</RouterLink>
+			<div class="aside-item__sublist" v-if="path === '/' || path === '/reputation'">
 				<RouterLink class="aside-item__link" to="/">{{$t("card")}}</RouterLink>
 				<RouterLink class="aside-item__link" to="/reputation">{{$t("reputation")}}</RouterLink>
 			</div>
@@ -79,6 +79,7 @@ const path = computed(() => route.path);
 		display: flex;
 		gap: 20px;
 		align-items: center;
+		text-decoration: none;
 	}
 	&__title {
 		font-size: 16px;

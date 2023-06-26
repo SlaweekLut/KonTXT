@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import Icon from '../components/Icon.vue';
 import IconChevron from '../components/icons/IconChevron.vue'
 import IconVerify from '../components/icons/IconVerify.vue';
@@ -31,6 +31,7 @@ import Work from '../components/Work.vue';
 import Modal from '../components/Modal.vue';
 import ActionModalBar from '../components/ActionModalBar.vue';
 import Login from '../components/Login.vue';
+import ReputationBubbles from '../components/ReputationBubbles.vue';
 
 const route = useRoute()
 const id = computed(() => route.params.id)
@@ -61,6 +62,34 @@ const modals = ref({
 	videoReview: false,
 	review: false,
 	login: false,
+})
+
+const currentReputationListId = ref(null)
+const currentReputationList = ref(null)
+const currentReputationListAll = ref(null)
+
+watch(currentReputationListId, () => {
+	if(currentReputationListId.value === null) {
+		currentReputationList.value = null
+	} else {
+		currentReputationList.value = userInfo.value.reputationInfo[Object.keys(userInfo.value.reputationInfo)[currentReputationListId.value]]
+	}
+})
+watch(currentReputationList, () => {
+	if(currentReputationList.value === null) {
+		currentReputationListAll.value = null
+		return 
+	} else if(currentReputationList.value.length > 0) {
+		currentReputationListAll.value = currentReputationList.value.reduce((a,b) => {
+			if(a.value) {
+				return a.value + b.value
+			} else {
+				return a + b.value
+			}
+		})
+	} else {
+		currentReputationListAll.value = 0
+	}
 })
 
 </script>
@@ -107,6 +136,27 @@ const modals = ref({
 						<p class="user-karma__text text-comment" v-else-if="testedKarma === 0">{{ $t('karmaDesc.neutral') }}</p>
 						<p class="user-karma__text text-comment" v-else>{{ $t('karmaDesc.negative', {value: testedKarma, valueb: -testedKarma}) }}</p>
 						<KarmaSlider @tested="testedKarma = $event" class="user-karma__slider" :value="userInfo.karma" />
+					</div>
+				</div>
+				<div class="user-reputation">
+					<p class="user-reputation__title text-h1">{{ $t('reputation') }} <Info :text="$t('info.reputation')" /></p>
+					<div class="user-reputation__row">
+						<ReputationBubbles @getList="(n) => currentReputationListId = n === null ? null : n - 1" :value="userInfo.reputationInfo" :reputation="userInfo.reputation" />
+						<div class="user-reputation__col" v-if="currentReputationListId !== null">
+							<p class="user-reputation__list-title text-main">
+								{{ $t(`reputationChart.${Object.keys(userInfo.reputationInfo)[currentReputationListId]}`) }} <Reputation :value="currentReputationListAll" small/>
+							</p>
+							<ul class="user-reputation__list">
+								<li class="user-reputation__item text-comment" v-for="(item,i) in currentReputationList" :key="i">
+									{{ item.title }} +{{ item.value }}
+								</li>
+							</ul>
+						</div>
+						<div class="user-reputation__col" v-else>
+							<p class="user-reputation__text text-comment" v-if="testedKarma > 0">{{ $t('karmaDesc.positive', {value: `${testedKarma}`}) }}</p>
+							<p class="user-reputation__text text-comment" v-else-if="testedKarma === 0">{{ $t('karmaDesc.neutral') }}</p>
+							<p class="user-reputation__text text-comment" v-else>{{ $t('karmaDesc.negative', {value: testedKarma, valueb: -testedKarma}) }}</p>
+						</div>
 					</div>
 				</div>
 				<div class="user-content">
@@ -466,6 +516,48 @@ const modals = ref({
 	}
 }
 
+.user-reputation {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	&__row {
+		display: flex;
+		gap: 20px 40px;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+	&__text {
+		max-width: 307px;
+		user-select: none;
+	}
+	&__col {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		gap: 10px;
+	}
+	&__title {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+	}
+	&__list-title {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+	}
+	&__list {
+		list-style: none;
+	}
+
+	@include screen(767.98px) {
+		&__text,&__slider {
+			max-width: 100%;
+			width: 100%;
+		}
+	}
+}
 .user-karma {
 	display: flex;
 	flex-direction: column;

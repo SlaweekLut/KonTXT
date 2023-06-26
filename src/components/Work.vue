@@ -2,7 +2,7 @@
 	<div class="work" :class="{'work--nonline': nonline}">
 		<div class="work-aside">
 			<div class="work-aside__logo">
-				<img :src="srcImg" :alt="work.title">
+				<img :src="getSrc(work.src)" :alt="work.title">
 			</div>
 			<div class="work-aside__reputation">
 				<p class="work-aside__reputation-title">
@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
 import Icon from './Icon.vue';
 import IconReputation from './icons/IconReputation.vue';
 import IconVerify from './icons/IconVerify.vue';
@@ -43,19 +42,9 @@ const props = defineProps({
 	}
 })
 
-const srcImg = ref()
-
-onMounted(() => {
-	loadImage()
-})
-
-const loadImage = () => {
-	fetch(`/src/${props.work.src}`)
-		.then(response => response.blob())
-		.then(blob => {
-			const objectURL = URL.createObjectURL(blob)
-			srcImg.value = objectURL
-		})
+const getSrc = (src) => {
+	let formattedSrc =`./../assets/images/${src}`
+	return new URL(formattedSrc, import.meta.url).href
 }
 </script>
 

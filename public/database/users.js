@@ -5,7 +5,7 @@ export default {
 		karma: 30,
 		reputation: 194,
 		isVerified: true,
-		src: 'assets/images/avatar-01.jpg',
+		src: 'avatar-01.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',
@@ -54,37 +54,37 @@ export default {
 		],
 		sertificates: [
 			{
-				src: "assets/images/sertificate-03.jpg",
+				src: "sertificate-03.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-01.jpg",
+				src: "sertificate-01.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-02.jpg",
+				src: "sertificate-02.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
@@ -102,7 +102,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -115,7 +115,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -128,7 +128,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -138,7 +138,7 @@ export default {
 			{
 				isVerified: false,
 				title: 'Место работы',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 194,
 				dateStart: '2020',
 				dateEnd: '2021',
@@ -148,7 +148,7 @@ export default {
 			{
 				isVerified: true,
 				title: 'Место работы 2',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 300,
 				dateStart: '2021',
 				dateEnd: '2023',
@@ -163,7 +163,7 @@ export default {
 		karma: 30,
 		reputation: 194,
 		isVerified: false,
-		src: 'assets/images/avatar-02.jpg',
+		src: 'avatar-02.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',
@@ -212,37 +212,37 @@ export default {
 		],
 		sertificates: [
 			{
-				src: "assets/images/sertificate-03.jpg",
+				src: "sertificate-03.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-01.jpg",
+				src: "sertificate-01.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-02.jpg",
+				src: "sertificate-02.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
@@ -260,7 +260,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -273,7 +273,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -286,7 +286,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -296,7 +296,7 @@ export default {
 			{
 				isVerified: false,
 				title: 'Место работы',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 194,
 				dateStart: '2020',
 				dateEnd: '2021',
@@ -306,7 +306,7 @@ export default {
 			{
 				isVerified: true,
 				title: 'Место работы 2',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 300,
 				dateStart: '2021',
 				dateEnd: '2023',
@@ -321,7 +321,7 @@ export default {
 		karma: 10,
 		reputation: 194,
 		isVerified: true,
-		src: 'assets/images/avatar-03.jpg',
+		src: 'avatar-03.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',
@@ -371,37 +371,37 @@ export default {
 		],
 		sertificates: [
 			{
-				src: "assets/images/sertificate-03.jpg",
+				src: "sertificate-03.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-01.jpg",
+				src: "sertificate-01.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-02.jpg",
+				src: "sertificate-02.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
@@ -419,7 +419,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -432,7 +432,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -445,7 +445,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -455,7 +455,7 @@ export default {
 			{
 				isVerified: false,
 				title: 'Место работы',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 194,
 				dateStart: '2020',
 				dateEnd: '2021',
@@ -465,7 +465,7 @@ export default {
 			{
 				isVerified: true,
 				title: 'Место работы 2',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 300,
 				dateStart: '2021',
 				dateEnd: '2023',
@@ -480,7 +480,7 @@ export default {
 		karma: 30,
 		reputation: 194,
 		isVerified: true,
-		src: 'assets/images/avatar-04.jpg',
+		src: 'avatar-04.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',
@@ -528,37 +528,37 @@ export default {
 		],
 		sertificates: [
 			{
-				src: "assets/images/sertificate-03.jpg",
+				src: "sertificate-03.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-01.jpg",
+				src: "sertificate-01.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-02.jpg",
+				src: "sertificate-02.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
@@ -576,7 +576,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -589,7 +589,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -602,7 +602,7 @@ export default {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -612,7 +612,7 @@ export default {
 			{
 				isVerified: false,
 				title: 'Место работы',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 194,
 				dateStart: '2020',
 				dateEnd: '2021',
@@ -622,7 +622,7 @@ export default {
 			{
 				isVerified: true,
 				title: 'Место работы 2',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 300,
 				dateStart: '2021',
 				dateEnd: '2023',
@@ -637,7 +637,7 @@ export default {
 		karma: 30,
 		reputation: 194,
 		isVerified: true,
-		src: 'assets/images/avatar-04.jpg',
+		src: 'avatar-04.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',
@@ -654,7 +654,7 @@ export default {
 		karma: 30,
 		reputation: 194,
 		isVerified: true,
-		src: 'assets/images/avatar-04.jpg',
+		src: 'avatar-04.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',

@@ -5,7 +5,7 @@
 			<p class="project__date text-comment">{{ project.date }}</p>
 		</div>
 		<div class="project__images">
-			<img v-for="(image, i) in srcImgs" :src="image" class="project__image" :key="i" />
+			<img v-for="(image, i) in project.images" :src="getSrc(image)" class="project__image" :key="i" />
 		</div>
 		<div class="project__row">
 			<div class="project__col">
@@ -33,7 +33,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import Donars from './Donars.vue';
 
 const props = defineProps({
@@ -43,21 +42,9 @@ const props = defineProps({
 	}
 })
 
-const srcImgs = ref([])
-
-onMounted(() => {
-	loadImage()
-})
-
-const loadImage = () => {
-	for(let i = 0; i < props.project.images.length; i++) {
-		fetch(`/src/${props.project.images[i]}`)
-			.then(response => response.blob())
-			.then(blob => {
-				const objectURL = URL.createObjectURL(blob)
-				srcImgs.value.push(objectURL)
-			})
-	}
+const getSrc = (src) => {
+	let formattedSrc =`./../assets/images/${src}`
+	return new URL(formattedSrc, import.meta.url).href
 }
 </script>
 

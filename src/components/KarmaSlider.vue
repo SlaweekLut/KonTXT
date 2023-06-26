@@ -2,22 +2,17 @@
 	<div class="karma-container">
 		<div class="karma-slider__value-container">
 			<Karma 
-				:value="valueTest === null ? value : valueTest" 
+				:value="Number(x)" 
 				slider 
 				class="karma-slider__value"
-				:style="`transform: translateX(min(max(-50%, calc(-50% + ${x}px)), calc(-50% + ${xmax}px)));`"
+				:style="`transform: translateX(-50%); left: ${Number(x) + 50}%;`"
 			/>
 		</div>
-		<div class="karma-slider" 
-			ref="slider"
-			@mousemove="changeCoordinate($event)"
-			@mousedown="down = true; changeCoordinate($event)"
-			@mouseup="down = false; setDefault()"
-			@mouseleave="down = false; setDefault()"
-		>
+		<div class="karma-slider" ref="slider">
+			<input type="range" min="-50" max="50" step="10" class="karma-slider__range" v-model="x" @touchend="x = valueBuffer" @mouseup="x = valueBuffer">
 			<div 
 				class="karma-slider__thumb" 
-				:style="`transform: translate(min(max(0px,${x}px), ${xmax}px),-50%);`" 
+				:style="`transform: translate(-50%, -50%); left: ${Number(x) + 50}%;`" 
 			></div>
 			<div class="karma-slider__stops">
 				<span></span>
@@ -43,7 +38,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref, watch } from 'vue';
 import Karma from './Karma.vue';
 
 const props = defineProps({
@@ -56,38 +51,12 @@ const props = defineProps({
 const emits = defineEmits(['tested'])
 
 const slider = ref(null);
-const xmax = ref(0);
-const x = ref(0)
-const down = ref(false);
-const valueTest = ref(null);
+const valueBuffer = ref(props.value);
+const x = ref(Number(props.value))
 
-onMounted(() => {
-	xmax.value = slider.value.offsetWidth - 23
-	x.value = Math.round(xmax.value / 100 * (props.value + 50))
+watch(x, () => {
+	emits('tested', Number(x.value))
 })
-
-const changeCoordinate = (event) => {
-	if(down.value) {
-		if(x.value < 0) {
-			x.value = 0;
-		} else if (x.value > xmax.value) {
-			x.value = xmax.value;
-		} else {
-			x.value = 
-			event.clientX - slider.value.offsetLeft - 11 < 0 
-			? 0 : event.clientX - slider.value.offsetLeft - 11 > xmax.value
-			? xmax.value : event.clientX - slider.value.offsetLeft - 11
-		}
-	}
-	valueTest.value = Math.round(x.value / (xmax.value / 100) - 50)
-	emits('tested', valueTest.value)
-}
-
-const setDefault = () => {
-	x.value = Math.round(xmax.value / 100 * (props.value + 50))
-	valueTest.value = Math.round(x.value / (xmax.value / 100) - 50)
-	emits('tested', valueTest.value)
-}
 </script>
 
 <style scoped lang="scss">
@@ -101,21 +70,26 @@ const setDefault = () => {
 .karma-slider {
 	position: relative;
 	width: 100%;
-	padding: 0px 10px;
 	margin: -30px 0;
 	height: calc(21px + 60px);
 	user-select: none;
 	&__value-container {
 		position: relative;
 		height: 34px;
-		padding: 0px 10px;
+	}
+	&__range {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		opacity: 0;
+		cursor: pointer;
 	}
 	&__value {
 		position: absolute;
 		transform: translateX(-50%);
-		&--transition {
-			transition: .3s ease;
-		}
+		transition: .3s ease;
 	}
 	&__values {
 		width: 100%;
@@ -147,6 +121,7 @@ const setDefault = () => {
 		height: 21px;
 		background-color: var(--color-dynamic-black);
 		cursor: pointer;
+		transition: .3s ease;
 		&::before {
 			content: '';
 			display: block;
@@ -157,9 +132,6 @@ const setDefault = () => {
 			top: 0;
 			left: 50%;
 			background-color: var(--color-dynamic-black);
-		}
-		&--transition {
-			transition: .3s ease;
 		}
 	}
 }

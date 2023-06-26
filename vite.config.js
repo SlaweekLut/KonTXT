@@ -19,5 +19,6 @@ export default defineConfig({
         additionalData: `@use '@/assets/mixins.scss' as *;`
       }
     }
-  }
+  },
+  base: '/KonTXT/Auth/',
 })

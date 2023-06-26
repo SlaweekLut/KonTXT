@@ -1,12 +1,10 @@
 <template>
 	<div class="avatar" :style="`max-width: ${size}px; max-height: ${size}px; min-width: ${size}px; min-height: ${size}px`">
-		<img class="avatar__img" :src="srcImg" :alt="alt" :width="size" :height="size"/>
+		<img class="avatar__img" :src="getSrc(src)" :alt="alt" :width="size" :height="size"/>
 	</div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-
 const props = defineProps({
 	src: {
 		type: String,
@@ -22,19 +20,9 @@ const props = defineProps({
 	},
 })
 
-const srcImg = ref()
-
-onMounted(() => {
-	loadImage()
-})
-
-const loadImage = () => {
-	fetch(`/src/${props.src}`)
-		.then(response => response.blob())
-		.then(blob => {
-			const objectURL = URL.createObjectURL(blob)
-			srcImg.value = objectURL
-		})
+const getSrc = (src) => {
+	// let formattedSrc =`./../assets/images/${src}`
+	return require(`@/assets/images/${src}`)
 }
 
 </script>

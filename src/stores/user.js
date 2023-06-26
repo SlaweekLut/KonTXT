@@ -6,9 +6,9 @@ export const useUserStore = defineStore('user', () => {
 		id: '0000001',
 		name: 'Мария Твердых',
 		karma: 30,
-		reputation: 194,
+		reputation: 3072,
 		isVerified: true,
-		src: 'assets/images/avatar-01.jpg',
+		src: 'avatar-01.jpg',
 		profession: 'Дизайн',
 		job: 'Арт-Директор',
 		company: 'Future Lab',
@@ -57,37 +57,37 @@ export const useUserStore = defineStore('user', () => {
 		],
 		sertificates: [
 			{
-				src: "assets/images/sertificate-03.jpg",
+				src: "sertificate-03.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-01.jpg",
+				src: "sertificate-01.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-02.jpg",
+				src: "sertificate-02.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
 			},
 			{
-				src: "assets/images/sertificate-04.jpg",
+				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
 				date: "2020"
@@ -105,7 +105,7 @@ export const useUserStore = defineStore('user', () => {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -118,7 +118,7 @@ export const useUserStore = defineStore('user', () => {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -131,7 +131,7 @@ export const useUserStore = defineStore('user', () => {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['assets/images/sertificate-01.jpg', 'assets/images/sertificate-02.jpg', 'assets/images/sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'
@@ -141,7 +141,7 @@ export const useUserStore = defineStore('user', () => {
 			{
 				isVerified: false,
 				title: 'Место работы',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 194,
 				dateStart: '2020',
 				dateEnd: '2021',
@@ -151,14 +151,35 @@ export const useUserStore = defineStore('user', () => {
 			{
 				isVerified: true,
 				title: 'Место работы 2',
-				src: 'assets/images/logo-01.png',
+				src: 'logo-01.png',
 				reputation: 300,
 				dateStart: '2021',
 				dateEnd: '2023',
 				job: 'Должность 2',
 				description: 'Я имею большой опыт работы в компании, где я занимался задачами связанными с созданием новых проектов и их управлением. В процессе работы, я успешно руководил командой из различных отделов, включая софт и хард разработчиков, маркетологов и менеджеров по продажам... Мой опыт также включает работу с множеством программных обеспечений и платформ, в том числе с SAP, Oracle, Salesforce и другими. Я обладаю навыками в области анализа и оптимизации бизнес-процессов, а также в области бюджетирования и управления проектами. Кроме того, я обладаю навыками в области настройки и разработки больших и сложных систем управления данных'
 			},
-		]
+		],
+		reputationInfo: {
+			activity: [],
+			profile: [
+				{title: 'Заполнен', value: 250},
+				{title: 'Подтвержден email', value: 200},
+				{title: 'Подтвержден телефон', value: 100},
+			],
+			popular: [
+				{title: 'Что-то сказал', value: 250},
+				{title: 'Что-то написал', value: 250},
+			],
+			contribution: [
+				{title: 'В МММ', value: 690},
+				{title: 'Завод по производству пирамидок', value: 10},
+			],
+			achivements: [
+				{title: 'Каменный век', value: 10},
+				{title: 'Обновка!', value: 10},
+				{title: 'Куй железо...', value: 10},
+			],
+		}
 	})
 
 	const addNotes = (id, notes) => {
