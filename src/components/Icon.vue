@@ -1,18 +1,14 @@
 <template>
-	<component :is="name" class="icon" :width="width" :height="height"></component>
+	<component :style="`min-width: ${size}; min-height: ${size}; max-width: ${size}; max-height: ${size}`" :is="name" class="icon" :width="size" :height="size"></component>
 </template>
 
 <script setup>
 defineProps({
 	name: {
-		type: String,
+		type: Object,
 		required: true
 	},
-	width: {
-		type: Number,
-		default: 32
-	},
-	height: {
+	size: {
 		type: Number,
 		default: 32
 	}
@@ -21,13 +17,29 @@ defineProps({
 
 <style scoped lang="scss">
 .icon {
-	path[fill], path[stroke],
-	rect[fill], rect[stroke],
-	ellipse[fill], ellipse[stroke],
-	circle[fill], circle[stroke],
-	line[fill], line[stroke],
-	polygon[fill], polygon[stroke] {
+	:deep(path[fill]),
+	:deep(ellipse[fill]),
+	:deep(circle[fill]),
+	:deep(line[fill]),
+	:deep(polygon[fill]),
+	:deep(rect[fill]) {
 		fill: var(--color-dynamic-black);
+	}
+	:deep(path[stroke]),
+	:deep(ellipse[stroke]),
+	:deep(circle[stroke]),
+	:deep(line[stroke]),
+	:deep(polygon[stroke]),
+	:deep(rect[stroke]) {
+		stroke: var(--color-dynamic-black);
+	}
+	:deep(path[stroke="white"]),
+	:deep(ellipse[stroke="white"]),
+	:deep(circle[stroke="white"]),
+	:deep(line[stroke="white"]),
+	:deep(polygon[stroke="white"]),
+	:deep(rect[stroke="white"]) {
+		stroke: var(--color-dynamic-white);
 	}
 }
 </style>

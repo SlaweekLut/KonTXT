@@ -2,3 +2,15 @@
 @import './mixins.scss';
 @import './color.scss';
 @import './typography.scss';
+
+.scroll-lock {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	&>* {
+		margin-right: 15px;
+		@include screen(1199.98px) {
+			margin-right: 0;
+		}
+	}
+}
