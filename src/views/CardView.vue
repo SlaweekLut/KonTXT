@@ -39,6 +39,10 @@ const isAuth = computed(() => userStore.isAuth)
 
 const noteAboutUser = ref(mainInfo.value.notes?.[id.value])
 
+const copy = () => {
+	navigator.clipboard.writeText(`${new URL(`${route.fullPath}`,import.meta.url)}` )
+}
+
 watch(noteAboutUser, () => {
 	userStore.setNote(id.value, noteAboutUser.value)
 })
@@ -82,7 +86,7 @@ const modalQR = ref(false)
 				<div class="user-info__footer">
 					<p class="user-info__id text-comment-small">id{{ userInfo.id }}</p>
 					<button class="user-info__button">
-						<Icon :name="IconCopy" :size="24"/>
+						<Icon :name="IconCopy" :size="24" @click="copy(userInfo.id)"/>
 					</button>
 					<button class="user-info__button">
 						<Icon :name="IconShare" :size="24"/>

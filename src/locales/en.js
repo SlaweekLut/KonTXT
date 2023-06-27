@@ -77,5 +77,6 @@ export default {
 		popular: 'Popular',
 		contribution: 'Contribution',
 		achivements: 'Achivements',
+		others: 'Others'
 	}
 }

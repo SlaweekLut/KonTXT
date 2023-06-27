@@ -1,7 +1,7 @@
 <template>
 	<div class="bubbles">
-		<div class="bubble" v-for="n in 7" :class="{'bubble--active': progress(n) > 0}" :style="`--progress: ${progress(n)}%`"></div>
-		<div class="bubble bubble--clickable" :class="{'bubble--active': currentList === n, 'bubble--filled': progressSize(n) > 0 }" @click="currentList = currentList === n ? null : n; $emit('getList', currentList)" :style="`--progress: calc(8px + ${progressSize(n)}px)`" v-for="n in 5"></div>
+		<div class="bubble" v-for="n in 8" :class="{'bubble--active': progress(n) > 0}" :style="`--progress: ${progress(n)}%`"></div>
+		<div class="bubble bubble--clickable" :class="{'bubble--active': currentList === n, 'bubble--filled': progressSize(n) > 0 }" @click="currentList = currentList === n ? null : n; $emit('getList', currentList)" :style="`--progress: calc(8px + ${progressSize(n)}px); max-height: ${maxSizes[n-1]}px; max-width: ${maxSizes[n-1]}px;`" v-for="n in 6"></div>
 		<div class="bubble-container">
 			<Reputation :value="reputation" subtitle-hide/>
 		</div>
@@ -14,6 +14,7 @@ import Reputation from './Reputation.vue';
 
 let stepSize = 500;
 let currentList = ref(null)
+let maxSizes = [70, 70, 60, 70, 50, 40]
 const props = defineProps({
 	value: {
 		type: Object,
@@ -35,7 +36,7 @@ const progressSize = (n) => {
 	let valueGroup = props.value[Object.keys(props.value)[n-1]].reduce((a,b) => a + b.value, 0)
 	let step = props.reputation / 5
 	let percent = step / 100
-	let size = (26 / 100) * (valueGroup / percent)
+	let size = ((maxSizes[n-1] - 8) / 100) * (valueGroup / percent)
 	return size
 }
 
@@ -44,9 +45,9 @@ const progressSize = (n) => {
 <style scoped lang="scss">
 .bubbles {
 	position: relative;
-	max-width: 274px;
+	max-width: 328px;
 	width: 100%;
-	height: 230px;
+	height: 273px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -56,8 +57,6 @@ const progressSize = (n) => {
 	position: absolute;
 	min-width: 8px;
 	min-height: 8px;
-	max-height: 34px;
-	max-width: 34px;
 	border: 1px solid var(--color-dynamic-gray);
 	border-radius: 50%;
 	overflow: hidden;
@@ -70,68 +69,80 @@ const progressSize = (n) => {
 	&:nth-child(2) {
 		width: 7px;
 		height: 7px;
-		top: 0px;
-		left: 39px;
-	}
-	&:nth-child(3) {
-		width: 7px;
-		height: 7px;
 		top: 7px;
 		left: 88px;
 	}
-	&:nth-child(4) {
+	&:nth-child(3) {
 		width: 13px;
 		height: 13px;
 		top: 18px;
 		left: 185px;
 	}
-	&:nth-child(5) {
+	&:nth-child(4) {
 		width: 13px;
 		height: 13px;
 		top: 109px;
-		left: 233px;
-	}
-	&:nth-child(6) {
-		width: 7px;
-		height: 7px;
-		bottom: 6px;
 		right: 50px;
 	}
+	&:nth-child(5) {
+		width: 7px;
+		height: 7px;
+		bottom: 48px;
+		right: 72px;
+	}
+	&:nth-child(6) {
+		width: 5px;
+		height: 5px;
+		bottom: 62px;
+		left: 167px;
+	}
 	&:nth-child(7) {
-		width: 9px;
-		height: 9px;
-		bottom: 104px;
-		left: 18px;
+		width: 5px;
+		height: 5px;
+		bottom: 67px;
+		left: 13px;
 	}
 	&:nth-child(8) {
+		width: 9px;
+		height: 9px;
+		top: 118px;
+		left: 50px;
+	}
+	&:nth-child(9) {
 		width: var(--progress);
 		height: var(--progress);
 		top: 64px;
 		left: 0;
 	}
-	&:nth-child(9) {
-		width: var(--progress);
-		height: var(--progress);
-		top: 43px;
-		right: 0;
-	}
 	&:nth-child(10) {
 		width: var(--progress);
 		height: var(--progress);
-		bottom: 45px;
-		right: 16px;
+		top: 0;
+		right: 0;
 	}
 	&:nth-child(11) {
+		width: var(--progress);
+		height: var(--progress);
+		bottom: 74px;
+		right: 3px;
+	}
+	&:nth-child(12) {
 		width: var(--progress);
 		height: var(--progress);
 		bottom: 0px;
 		right: 90px;
 	}
-	&:nth-child(12) {
+	&:nth-child(13) {
 		width: var(--progress);
 		height: var(--progress);
-		bottom: 36px;
-		left: 32px;
+		bottom: 28px;
+		left: 82px;
+	}
+	&:nth-child(14) {
+		width: var(--progress);
+		height: var(--progress);
+		bottom: 74px;
+		left: 28px;
 	}
 	&::before {
 		content: '';
@@ -179,6 +190,9 @@ const progressSize = (n) => {
 			opacity: 1;
 		}
 	}
+	&:not(&--clickable) {
+		opacity: 0.7;
+	}
 }
 .bubble-container {
 	display: flex;
@@ -187,7 +201,7 @@ const progressSize = (n) => {
 	justify-content: center;
 	position: absolute;
 	top: 34px;
-	left: 54px;
+	left: 86px;
 	width: 154px;
 	height: 154px;
 	border-radius: 50%;

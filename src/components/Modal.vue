@@ -142,6 +142,7 @@ defineEmits(['close'])
 			max-height: 24px !important;
 		}
 		&--mobile {
+			border-radius: 0 0 30px 30px;
 			padding: 16px 0 36px;
 		}
 	}

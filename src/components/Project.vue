@@ -42,10 +42,11 @@ const props = defineProps({
 	}
 })
 
-const getSrc = (src) => {
-	let formattedSrc =`./../assets/images/${src}`
-	return new URL(formattedSrc, import.meta.url).href
-}
+// const getSrc = (src) => {
+// 	let formattedSrc =`./../assets/images/${src}`
+// 	return new URL(formattedSrc, import.meta.url).href
+// }
+const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
 </script>
 
 <style scoped lang="scss">

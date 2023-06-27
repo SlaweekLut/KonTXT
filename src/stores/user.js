@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
@@ -179,6 +179,11 @@ export const useUserStore = defineStore('user', () => {
 				{title: 'Обновка!', value: 10},
 				{title: 'Куй железо...', value: 10},
 			],
+			others: [
+				{title: 'Другая 1', value: 10},
+				{title: 'Другая 2', value: 10},
+				{title: 'Другая 3', value: 10},
+			],
 		}
 	})
 
@@ -186,7 +191,9 @@ export const useUserStore = defineStore('user', () => {
 		userInfo.value.notes[id] = notes
 	}
 
-	const isAuth = ref(true)
+	const isAuth = computed(() => {
+		return localStorage.getItem('auth') === 'true' ? true : false
+	})
 
 	const setAuth = () => {
 		isAuth.value = true

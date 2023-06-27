@@ -76,5 +76,6 @@ export default {
 		popular: 'Популярность',
 		contribution: 'Вклад',
 		achivements: 'Достижения',
+		others: 'Другие',
 	}
 }

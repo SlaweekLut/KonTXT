@@ -138,7 +138,7 @@ watch(currentReputationList, () => {
 						<KarmaSlider @tested="testedKarma = $event" class="user-karma__slider" :value="userInfo.karma" />
 					</div>
 				</div>
-				<div class="user-reputation">
+				<div class="user-reputation" v-if="userInfo.reputationInfo">
 					<p class="user-reputation__title text-h1">{{ $t('reputation') }} <Info :text="$t('info.reputation')" /></p>
 					<div class="user-reputation__row">
 						<ReputationBubbles @getList="(n) => currentReputationListId = n === null ? null : n - 1" :value="userInfo.reputationInfo" :reputation="userInfo.reputation" />
@@ -536,6 +536,7 @@ watch(currentReputationList, () => {
 		flex-direction: column;
 		flex-grow: 1;
 		gap: 10px;
+		max-width: calc(100% - 368px);
 	}
 	&__title {
 		display: flex;
@@ -551,8 +552,14 @@ watch(currentReputationList, () => {
 		list-style: none;
 	}
 
+	@include screen(1199.98px) {
+		&__col {
+			max-width: 100%;
+			width: 100%;
+		}
+	}
 	@include screen(767.98px) {
-		&__text,&__slider {
+		&__text {
 			max-width: 100%;
 			width: 100%;
 		}

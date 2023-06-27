@@ -1,6 +1,6 @@
 <template>
 	<div class="donars">
-		<RouterLink :to="`/card/${donar.id}`" class="donar" v-for="donar of visibleUsers" :key="donar">
+		<RouterLink :to="`/user/${donar.id}/cutaway`" class="donar" v-for="donar of visibleUsers" :key="donar">
 			<Avatar :src="donar.src" :alt="donar.name" :size="size"/>
 		</RouterLink>
 		<p class="donars__more text-menu-up" @click="modal = true" :style="`width: ${size}px; height: ${size}px;`" v-if="Object.keys(users).length - 3 > 0">

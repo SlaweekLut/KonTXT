@@ -1,5 +1,6 @@
 <template>
 	<div class="header-wrapper">
+		<button class="dev" @click="auth()"></button>
 		<header class="header">
 			<div class="header__top">
 				<router-link class="logo__link" to="/" >
@@ -21,24 +22,24 @@
 			<div class="header__mobile" v-if="isAuth">
 				<!-- <RouterLink class="aside-item__link" to="/">{{$t("card")}}</RouterLink>
 				<RouterLink class="aside-item__link" to="/reputation">{{$t("reputation")}}</RouterLink> -->
-				<RouterLink to="/" class="header-link" :class="{'router-link-active': currentPath === '/reputation'}">
-					<Icon :name="IconCircle" class="header-link__icon" />
+				<RouterLink to="/cutaway" class="header-link" :class="{'router-link-active': currentPath === '/reputation'}">
+					<Icon :name="IconMobileCircle" class="header-link__icon" />
 					<p class="header-link__title">{{ $t('header.profile') }}</p>
 				</RouterLink>
 				<RouterLink to="/contacts" disabled class="header-link">
-					<Icon :name="IconSquare" class="header-link__icon" />
+					<Icon :name="IconMobileSquare" class="header-link__icon" />
 					<p class="header-link__title">{{ $t('header.contacts') }}</p>
 				</RouterLink>
 				<RouterLink to="/meets" disabled class="header-link">
-					<Icon :name="IconCross" class="header-link__icon" />
+					<Icon :name="IconMobileCross" class="header-link__icon" />
 					<p class="header-link__title">{{ $t('header.meets') }}</p>
 				</RouterLink>
 				<RouterLink to="/knowledge" disabled class="header-link">
-					<Icon :name="IconTriangle" class="header-link__icon" />
+					<Icon :name="IconMobileTriangle" class="header-link__icon" />
 					<p class="header-link__title">{{ $t('header.knowledge') }}</p>
 				</RouterLink>
 			</div>
-			<!-- <div class="header__bottom" v-if="isAuth">
+			<!-- <div class="header__bottom">
 				<RouterLink :to="`/card/${currentId}`" class="header__link text-h2" :class="{'header__link--active': currentPage === 'card'}">{{$t("card")}}</RouterLink>
 				<hr class="header__line">
 				<RouterLink :to="`/reputation/${currentId}`" class="header__link text-h2" :class="{'header__link--active': currentPage === 'reputation'}">{{$t("reputation")}}</RouterLink>
@@ -117,10 +118,10 @@
 		</Modal>
 		<Login :open="login" @close="login = false" />
 	</div>
-	<div class="header__bottom" v-if="!isAuth || (currentPath === '/' || currentPath === '/reputation')">
-		<RouterLink :to="`/`" class="header__link text-h2" :class="{'header__link--active': currentPage === 'noAuthCard'}">{{$t("card")}}</RouterLink>
+	<div class="header__bottom" :class="{'header__bottom--mobile': isAuth && (currentPage === 'cutaway' || currentPage === 'reputation')}" v-if="!isAuth || (currentPage === 'cutaway' || currentPage === 'reputation') || (currentPage === 'userCutaway' || currentPage === 'userReputation')">
+		<RouterLink :to="(currentPage !== 'reputation' && currentPage !== 'cutaway') ? `/user/${currentId}/cutaway` : '/cutaway'" class="header__link text-h2" :class="{'header__link--active': currentPage === 'cutaway' || currentPage === 'userCutaway'}">{{$t("card")}}</RouterLink>
 		<hr class="header__line">
-		<RouterLink :to="`/reputation`" class="header__link text-h2" :class="{'header__link--active': currentPage === 'noAuthReputation'}">{{$t("reputation")}}</RouterLink>
+		<RouterLink :to="(currentPage !== 'reputation' && currentPage !== 'cutaway') ? `/user/${currentId}/reputation` : '/reputation'" class="header__link text-h2" :class="{'header__link--active': currentPage === 'reputation' || currentPage === 'userReputation'}">{{$t("reputation")}}</RouterLink>
 	</div>
 </template>
 
@@ -135,10 +136,11 @@ import { computed, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import Avatar from './Avatar.vue';
 import Icon from './Icon.vue';
-import IconCircle from './icons/IconCircle.vue';
-import IconSquare from './icons/IconSquare.vue';
+import IconMobileCircle from './icons/IconMobileCircle.vue';
+import IconMobileSquare from './icons/IconMobileSquare.vue';
+import IconMobileCross from './icons/IconMobileCross.vue';
 import IconCross from './icons/IconCross.vue';
-import IconTriangle from './icons/IconTriangle.vue';
+import IconMobileTriangle from './icons/IconMobileTriangle.vue';
 import Modal from './Modal.vue';
 import IconQuestion from './icons/IconQuestion.vue';
 import IconSettings from './icons/IconSettings.vue';
@@ -157,14 +159,29 @@ const isAuth = computed(() => userStore.isAuth)
 const route = useRoute()
 const currentPage = computed(() => route.name)
 const currentPath = computed(() => route.path)
-// const currentId = computed(() => route.params.id)
+const currentId = computed(() => route.params.id)
 const nav = ref(false)
 const login = ref(false)
 
+const auth = () => {
+	localStorage.setItem('auth', localStorage.getItem('auth') === 'true' ? false : true)
+}
 </script>
 
 <style scoped lang="scss">
-
+.dev {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 48px;
+	height: 48px;
+	cursor: pointer;
+	transition: .3s ease;
+	border-radius: 8px;
+	&:hover {
+		background: rgba(0, 0, 0, 0.4);
+	}
+}
 .logo {
 	height: 45px;
 	width: auto;
@@ -264,6 +281,9 @@ const login = ref(false)
 		justify-content: center;
 		align-items: center;
 		margin-top: 14px;
+		&--mobile {
+			display: none;
+		}
 	}
 	&__line {
 		border-right: 1px solid var(--color-dynamic-black);
@@ -297,6 +317,9 @@ const login = ref(false)
 		}
 		&__bottom {
 			margin-top: 30px;
+			&--mobile {
+				display: flex;
+			}
 		}
 		&__button {
 			display: none;
@@ -324,7 +347,7 @@ const login = ref(false)
 }
 .header-wrapper {
 	@include screen(1199.98px) {
-		background-color: var(--color-dynamic-black);
+		background-color: var(--color-black);
 	}
 }
 .header-link {

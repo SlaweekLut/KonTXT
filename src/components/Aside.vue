@@ -1,12 +1,12 @@
 <template>
-	<aside class="aside">
-		<div class="aside-item" :class="{'router-link-active': path === '/' || path === '/reputation'}">
+	<aside class="aside" v-if="isAuth">
+		<div class="aside-item" :class="{'router-link-active': path === '/cutaway' || path === '/reputation'}">
 			<RouterLink to="/" class="aside-item__header">
 				<Icon :name="IconCircle" class="aside-item__icon" />
 				<p class="aside-item__title">{{$t('header.profile')}}</p>
 			</RouterLink>
-			<div class="aside-item__sublist" v-if="path === '/' || path === '/reputation'">
-				<RouterLink class="aside-item__link" to="/">{{$t("card")}}</RouterLink>
+			<div class="aside-item__sublist" v-if="path === '/cutaway' || path === '/reputation'">
+				<RouterLink class="aside-item__link" to="/cutaway">{{$t("card")}}</RouterLink>
 				<RouterLink class="aside-item__link" to="/reputation">{{$t("reputation")}}</RouterLink>
 			</div>
 		</div>
@@ -40,6 +40,10 @@ import IconCross from './icons/IconCross.vue';
 import IconTriangle from './icons/IconTriangle.vue';
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
+const isAuth = computed(() => userStore.isAuth);
 
 const route = useRoute();
 const path = computed(() => route.path);
@@ -68,6 +72,9 @@ const path = computed(() => route.path);
 			stroke: var(--color-dynamic-gray);
 			transition: .3s ease;
 		}
+	}
+	&__link {
+		font-size: 14px;
 	}
 	&__sublist {
 		display: flex;

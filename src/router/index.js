@@ -2,13 +2,27 @@ import { createRouter, createWebHistory } from 'vue-router'
 import CardView from '../views/CardView.vue'
 import ReputationView from '../views/ReputationView.vue'
 
+import { useUserStore } from '@/stores/user'
+import { computed } from 'vue'
+const isAuth = computed(() => {
+  return useUserStore().isAuth
+})
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'noAuthCard',
+      name: 'home',
       component: CardView,
+      redirect: () => {
+        return '/cutaway'
+        if(isAuth.value) {
+          return '/cutaway'
+        } else {
+          window.location.replace('https://kontxt.me/')
+        }
+      }
     },
     {
       path: '/contacts',
@@ -27,17 +41,27 @@ const router = createRouter({
     },
     {
       path: '/reputation',
-      name: 'noAuthReputation',
+      name: 'reputation',
       component: ReputationView,
     },
     {
-      path: '/card/:id',
-      name: 'card',
+      path: '/cutaway',
+      name: 'cutaway',
       component: CardView,
     },
     {
-      path: '/reputation/:id',
-      name: 'reputation',
+      path: '/user/:id',
+      name: 'userCutaway',
+      redirect: '/user/:id/cutaway',
+    },
+    {
+      path: '/user/:id/cutaway',
+      name: 'userCutaway',
+      component: CardView,
+    },
+    {
+      path: '/user/:id/reputation',
+      name: 'userReputation',
       component: ReputationView,
     }
   ]
