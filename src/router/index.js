@@ -16,7 +16,6 @@ const router = createRouter({
       name: 'home',
       component: CardView,
       redirect: () => {
-        return '/cutaway'
         if(isAuth.value) {
           return '/cutaway'
         } else {
@@ -51,8 +50,15 @@ const router = createRouter({
     },
     {
       path: '/user/:id',
-      name: 'userCutaway',
-      redirect: '/user/:id/cutaway',
+      name: 'userCutawayRedirect',
+      component: CardView,
+      redirect: (to) => `/user/${to.params.id}/cutaway`,
+    },
+    {
+      path: '/:id',
+      name: 'userCutawayRedirectId',
+      component: CardView,
+      redirect: (to) => `/user/${to.params.id}/cutaway`,
     },
     {
       path: '/user/:id/cutaway',

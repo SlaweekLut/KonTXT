@@ -10,6 +10,7 @@ export default {
 	job: 'Position',
 	company: 'Company',
 	in: 'in',
+	copy: 'Copied!',
 	noAuth: 'This information and more than 80 elements of reputation are hidden - log in to view more',
 	achivements: {
 		magnet: 'Rewards for 10 successful meetings',

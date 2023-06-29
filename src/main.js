@@ -8,6 +8,7 @@ import en from './locales/en'
 import App from './App.vue'
 import router from './router'
 import Popper from "vue3-popper";
+import { createHead } from "unhead"
 
 const i18n = createI18n({
 	locale: 'ru',
@@ -19,6 +20,8 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
+const head = createHead()
+
 app.component("Popper", Popper);
 app.use(i18n)
 app.use(createPinia())

@@ -1,8 +1,8 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import Copy from '../components/Copy.vue';
 import Icon from '../components/Icon.vue';
 import IconVerify from '../components/icons/IconVerify.vue';
-import IconCopy from '../components/icons/IconCopy.vue';
 import IconShare from '../components/icons/IconShare.vue';
 import IconQR from '../components/icons/IconQR.vue';
 import IconCamera from '../components/icons/IconCamera.vue';
@@ -18,8 +18,11 @@ import Social from '../components/Social.vue';
 import Button from '../components/Button.vue';
 import {useUserStore} from '@/stores/user';
 import UserNote from '../components/UserNote.vue';
-
-import { useRoute } from 'vue-router';
+import IconEnvelop from '../components/icons/IconEnvelop.vue';
+import IconFacebook from '../components/icons/IconFacebook.vue';
+import IconVK from '../components/icons/IconVK.vue';
+import { useRoute, useRouter } from 'vue-router';
+import {useHead} from 'unhead'
 
 import Users from '../database/users.js';
 import Modal from '../components/Modal.vue';
@@ -36,18 +39,30 @@ const userInfo = computed(() => {
 })
 
 const isAuth = computed(() => userStore.isAuth)
-
+const canShare = computed(() => navigator.share ? true : false)
 const noteAboutUser = ref(mainInfo.value.notes?.[id.value])
-
-const copy = () => {
-	navigator.clipboard.writeText(`${new URL(`${route.fullPath}`,import.meta.url)}` )
-}
 
 watch(noteAboutUser, () => {
 	userStore.setNote(id.value, noteAboutUser.value)
 })
 
 const modalQR = ref(false)
+const modalShare = ref(false)
+const url = computed(() => {
+	let id = `/user/${userInfo.value.id}/cutaway`
+	return new URL(id,import.meta.url).href
+})
+
+const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
+useHead({
+	title: userInfo.value.name,
+	meta: [
+		{ property: 'og:title', content: userInfo.value.name },
+		{ property: 'og:description', content: userInfo.value.description },
+		{ property: 'og:image', content: getSrc(userInfo.value.src) },
+		{ property: 'og:url', content: window.location.href },
+	]
+})
 
 </script>
 
@@ -86,9 +101,9 @@ const modalQR = ref(false)
 				<div class="user-info__footer">
 					<p class="user-info__id text-comment-small">id{{ userInfo.id }}</p>
 					<button class="user-info__button">
-						<Icon :name="IconCopy" :size="24" @click="copy(userInfo.id)"/>
+						<Copy :copyValue="url"/>
 					</button>
-					<button class="user-info__button">
+					<button class="user-info__button" @click="canShare ? navigator.share({url: url}) : modalShare = true ">
 						<Icon :name="IconShare" :size="24"/>
 					</button>
 					<button class="user-info__button" @click="modalQR = true">
@@ -108,7 +123,7 @@ const modalQR = ref(false)
 			</div>
 			<div class="user-about">
 				<p class="user-about__title text-h1">{{ $t('titles.about') }}</p>
-				<p class="user-about__text text-main">Создаю Hyper casual игры с охватом пользователей свыше 10 тысяч. Последний проект Jam-Ko. Проект запустили на международный рынок. Большой опыт в управлении кросс-функциональными командами. Создаю Hyper casual игры с охватом пользователей свыше 10 тысяч. Последний проект Jam-Ko. Проект запустили на международный рынок. Большой опыт в управлении кросс-функциональными командами. </p>
+				<p class="user-about__text text-main">{{ userInfo.description }}</p>
 			</div>
 			<div class="user-interes">
 				<div class="user-interes__title text-h1">{{ $t('titles.interes') }}</div>
@@ -156,17 +171,72 @@ const modalQR = ref(false)
 					<button class="qr__action">
 						<Icon :name="IconCamera"/>
 					</button>
-					<button class="qr__action">
+					<button class="qr__action" @click="canShare ? navigator.share({url: url}) : modalShare = true ">
 						<Icon :name="IconShare"/>
 					</button>
 				</div>
 			</div>
 		</Modal>
-
+		<Modal :open="modalShare" @close="modalShare = false" share>
+			<div class="share">
+				<div class="share__input">
+					<p class="text-comment">www.kontxt.me/id{{ userInfo.id }}</p>
+					<Copy :copyValue="url"/>
+				</div>
+				<div class="share__links">
+					<a :href="`https://t.me/share/url?url=${url}`" class="share__link" target="_blank">
+						<Icon :name="IconTelegram" :size="24"/>
+					</a>
+					<a :href="`mailto:?subject=Hello%20again`" class="share__link" target="_top">
+						<Icon :name="IconEnvelop" :size="24"/>
+					</a>
+					<a :href="`https://www.facebook.com/sharer/sharer.php?u=${url}`" class="share__link" target="_blank">
+						<Icon :name="IconFacebook" :size="24"/>
+					</a>
+					<a :href="`https://vk.com/share.php?url=${url}`" class="share__link" target="_blank">
+						<Icon :name="IconVK" :size="24"/>
+					</a>
+					<a :href="`https://www.linkedin.com/sharing/share-offsite/?url=${url}`" class="share__link" target="_blank">
+						<Icon :name="IconLinkedIn" :size="24"/>
+					</a>
+				</div>
+			</div>
+		</Modal>
 	</main>
 </template>
 
 <style scoped lang="scss">
+.share {
+	padding: 40px;
+	display: flex;
+	gap: 30px;
+	align-items: center;
+	flex-direction: column;
+	&__input {
+		display: flex;
+		border: 1px solid var(--color-dynamic-gray);
+		border-radius: 1000px;
+		align-items: center;
+		gap: 10px;
+		padding: 10px 20px;
+		width: 100%;
+		justify-content: space-between;
+		p {
+			font-size: 16px;
+		}
+		:deep(path[fill]) {
+			fill: var(--color-dynamic-gray);
+		}
+	}
+
+	&__links {
+		display: flex;
+		align-items: center;
+		gap: 30px;
+		align-items: center;
+		margin: 0 auto;
+	}
+}
 .qr {
 	display: flex;
 	flex-direction: column;

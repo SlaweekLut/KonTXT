@@ -2,7 +2,7 @@
 	<Teleport to="body">
 		<Transition :name="mobile ? 'slideInDown' : 'fade'">
 			<div class="modal-wrapper" v-if="open" @click.self="$emit('close')">
-				<div class="modal" :class="{'modal--small': small, 'modal--mobile': mobile, 'modal--login': login}">
+				<div class="modal" :class="{'modal--small': small, 'modal--mobile': mobile, 'modal--login': login, 'modal--share': share}">
 					<Icon :name="IconCross" @click="$emit('close')" class="modal__close"/>
 					<div class="modal__container" v-bind="$attrs">
 						<slot/>
@@ -31,6 +31,10 @@ const props = defineProps({
 		default: false
 	},
 	login: {
+		type: Boolean,
+		default: false
+	},
+	share: {
 		type: Boolean,
 		default: false
 	}
@@ -117,6 +121,12 @@ defineEmits(['close'])
 				margin: 0 auto;
 			}
 		}
+	}
+	&--share {
+		max-width: 362px;
+		height: auto;
+		max-height: 241px;
+		padding: 0;
 	}
 	@include screen(767.98px) {
 		padding: 20px 30px;
