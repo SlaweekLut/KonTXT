@@ -48,18 +48,11 @@ defineProps({
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-	}
-	&__name {
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
-		text-align: center;
-		margin-top: 10px;
-	}
-	&__info {
 		&--full {
 			display: flex;
 			gap: 32px;
+			align-items: flex-start;
+			flex-direction: row;
 			.review-video {
 				&__name {
 					text-align: left;
@@ -70,9 +63,17 @@ defineProps({
 					display: flex;
 					align-items: center;
 					gap: 18px;
+					margin-bottom: 10px;
 				}
 			}
 		}
+	}
+	&__name {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		text-align: center;
+		margin-top: 10px;
 	}
 	&__karma {
 		margin-top: 20px;

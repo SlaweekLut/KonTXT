@@ -59,7 +59,7 @@ defineEmits(['close'])
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	z-index: 1;
+	z-index: 3;
 	backdrop-filter: blur(10px);
 	background-color: var(--color-dynamic-black-alpha);
 }
@@ -82,7 +82,7 @@ defineEmits(['close'])
 		top: -32px;
 		cursor: pointer;
 	}
-	&__container {
+	&:not(:is(&--small)) &__container {
 		overflow-x: hidden;
 		overflow-y: auto;
 		height: 100%;
@@ -131,11 +131,11 @@ defineEmits(['close'])
 	@include screen(767.98px) {
 		padding: 20px 30px;
 		border-radius: 15px;
-		max-height: 80vh;
-		&:not(:is(&--login, &--mobile)) {
+		&:not(:is(&--login, &--mobile, &--share, &--small)) {
 			height: 100%;
+			max-height: 80vh;
 		}
-		&__container {
+		&:not(:is(&--share, &--login, &--mobile, &--small)).modal__container {
 			height: 100%;
 			display: flex;
 			flex-direction: column;
@@ -154,6 +154,12 @@ defineEmits(['close'])
 		&--mobile {
 			border-radius: 0 0 30px 30px;
 			padding: 16px 0 36px;
+		}
+		&--share {
+			max-width: 362px;
+			height: auto;
+			max-height: 241px;
+			padding: 0;
 		}
 	}
 }

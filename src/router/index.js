@@ -16,11 +16,11 @@ const router = createRouter({
       name: 'home',
       component: CardView,
       redirect: () => {
-        if(isAuth.value) {
-          return '/cutaway'
-        } else {
-          window.location.replace('https://kontxt.me/')
-        }
+        return '/cutaway'
+        // if(isAuth.value) {
+        // } else {
+        //   window.location.replace('https://kontxt.me/')
+        // }
       }
     },
     {

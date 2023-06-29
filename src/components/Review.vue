@@ -70,6 +70,12 @@ defineProps({
 		flex-direction: column;
 		gap: 10px;
 		margin-left: auto;
+		&--mobile {
+			display: none;
+		}
+	}
+	&__text--mobile {
+		display: none;
 	}
 	&--full {
 		display: flex;

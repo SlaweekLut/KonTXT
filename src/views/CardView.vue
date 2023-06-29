@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Copy from '../components/Copy.vue';
 import Icon from '../components/Icon.vue';
 import IconVerify from '../components/icons/IconVerify.vue';
@@ -39,7 +39,10 @@ const userInfo = computed(() => {
 })
 
 const isAuth = computed(() => userStore.isAuth)
-const canShare = computed(() => navigator.share ? true : false)
+const canShare = computed(() => {
+	if(navigator?.share) return true
+	else return false
+})
 const noteAboutUser = ref(mainInfo.value.notes?.[id.value])
 
 watch(noteAboutUser, () => {
@@ -151,7 +154,7 @@ useHead({
 				<Button class="user-controlls__button" type="secondary" :text="$t('button.save')" v-if="!isAuth" />
 			</div>
 		</div>
-		<Modal :open="modalQR" @close="modalQR = false" v-if="isAuth" small>
+		<Modal :open="modalQR" @close="modalQR = false" small>
 			<div class="modal__header">
 				<p class="user-content__title text-h1">QR-код вашего профиля</p>
 			</div>

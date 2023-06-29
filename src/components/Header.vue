@@ -19,26 +19,6 @@
 				</button>
 				<Button class="header__button" :text="$t('button.logIn')" @click="login = true" v-if="!isAuth"/>
 			</div>
-			<div class="header__mobile" v-if="isAuth">
-				<!-- <RouterLink class="aside-item__link" to="/">{{$t("card")}}</RouterLink>
-				<RouterLink class="aside-item__link" to="/reputation">{{$t("reputation")}}</RouterLink> -->
-				<RouterLink to="/cutaway" class="header-link" :class="{'router-link-active': currentPath === '/reputation'}">
-					<Icon :name="IconMobileCircle" class="header-link__icon" />
-					<p class="header-link__title">{{ $t('header.profile') }}</p>
-				</RouterLink>
-				<RouterLink to="/contacts" disabled class="header-link">
-					<Icon :name="IconMobileSquare" class="header-link__icon" />
-					<p class="header-link__title">{{ $t('header.contacts') }}</p>
-				</RouterLink>
-				<RouterLink to="/meets" disabled class="header-link">
-					<Icon :name="IconMobileCross" class="header-link__icon" />
-					<p class="header-link__title">{{ $t('header.meets') }}</p>
-				</RouterLink>
-				<RouterLink to="/knowledge" disabled class="header-link">
-					<Icon :name="IconMobileTriangle" class="header-link__icon" />
-					<p class="header-link__title">{{ $t('header.knowledge') }}</p>
-				</RouterLink>
-			</div>
 			<!-- <div class="header__bottom">
 				<RouterLink :to="`/card/${currentId}`" class="header__link text-h2" :class="{'header__link--active': currentPage === 'card'}">{{$t("card")}}</RouterLink>
 				<hr class="header__line">
@@ -117,6 +97,29 @@
 			</div>
 		</Modal>
 		<Login :open="login" @close="login = false" />
+	</div>
+	<div class="header-wrapper--placeholder"></div>
+	<div class="header-wrapper--mobile" v-if="isAuth">
+		<div class="header__mobile">
+			<!-- <RouterLink class="aside-item__link" to="/">{{$t("card")}}</RouterLink>
+			<RouterLink class="aside-item__link" to="/reputation">{{$t("reputation")}}</RouterLink> -->
+			<RouterLink to="/cutaway" class="header-link" :class="{'router-link-active': currentPath === '/reputation'}">
+				<Icon :name="IconMobileCircle" class="header-link__icon" />
+				<p class="header-link__title">{{ $t('header.profile') }}</p>
+			</RouterLink>
+			<RouterLink to="/contacts" disabled class="header-link">
+				<Icon :name="IconMobileSquare" class="header-link__icon" />
+				<p class="header-link__title">{{ $t('header.contacts') }}</p>
+			</RouterLink>
+			<RouterLink to="/meets" disabled class="header-link">
+				<Icon :name="IconMobileCross" class="header-link__icon" />
+				<p class="header-link__title">{{ $t('header.meets') }}</p>
+			</RouterLink>
+			<RouterLink to="/knowledge" disabled class="header-link">
+				<Icon :name="IconMobileTriangle" class="header-link__icon" />
+				<p class="header-link__title">{{ $t('header.knowledge') }}</p>
+			</RouterLink>
+		</div>
 	</div>
 	<div class="header__bottom" :class="{'header__bottom--mobile': isAuth && (currentPage === 'cutaway' || currentPage === 'reputation')}" v-if="!isAuth || (currentPage === 'cutaway' || currentPage === 'reputation') || (currentPage === 'userCutaway' || currentPage === 'userReputation')">
 		<RouterLink :to="(currentPage !== 'reputation' && currentPage !== 'cutaway') ? `/user/${currentId}/cutaway` : '/cutaway'" class="header__link text-h2" :class="{'header__link--active': currentPage === 'cutaway' || currentPage === 'userCutaway'}">{{$t("card")}}</RouterLink>
@@ -261,7 +264,7 @@ const auth = () => {
 	width: 100%;
 	max-width: calc(1286px + 80px);
 	margin: 0 auto;
-	padding: 40px 40px 0;
+	padding: 14px 40px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -272,7 +275,7 @@ const auth = () => {
 		align-items: center;
 	}
 	&__button {
-		width: auto;
+		width: 228px;
 		margin-left: 30px;
 	}
 	&__bottom {
@@ -307,7 +310,7 @@ const auth = () => {
 		display: none;
 	}
 	@include screen(1199.98px) {
-		padding: 24px 20px;
+		padding: 14px 20px;
 		max-width: 673px;
 		&__burger {
 			display: block;
@@ -334,9 +337,13 @@ const auth = () => {
 			display: none;
 		}
 		&__mobile {
+			max-width: 673px;
+			width: 100%;
+			padding: 14px 20px;
 			display: flex;
 			justify-content: space-between;
-			margin-top: 26px;
+			margin: 0 auto;
+			background: var(--color-black);
 		}
 	}
 	@include screen(767.98px) {
@@ -346,8 +353,26 @@ const auth = () => {
 	}
 }
 .header-wrapper {
+	position: fixed;
+	width: 100vw;
+	top: 0;
+	left: 0;
+	background-color: var(--color-dynamic-white);
+	z-index: 2;
+	&--placeholder {
+		height: 73px;
+	}
 	@include screen(1199.98px) {
 		background-color: var(--color-black);
+		&--mobile {
+			max-width: 100%;
+			background-color: var(--color-black);
+		}
+		&--placeholder {
+			background-color: var(--color-black);
+			height: 61px;
+			padding-bottom: 0;
+		}
 	}
 }
 .header-link {
@@ -386,7 +411,7 @@ const auth = () => {
 			}
 		}
 	}
-	@include screen(767.98px) {
+	@include screen(424.98px) {
 		gap: 6px;
 		&__icon {
 			width: 24px !important;

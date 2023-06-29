@@ -5,14 +5,14 @@
 				:value="Number(x)" 
 				slider 
 				class="karma-slider__value"
-				:style="`transform: translateX(-50%); left: ${Number(x) + 50}%;`"
+				:style="`transform: translateX(-50%); left:${(Number(x) / 10 + 5) * 32 + ((Number(x) / 10 + 5) * 2) + 9}px;`"
 			/>
 		</div>
 		<div class="karma-slider" ref="slider">
 			<input type="range" min="-50" max="50" step="10" class="karma-slider__range" v-model="x" @touchend="x = valueBuffer" @mouseup="x = valueBuffer">
 			<div 
 				class="karma-slider__thumb" 
-				:style="`transform: translate(-50%, -50%); left: ${Number(x) + 50}%;`" 
+				:style="`transform: translateY(-50%); left: ${(Number(x) / 10 + 5) * 32 + ((Number(x) / 10 + 5) * 2) + 9}px;`" 
 			></div>
 			<div class="karma-slider__stops">
 				<span></span>
@@ -79,7 +79,7 @@ watch(x, () => {
 	}
 	&__range {
 		position: absolute;
-		width: 100%;
+		width: calc(100% - 18px);
 		height: 100%;
 		top: 0;
 		left: 0;
@@ -99,16 +99,20 @@ watch(x, () => {
 	}
 	&__stops {
 		display: flex;
-		justify-content: space-between;
+		// justify-content: space-between;
 		align-items: center;
-		width: 100%;
+		width: calc(100% - 18px);
 		height: 100%;
+		margin: 0px 9px;
+		gap: 32px;
 		cursor: pointer;
 		span {
+			min-width: 2px;
+			max-width: 2px;
 			width: 2px;
 			height: 14px;
 			background: linear-gradient(180deg, var(--color-dynamic-black) 0%, rgba(20, 24, 31, 0.00) 100%);
-			display: block;
+			display: flex;
 			border-radius: 2px;
 		}
 	}
