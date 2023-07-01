@@ -70,7 +70,12 @@ export default {
 	karmaDesc: {
 		positive: 'Your karma is +%{value}, which means you are a good person and for each action in KonTxT you will receive an additional 1.%{value} RP.',
 		negative: 'Your karma is %{value}, which means you are a bad person and for each action in KonTxT you will receive an additional 0.%{valueb} less RP.',
-		neutral: 'Your karma is 0, which means you are a person and for each action in KonTxT you will receive an additional 1.0 RP.'
+		neutral: 'Your karma is 0, which means you are a person and for each action in KonTxT you will receive an additional 1.0 RP.',
+		static: {
+			positive: 'Your karma is +%{value}, which means you are a good person and for each action in KonTxT you will receive an additional 1.n RP.',
+			negative: 'Your karma is %{value}, which means you are a bad person and for each action in KonTxT you will receive an additional 0.n less RP.',
+			neutral: 'Your karma is 0, which means you are a person and for each action in KonTxT you will receive an additional 1.0 RP.'
+		}
 	},
 	reputationChart: {
 		activity: 'Activity',

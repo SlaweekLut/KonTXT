@@ -153,9 +153,9 @@ watch(currentReputationList, () => {
 							</ul>
 						</div>
 						<div class="user-reputation__col" v-else>
-							<p class="user-reputation__text text-comment" v-if="testedKarma > 0">{{ $t('karmaDesc.positive', {value: `${testedKarma}`}) }}</p>
-							<p class="user-reputation__text text-comment" v-else-if="testedKarma === 0">{{ $t('karmaDesc.neutral') }}</p>
-							<p class="user-reputation__text text-comment" v-else>{{ $t('karmaDesc.negative', {value: testedKarma, valueb: -testedKarma}) }}</p>
+							<p class="user-reputation__text text-comment" v-if="testedKarma > 0">{{ $t('karmaDesc.static.positive') }}</p>
+							<p class="user-reputation__text text-comment" v-else-if="testedKarma === 0">{{ $t('karmaDesc.static.neutral') }}</p>
+							<p class="user-reputation__text text-comment" v-else>{{ $t('karmaDesc.static.negative') }}</p>
 						</div>
 					</div>
 				</div>
@@ -280,9 +280,21 @@ watch(currentReputationList, () => {
 						<p class="user-content__title text-h1">{{ $t('titles.sertificates') }}</p>
 					</div>
 					<div class="modal__content user-content__sertificates">
-						<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
-							<Sertificate  :sertificate="sertificate"/>
-						</template>
+						<div class="user-content__sertificates-col">
+							<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
+								<Sertificate  :sertificate="sertificate"/>
+							</template>
+						</div>
+						<div class="user-content__sertificates-col">
+							<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
+								<Sertificate  :sertificate="sertificate" v-if="i % 2 === 0"/>
+							</template>
+						</div>
+						<div class="user-content__sertificates-col">
+							<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
+								<Sertificate  :sertificate="sertificate" v-if="i % 2 !== 0"/>
+							</template>
+						</div>
 					</div>
 				</Modal>
 				<Modal :open="modals.project" @close="modals.project = false">
@@ -318,7 +330,12 @@ watch(currentReputationList, () => {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 40px;
+		margin-bottom: 32px;
+		padding-bottom: 8px;
+		position: sticky;
+		top: -1px;
+		z-index: 1;
+		background: var(--color-dynamic-white);
 	}
 	&__content {
 		& > * {
@@ -437,21 +454,22 @@ watch(currentReputationList, () => {
 		width: 100%;
 		position: relative;
 		&--hidden {
-			&::before {
-				content: '';
-				display: block;
-				width: calc(100% + 64px);
-				height: calc(100% + 64px);
-				backdrop-filter: blur(14px);
-				position: absolute;
-				z-index: 1;
-				margin: -32px;
-				@include screen(767.98px) {
-					width: 100vw;
-					height: calc(100% + 62px);
-					margin: -30px -20px -16px;
-				}
-			}
+			filter: blur(14px);
+			// &::before {
+			// 	content: '';
+			// 	display: block;
+			// 	width: calc(100% + 64px);
+			// 	height: calc(100% + 64px);
+			// 	backdrop-filter: blur(14px);
+			// 	position: absolute;
+			// 	z-index: 1;
+			// 	margin: -32px;
+			// 	@include screen(767.98px) {
+			// 		width: 100vw;
+			// 		height: calc(100% + 62px);
+			// 		margin: -30px -20px -16px;
+			// 	}
+			// }
 		}
 	}
 	&__item {
@@ -666,30 +684,15 @@ watch(currentReputationList, () => {
 		gap: 35px;
 	}
 	&__sertificates {
-		display: grid;
+		display: flex;
 		gap: 20px;
-		grid-template-columns: repeat(auto-fill, calc(50% - 10px));
-		grid-auto-rows: minmax(20px, auto);
 		justify-content: center;
-		& > * {
-			padding-bottom: 0;
-			&::after {
+		&-col {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			&:first-child {
 				display: none;
-			}
-			&:nth-child(n) {
-				grid-row-end: span 2;
-			}
-			&:nth-child(2n) {
-				grid-row-end: span 3;
-			}
-			&:nth-child(3n) {
-				grid-row-end: span 4;
-			}
-			&:nth-child(4n) {
-				grid-row-end: span 5;
-			}
-			&:nth-child(5n) {
-				grid-row-end: span 6;
 			}
 		}
 	}
@@ -698,8 +701,14 @@ watch(currentReputationList, () => {
 			gap: 0;
 		}
 		&__sertificates {
-			display: flex;
-			flex-direction: column;
+			&-col {
+				&:first-child {
+					display: flex;
+				}
+				&:not(&:first-child) {
+					display: none;
+				}
+			}
 		}
 	}
 }

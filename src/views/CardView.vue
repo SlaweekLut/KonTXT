@@ -326,7 +326,12 @@ useHead({
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin-bottom: 40px;
+		margin-bottom: 32px;
+		padding-bottom: 8px;
+		position: sticky;
+		top: -1px;
+		z-index: 1;
+		background: var(--color-dynamic-white);
 	}
 }
 
