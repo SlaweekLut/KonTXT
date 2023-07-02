@@ -40,7 +40,7 @@ const userInfo = computed(() => {
 
 const isAuth = computed(() => userStore.isAuth)
 const canShare = computed(() => {
-	if(navigator?.share) return true
+	if(Navigator.share) return true
 	else return false
 })
 const noteAboutUser = ref(mainInfo.value.notes?.[id.value])
@@ -51,10 +51,7 @@ watch(noteAboutUser, () => {
 
 const modalQR = ref(false)
 const modalShare = ref(false)
-const url = computed(() => {
-	let id = `/user/${userInfo.value.id}/cutaway`
-	return new URL(id,import.meta.url).href
-})
+const url = computed(() => {return window.location.href})
 
 const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
 useHead({
@@ -104,9 +101,9 @@ useHead({
 				<div class="user-info__footer">
 					<p class="user-info__id text-comment-small">id{{ userInfo.id }}</p>
 					<button class="user-info__button">
-						<Copy :copyValue="url"/>
+						<Copy/>
 					</button>
-					<button class="user-info__button" @click="canShare ? navigator.share({url: url}) : modalShare = true ">
+					<button class="user-info__button" @click="canShare ? Navigator.share({url: url}) : modalShare = true ">
 						<Icon :name="IconShare" :size="24"/>
 					</button>
 					<button class="user-info__button" @click="modalQR = true">
@@ -174,7 +171,7 @@ useHead({
 					<button class="qr__action">
 						<Icon :name="IconCamera"/>
 					</button>
-					<button class="qr__action" @click="canShare ? navigator.share({url: url}) : modalShare = true ">
+					<button class="qr__action" @click="canShare ? Navigator.share({url: url}) : modalShare = true ">
 						<Icon :name="IconShare"/>
 					</button>
 				</div>
@@ -184,7 +181,7 @@ useHead({
 			<div class="share">
 				<div class="share__input">
 					<p class="text-comment">www.kontxt.me/id{{ userInfo.id }}</p>
-					<Copy :copyValue="url"/>
+					<Copy/>
 				</div>
 				<div class="share__links">
 					<a :href="`https://t.me/share/url?url=${url}`" class="share__link" target="_blank">

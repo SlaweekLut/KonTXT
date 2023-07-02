@@ -454,7 +454,9 @@ watch(currentReputationList, () => {
 		width: 100%;
 		position: relative;
 		&--hidden {
+			pointer-events: none;
 			filter: blur(14px);
+			user-select: none;
 			// &::before {
 			// 	content: '';
 			// 	display: block;

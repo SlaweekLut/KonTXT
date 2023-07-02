@@ -3,26 +3,21 @@
 	<Transition name="fade-slide-up">
 		<div class="tooltip" v-if="copied">{{ $t('copy') }}</div>
 	</Transition>
-	<Icon :name="IconCopy" :size="24" @click="copy(copyValue)"/>
+	<Icon :name="IconCopy" :size="24" @click="copy()"/>
 </button>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Icon from './Icon.vue';
 import IconCopy from './icons/IconCopy.vue';
 
-const props = defineProps({
-	copyValue: {
-		type: String,
-		required: true
-	}
-})
+const url = computed(() => {return window.location.href})
 
 const copied = ref(false)
 
-const copy = (value) => {
-	navigator.clipboard.writeText(value)
+const copy = () => {
+	navigator.clipboard.writeText(url.value)
 	copied.value = true
 	setTimeout(() => {
 		copied.value = false
@@ -45,6 +40,7 @@ const copy = (value) => {
 	z-index: 1;
 	left: 50%;
 	transform: translate(-50%, -120%);
+	color: var(--color-dynamic-black);
 }
 
 .fade-slide-up-enter-active,
