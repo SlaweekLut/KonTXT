@@ -1,8 +1,8 @@
 <template>
 	<div class="bubbles">
-		<div class="bubble" v-for="n in 8" :class="{'bubble--active': progress(n) > 0}" :style="`--progress: ${progress(n)}%`"></div>
+		<div class="bubble" v-for="n in 8" :class="{'bubble--filled': progress(n) !== 0}"></div>
 		<div class="bubble bubble--clickable" :class="{'bubble--active': currentList === n, 'bubble--filled': progressSize(n) > 0 }" @click="currentList = currentList === n ? null : n; $emit('getList', currentList)" :style="`--progress: calc(8px + ${progressSize(n)}px); max-height: ${maxSizes[n-1]}px; max-width: ${maxSizes[n-1]}px;`" v-for="n in 6"></div>
-		<div class="bubble-container">
+		<div class="bubble-container" @click="currentList = null; $emit('getList', currentList)">
 			<Reputation :value="reputation" subtitle-hide/>
 		</div>
 	</div>
@@ -29,14 +29,14 @@ const props = defineProps({
 defineEmits(['getList'])
 
 const progress = (n) => {
-	return props.reputation - stepSize * n > 0 ? 100 : (stepSize + (props.reputation - stepSize * n)) / (stepSize / 100)
+	return Math.floor(props.reputation - stepSize * n > 0 ? 100 : (stepSize + (props.reputation - stepSize * n)) / (stepSize / 100))
 }
 
 const progressSize = (n) => {
 	let valueGroup = props.value[Object.keys(props.value)[n-1]].reduce((a,b) => a + b.value, 0)
 	let step = props.reputation / 5
 	let percent = step / 100
-	let size = ((maxSizes[n-1] - 8) / 100) * (valueGroup / percent)
+	let size = Math.floor(((maxSizes[n-1] - 8) / 100) * (valueGroup / percent))
 	return size
 }
 
@@ -53,7 +53,6 @@ const progressSize = (n) => {
 	justify-content: center;
 }
 .bubble {
-	--progress: 0%;
 	position: absolute;
 	min-width: 8px;
 	min-height: 8px;
@@ -144,15 +143,6 @@ const progressSize = (n) => {
 		bottom: 74px;
 		left: 28px;
 	}
-	&::before {
-		content: '';
-		width: 100%;
-		height: var(--progress);
-		display: block;
-		position: absolute;
-		bottom: 0;
-		background-color: var(--color-dynamic-black);
-	}
 	&--active {
 		border-color: var(--color-dynamic-black);
 	}
@@ -166,6 +156,8 @@ const progressSize = (n) => {
 		overflow: unset;
 		transition: .3s ease;
 		&::before {
+			content: '';
+			position: absolute;
 			width: 0;
 			height: 0;
 			transition: .3s ease;
@@ -173,9 +165,7 @@ const progressSize = (n) => {
 			top: calc(50%);
 			left: calc(50%);
 			transform: translate(-50%, -50%);
-			bottom: unset;
 			right: unset;
-			background: transparent;
 			border: 1px solid var(--color-dynamic-black);
 			border-radius: 50%;
 			opacity: 0;
@@ -190,9 +180,6 @@ const progressSize = (n) => {
 			opacity: 1;
 		}
 	}
-	&:not(&--clickable) {
-		opacity: 0.7;
-	}
 }
 .bubble-container {
 	display: flex;
@@ -200,6 +187,8 @@ const progressSize = (n) => {
 	align-items: center;
 	justify-content: center;
 	position: absolute;
+	cursor: pointer;
+	user-select: none;
 	top: 34px;
 	left: 86px;
 	width: 154px;

@@ -33,11 +33,18 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 	&__img {
 		border-radius: 10px;
 		border: 1px solid var(--color-dynamic-gray);
+		width: 100%;
+		height: 100%;
 	}
 	&__info {
 		display: flex;
 		flex-direction: column;
 		gap: 5px;
+	}
+	@include screen(767.98px) {
+		&__organisation {
+			font-size: 12px;
+		}
 	}
 }
 </style>

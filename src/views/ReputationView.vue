@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, reactive } from 'vue';
 import Icon from '../components/Icon.vue';
 import IconChevron from '../components/icons/IconChevron.vue'
 import IconVerify from '../components/icons/IconVerify.vue';
@@ -32,6 +32,7 @@ import Modal from '../components/Modal.vue';
 import ActionModalBar from '../components/ActionModalBar.vue';
 import Login from '../components/Login.vue';
 import ReputationBubbles from '../components/ReputationBubbles.vue';
+import UserHeader from '../components/UserHeader.vue';
 
 const route = useRoute()
 const id = computed(() => route.params.id)
@@ -64,6 +65,7 @@ const modals = ref({
 	login: false,
 })
 
+const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
 const currentReputationListId = ref(null)
 const currentReputationList = ref(null)
 const currentReputationListAll = ref(null)
@@ -92,35 +94,33 @@ watch(currentReputationList, () => {
 	}
 })
 
+const sertificateImgs = computed(() => {
+	return userInfo.value.sertificates.filter((img, i) => i < 4).map((img) => {
+		return {src: getSrc(img.src), title: img.title}
+	})
+})
+const sertificateState = reactive({
+	visible: false,
+	index: 0,
+})
+
+const sertificateZoom = (i) => {sertificateState.visible = true; sertificateState.index = i}
+
+const windowWidth = ref(window.innerWidth)
+window.addEventListener('resize', () => {
+	windowWidth.value = window.innerWidth
+})
+
 </script>
 
 <template>
 	<main class="user">
-		<div class="user__header">
-			<h1 class="text-username user__name">{{ userInfo.name }}</h1>
-			<Icon :name="IconVerify" v-if="userInfo.isVerified"/>
-		</div>
-		<div class="user-info">
-			<Avatar :src="userInfo.src" :alt="userInfo.name" class="user-info__avatar"/>
-			<div class="user__header user__header--mobile">
-				<h1 class="text-username user__name">{{ userInfo.name }}</h1>
-				<Icon :name="IconVerify" v-if="userInfo.isVerified"/>
-			</div>
-			<div class="user-info__column" :class="!isAuth ? 'user-info__column--hidden' : ''">
-				<div class="user-info__item">
-					<AchivementList :achivements="userInfo.achivements" class="user-info__achivments" />
-				</div>
-				<div class="user-info__item">
-					<Karma :value="isAuth ? userInfo.karma : NaN"/>
-					<Reputation :value="isAuth ? userInfo.reputation : NaN"/>
-				</div>
-				<div class="user-info__item user-info__item--donars">
-					<p class="user-info__title text-h1">{{ $t('donars') }} <Info :text="$t('info.donars')" /></p>
-					<donars :value="userInfo.donars" :hidden="!isAuth"/>
-				</div>
-			</div>
-		</div>
+		<UserHeader />
 		<div class="user__content">
+			<div class="user-controlls user-controlls--mobile" v-if="isAuth">
+				<Button class="user-controlls__button" :text="$t('button.write')" />
+				<Button class="user-controlls__button" type="secondary" :text="$t('button.save')" />
+			</div>
 			<div class="user-noauth" v-if="!isAuth">
 				<p class="text-main user-noauth__text">
 					{{ $t('noAuth') }}
@@ -198,7 +198,7 @@ watch(currentReputationList, () => {
 					<p class="user-content__title text-h1">{{ $t('titles.videoReviews') }} <span class="text-comment-small">{{ currentVideoReview + " / " + userInfo.videoReviews.length }}</span></p>
 					<div class="review-wrapper review-wrapper--video">
 						<button class="review__button review__button--video" ref="prevVideoReview">
-							<Icon :name="IconChevron" :size="32"/>
+							<Icon :name="IconChevron" :size="24"/>
 						</button>
 						<swiper
 							:slides-per-view="2"
@@ -220,7 +220,7 @@ watch(currentReputationList, () => {
 							</swiper-slide>
 						</swiper>
 						<button class="review__button review__button--video review__button--next" ref="nextVideoReview">
-							<Icon :name="IconChevron" :size="32"/>
+							<Icon :name="IconChevron" :size="24"/>
 						</button>
 					</div>
 					<Button :text="$t('button.more')" @click="modals.videoReview = true" class="user-content__more" />
@@ -229,7 +229,7 @@ watch(currentReputationList, () => {
 					<p class="user-content__title user-content__title--sertificates text-h1">{{ $t('titles.sertificates') }} <span class="text-comment-small">{{ "4 / " + userInfo.sertificates.length }}</span></p>
 					<div class="user-content__grid">
 						<template v-for="(sertificate, i) in userInfo.sertificates.slice(0, 4)" :key="i">
-							<Sertificate  :sertificate="sertificate" grid/>
+							<Sertificate  :sertificate="sertificate" grid @click="sertificateZoom(i)"/>
 						</template>
 					</div>
 					<Button :text="$t('button.more')" @click="modals.sertificate = true" class="user-content__more" />
@@ -319,12 +319,38 @@ watch(currentReputationList, () => {
 						</template>
 					</div>
 				</Modal>
+				<vue-easy-lightbox :visible="sertificateState.visible" :index="sertificateState.index" :imgs="sertificateImgs" @hide="sertificateState.visible = false"></vue-easy-lightbox>
 			</template>
 		</div>
 	</main>
 </template>
 
 <style scoped lang="scss">
+.user-controlls {
+	display: flex;
+	gap: 20px 40px;
+	align-items: center;
+	flex-wrap: wrap;
+	&__button {
+		width: 100%;
+	}
+	&--mobile {
+		display: none;
+	}
+	@include screen(767.98px) {
+		display: none;
+		&__button {
+			max-width: 100%;
+			&--pc {
+				display: none;
+			}
+		}
+		&--mobile {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}
 .modal {
 	&__header {
 		display: flex;
@@ -399,10 +425,10 @@ watch(currentReputationList, () => {
 
 .review-wrapper {
 	display: flex;
-	gap: 56px;
+	gap: 46px;
 	align-items: start;
 	&--video {
-		gap: 14px;
+		gap: 12px;
 	}
 	@include screen(767.98px) {
 		gap: 20px;
@@ -415,14 +441,14 @@ watch(currentReputationList, () => {
 .review {
 	&__button {
 		margin-top: 10px;
-		width: 32px;
-		height: 32px;
+		width: 24px;
+		height: 24px;
 		cursor: pointer;
 		&--next {
 			transform: rotate(180deg);
 		}
 		&--video {
-			margin-top: 64px;
+			margin-top: 52px;
 		}
 		@include screen(767.98px) {
 			width: 24px;
@@ -450,29 +476,9 @@ watch(currentReputationList, () => {
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
-		max-width: 306px;
+		max-width: 218px;
 		width: 100%;
 		position: relative;
-		&--hidden {
-			pointer-events: none;
-			filter: blur(14px);
-			user-select: none;
-			// &::before {
-			// 	content: '';
-			// 	display: block;
-			// 	width: calc(100% + 64px);
-			// 	height: calc(100% + 64px);
-			// 	backdrop-filter: blur(14px);
-			// 	position: absolute;
-			// 	z-index: 1;
-			// 	margin: -32px;
-			// 	@include screen(767.98px) {
-			// 		width: 100vw;
-			// 		height: calc(100% + 62px);
-			// 		margin: -30px -20px -16px;
-			// 	}
-			// }
-		}
 	}
 	&__item {
 		display: flex;
@@ -591,16 +597,16 @@ watch(currentReputationList, () => {
 	gap: 20px;
 	&__row {
 		display: flex;
-		gap: 20px 56px;
+		gap: 20px 28px;
 		flex-wrap: wrap;
 		justify-content: center;
 	}
 	&__slider {
-		max-width: 360px;
+		max-width: 298px;
 		width: 100%;
 	}
 	&__text {
-		max-width: 216px;
+		max-width: 197px;
 		user-select: none;
 	}
 	&__title {
@@ -646,8 +652,8 @@ watch(currentReputationList, () => {
 		width: auto;
 		@include ui-mouse {
 			&:hover {
-				color: var(--color-dynamic-white);
-				background-color: var(--color-dynamic-gray);
+				color: var(--color-dynamic-gray);
+				background-color: transparent;
 			}
 		}
 	}

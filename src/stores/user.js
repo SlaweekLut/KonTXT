@@ -106,7 +106,7 @@ export const useUserStore = defineStore('user', () => {
 					'Вот так сделали',
 					'Вот так сделали',
 				],
-				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg'],
+				images: ['sertificate-01.jpg', 'sertificate-02.jpg', 'sertificate-03.jpg', 'sertificate-03.jpg', 'sertificate-03.jpg'],
 				members: ['0000001', '0000002', '0000003', '0000004', '0000005'],
 				description: 'какие мы крутышки сделали проектик запустились и не просрали бюджет',
 				link: 'www.testlinks.com'

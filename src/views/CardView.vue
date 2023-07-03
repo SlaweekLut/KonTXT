@@ -3,8 +3,8 @@ import { computed, ref, watch } from 'vue';
 import Copy from '../components/Copy.vue';
 import Icon from '../components/Icon.vue';
 import IconVerify from '../components/icons/IconVerify.vue';
-import IconShare from '../components/icons/IconShare.vue';
 import IconQR from '../components/icons/IconQR.vue';
+import IconShare from '../components/icons/IconShare.vue';
 import IconCamera from '../components/icons/IconCamera.vue';
 import IconDownload from '../components/icons/IconDownload.vue';
 import IconTelegram from '../components/icons/IconTelegram.vue'
@@ -26,6 +26,7 @@ import {useHead} from 'unhead'
 
 import Users from '../database/users.js';
 import Modal from '../components/Modal.vue';
+import UserHeader from '../components/UserHeader.vue';
 
 const route = useRoute()
 const id = computed(() => route.params.id)
@@ -63,57 +64,13 @@ useHead({
 		{ property: 'og:url', content: window.location.href },
 	]
 })
-
 </script>
 
 <template>
 	<main class="user">
-		<div class="user__header">
-			<h1 class="text-username user__name">{{ userInfo.name }}</h1>
-			<Icon :name="IconVerify" v-if="userInfo.isVerified"/>
-		</div>
-		<div class="user-info">
-			<Avatar :src="userInfo.src" :alt="userInfo.name" class="user-info__avatar"/>
-			<div class="user__header user__header--mobile">
-				<h1 class="text-username user__name">{{ userInfo.name }}</h1>
-				<Icon :name="IconVerify" v-if="userInfo.isVerified"/>
-			</div>
-			<div class="user-info__column">
-				<div class="user-info__item">
-					<p class="user-info__title text-h2">{{ $t('profession') }}</p>
-					<p class="user-info__text text-uppart">{{ userInfo.profession }}</p>
-				</div>
-				<div class="user-info__item">
-					<p class="user-info__title text-h2">{{ $t('job') }}</p>
-					<p class="user-info__text text-uppart">{{ userInfo.job }}</p>
-				</div>
-				<div class="user-info__item">
-					<p class="user-info__title text-h2">{{ $t('company') }}</p>
-					<p class="user-info__text text-uppart">{{ userInfo.company }}</p>
-					<p class="user-info__text text-main">{{ userInfo.address }}</p>
-				</div>
-				<div class="user-info__item user-info__item--mobile">
-					<p class="user-info__title text-main">{{ userInfo.profession }}, {{ userInfo.address.split(', ')[1] }}</p>
-				</div>
-				<div class="user-info__item user-info__item--mobile">
-					<p class="user-info__title text-main">{{ userInfo.job }} {{ $t('in') }} {{ userInfo.company }}</p>
-				</div>
-				<div class="user-info__footer">
-					<p class="user-info__id text-comment-small">id{{ userInfo.id }}</p>
-					<button class="user-info__button">
-						<Copy/>
-					</button>
-					<button class="user-info__button" @click="canShare ? Navigator.share({url: url}) : modalShare = true ">
-						<Icon :name="IconShare" :size="24"/>
-					</button>
-					<button class="user-info__button" @click="modalQR = true">
-						<Icon :name="IconQR" :size="24"/>
-					</button>
-				</div>
-			</div>
-		</div>
+		<UserHeader @openShare="modalShare = true" @openQR="modalQR = true" />
 		<div class="user__content">
-			<div class="user-controlls" v-if="isAuth">
+			<div class="user-controlls user-controlls--mobile" v-if="isAuth">
 				<Button class="user-controlls__button" :text="$t('button.write')" />
 				<Button class="user-controlls__button" type="secondary" :text="$t('button.save')" />
 			</div>
@@ -338,74 +295,22 @@ useHead({
 	align-items: center;
 	flex-wrap: wrap;
 	&__button {
-		max-width: calc(50% - 20px);
 		width: 100%;
-		min-width: 250px;
+	}
+	&--mobile {
+		display: none;
 	}
 	@include screen(767.98px) {
+		display: none;
 		&__button {
 			max-width: 100%;
-		}
-	}
-}
-
-.user-info {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 40px;
-	&__column {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		max-width: 306px;
-		width: 100%;
-	}
-	&__item {
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
-		&--mobile {
-			display: none;
-		}
-	}
-	&__footer {
-		display: flex;
-		gap: 20px;
-		align-items: flex-end;
-	}
-	&__button {
-		cursor: pointer;
-	}
-
-	@include screen(767.98px) {
-		align-items: center;
-		flex-direction: column;
-		margin-top: 30px;
-		&__avatar {
-			width: 225px !important;
-			height: 225px !important;
-			max-width: 225px !important;
-			max-height: 225px !important;
-			min-width: 225px !important;
-			min-height: 225px !important;
-		}
-		&__column {
-			margin-top: 10px;
-			align-items: center;
-			gap: 10px;
-			max-width: 100%;
-		}
-		&__item {
-			display: none;
-			&--mobile {
-				display: flex;
+			&--pc {
+				display: none;
 			}
 		}
-		&__footer {
-			margin-top: 10px;
-		}
-		&__id {
-			display: none;
+		&--mobile {
+			display: flex;
+			flex-direction: column;
 		}
 	}
 }

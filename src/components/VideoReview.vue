@@ -2,7 +2,7 @@
 	<div class="review-video">
 		<div class="review-video__info" :class="{ 'review-video__info--full': full }">
 			<div class="review-video__preview">
-				<Avatar :src="review.src" :size="160" :alt="review.name" class="review-video__avatar"/>
+				<Avatar :src="review.src" :size="130" :alt="review.name" class="review-video__avatar"/>
 				<Icon :name="IconPlayMedia" v-if="full" class="review-video__play" />
 			</div>
 			<div class="review-video__name">

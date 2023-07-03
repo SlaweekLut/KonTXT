@@ -1,9 +1,9 @@
 <template>
-	<div class="donars">
+	<div class="donars" :class="{'donars--projects': projects}">
 		<RouterLink :to="`/user/${donar.id}/cutaway`" class="donar" v-for="donar of visibleUsers" :key="donar">
 			<Avatar :src="donar.src" :alt="donar.name" :size="size"/>
 		</RouterLink>
-		<p class="donars__more text-menu-up" @click="modal = true" :style="`width: ${size}px; height: ${size}px;`" v-if="Object.keys(users).length - 3 > 0">
+		<p class="donars__more text-menu-up" @click="modal = true" :style="`width: ${size}px; height: ${size}px; min-width: ${size}px; min-height: ${size}px;`" v-if="Object.keys(users).length - 3 > 0">
 			+{{ Object.keys(users).length - 3 }} 
 		</p>
 		<Modal :open="modal" @close="modal = false">
@@ -49,12 +49,16 @@ const props = defineProps({
 	},
 	size: {
 		type: Number,
-		default: 58
+		default: 48
 	},
 	title: {
 		type: String,
 		default: 'Дона́ры'
 	},
+	projects: {
+		type: Boolean,
+		default: false
+	}
 })
 
 const modal = ref(false);
@@ -83,6 +87,8 @@ const userInfo = computed(() => {
 		border-radius: 50%;
 		width: 58px;
 		height: 58px;
+		min-width: 58px;
+		min-height: 58px;
 		border: 1px solid var(--color-dynamic-black);
 		position: relative;
 		box-sizing: border-box;
@@ -91,20 +97,32 @@ const userInfo = computed(() => {
 			content: '';
 			position: absolute;
 			display: block;
-			width: 100%;
-			height: 100%;
+			width: calc(100% + 2px);
+			height: calc(100% + 2px);
+			min-width: calc(100% + 2px);
+			min-height: calc(100% + 2px);
 			border-radius: 50%;
 			background-color: var(--color-dynamic-white);
 			border: 1px solid var(--color-dynamic-gray);
-			right: -40%;
+			right: -8px;
 			z-index: -1;
 			top: -1px;
 			box-sizing: border-box;
 		}
 		&::after {
-			right: -80%;
+			right: -16px;
 			z-index: -2;
 			border-color: #C8C8C8;
+		}
+	}
+	&--projects {
+		gap: 4px;
+	}
+	.dark & {
+		.donars__more {
+			&::after {
+				border-color: #565656;
+			}
 		}
 	}
 }

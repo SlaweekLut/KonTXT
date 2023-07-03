@@ -41,12 +41,12 @@ defineProps({
 		gap: 8px;
 	}
 	&__title {
-		font-size: 32px;
+		font-size: 26px;
 		font-weight: 600;
 		color: var(--color-dynamic-black);
 	}
 	&__subtitle {
-		font-size: 16px;
+		font-size: 14px;
 		font-family: "Inter";
 		font-weight: 500;
 		color: var(--color-dynamic-black);

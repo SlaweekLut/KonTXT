@@ -262,7 +262,6 @@ const auth = () => {
 }
 .header {
 	width: 100%;
-	max-width: calc(1286px + 80px);
 	margin: 0 auto;
 	padding: 14px 40px;
 	display: flex;
@@ -304,7 +303,8 @@ const auth = () => {
 		height: 32px;
 	}
 	&__burger {
-		display: none;
+		display: block;
+		cursor: pointer;
 	}
 	&__mobile {
 		display: none;
@@ -313,7 +313,6 @@ const auth = () => {
 		padding: 14px 20px;
 		max-width: 673px;
 		&__burger {
-			display: block;
 			:deep(path) {
 				stroke: #E7E7E7 !important;
 			}
@@ -357,7 +356,7 @@ const auth = () => {
 	width: 100vw;
 	top: 0;
 	left: 0;
-	background-color: var(--color-dynamic-white);
+	// background-color: var(--color-dynamic-white);
 	z-index: 2;
 	&--placeholder {
 		height: 73px;

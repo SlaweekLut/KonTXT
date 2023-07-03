@@ -89,7 +89,7 @@ const path = computed(() => route.path);
 		text-decoration: none;
 	}
 	&__title {
-		font-size: 16px;
+		font-size: 14px;
 		font-family: 'Inter';
 		font-weight: 500;
 		text-decoration: none;
@@ -103,6 +103,7 @@ const path = computed(() => route.path);
 		display: flex;
 		align-items: center;
 		gap: 10px;
+		font-size: 12px;
 		&::before {
 			content: '';
 			width: 27px;

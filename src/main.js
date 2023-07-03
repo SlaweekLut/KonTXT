@@ -4,6 +4,7 @@ import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import ru from './locales/ru'
 import en from './locales/en'
+import VueEasyLightbox from 'vue-easy-lightbox'
 
 import App from './App.vue'
 import router from './router'
@@ -23,6 +24,7 @@ const app = createApp(App)
 const head = createHead()
 
 app.component("Popper", Popper);
+app.use(VueEasyLightbox)
 app.use(i18n)
 app.use(createPinia())
 app.use(router)

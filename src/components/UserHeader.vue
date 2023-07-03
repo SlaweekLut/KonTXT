@@ -1,0 +1,269 @@
+<template>
+<div class="user__header" v-if="windowWidth > 767.98">
+	<h1 class="text-username user__name">{{ userInfo.name }}</h1>
+	<Icon :name="IconVerify" v-if="userInfo.isVerified"/>
+</div>
+<div class="user-info">
+	<div class="user-info__column user-info__column--avatar">
+		<Avatar :src="userInfo.src" :size="235" :alt="userInfo.name" class="user-info__avatar"/>
+		<Button class="user-controlls__button user-controlls__button--pc" :text="$t('button.write')" />
+	</div>
+	<div class="user__header user__header--mobile" v-if="windowWidth <= 767.98">
+		<h1 class="text-username user__name">{{ userInfo.name }}</h1>
+		<Icon :name="IconVerify" v-if="userInfo.isVerified"/>
+	</div>
+	<div class="user-info__column" v-if="!isReputation">
+		<div class="user-info__column-inner">
+			<div class="user-info__item">
+				<p class="user-info__title text-h2">{{ $t('profession') }}</p>
+				<p class="user-info__text text-uppart">{{ userInfo.profession }}</p>
+			</div>
+			<div class="user-info__item">
+				<p class="user-info__title text-h2">{{ $t('job') }}</p>
+				<p class="user-info__text text-uppart">{{ userInfo.job }}</p>
+			</div>
+			<div class="user-info__item">
+				<p class="user-info__title text-h2">{{ $t('company') }}</p>
+				<p class="user-info__text text-uppart">{{ userInfo.company }}</p>
+				<p class="user-info__address text-main">{{ userInfo.address }}</p>
+			</div>
+			<div class="user-info__item user-info__item--mobile">
+				<p class="user-info__title text-main">{{ userInfo.profession }}, {{ userInfo.address.split(', ')[1] }}</p>
+			</div>
+			<div class="user-info__item user-info__item--mobile">
+				<p class="user-info__title text-main">{{ userInfo.job }} {{ $t('in') }} {{ userInfo.company }}</p>
+			</div>
+			<div class="user-info__footer">
+				<p class="user-info__id text-comment-small">id{{ userInfo.id }}</p>
+				<button class="user-info__button">
+					<Copy/>
+				</button>
+				<button class="user-info__button" @click="canShare ? Navigator.share({url: url}) : $emit('openShare')">
+					<Icon :name="IconShare" :size="24"/>
+				</button>
+				<button class="user-info__button" @click="$emit('openQR')">
+					<Icon :name="IconQR" :size="24"/>
+				</button>
+			</div>
+		</div>
+		<Button class="user-controlls__button user-controlls__button--pc" type="secondary" :text="$t('button.save')" />
+	</div>
+	<div class="user-info__column" :class="!isAuth ? 'user-info__column--hidden' : ''" v-else>
+		<div class="user-info__column-inner user-info__column-inner--reputation">
+			<div class="user-info__item">
+				<AchivementList :achivements="userInfo.achivements" class="user-info__achivments" />
+			</div>
+			<div class="user-info__item user-info__item--karma">
+				<Karma :value="isAuth ? userInfo.karma : NaN"/>
+				<Reputation :value="isAuth ? userInfo.reputation : NaN"/>
+			</div>
+			<div class="user-info__item user-info__item--donars">
+				<p class="user-info__title text-h1">{{ $t('donars') }} <Info :text="$t('info.donars')" /></p>
+				<donars :value="userInfo.donars" :hidden="!isAuth"/>
+			</div>
+		</div>
+		<Button class="user-controlls__button user-controlls__button--pc" type="secondary" :text="$t('button.save')" />
+	</div>
+</div>
+</template>
+
+<script setup>
+import IconVerify from './icons/IconVerify.vue';
+import IconQR from './icons/IconQR.vue';
+import IconShare from './icons/IconShare.vue';
+import { computed, ref } from 'vue';
+import {useUserStore} from '@/stores/user';
+import { useRoute } from 'vue-router';
+import Copy from './Copy.vue';
+import Avatar from './Avatar.vue';
+import Button from './Button.vue';
+import Icon from './Icon.vue';
+import Users from '../database/users';
+import AchivementList from './AchivementList.vue';
+import Karma from './Karma.vue';
+import Reputation from './Reputation.vue';
+import donars from './Donars.vue';
+
+const route = useRoute()
+const id = computed(() => route.params.id)
+const isReputation = computed(() => route.path.includes('reputation'))
+
+const userStore = useUserStore()
+const mainInfo = computed(() => userStore.userInfo)
+const userInfo = computed(() => {
+	if(id.value === userStore.userInfo.id) return userStore.userInfo
+	if(id.value) return Users[id.value]
+	else return userStore.userInfo
+})
+
+const isAuth = computed(() => userStore.isAuth)
+
+
+// const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
+
+const canShare = computed(() => {
+	if(Navigator.share) return true
+	else return false
+})
+
+const windowWidth = ref(window.innerWidth)
+window.addEventListener('resize', () => {
+	windowWidth.value = window.innerWidth
+})
+
+defineEmits(['openShare', 'openQR'])
+</script>
+
+<style scoped lang="scss">
+.user {
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 20px;
+	}
+	@include screen(767.98px) {
+		&__header {
+			gap: 10px;
+			margin-top: 20px;
+		}
+	}
+}
+.user-info {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 40px;
+	
+	&__column {
+		display: flex;
+		flex-direction: column;
+		gap: 40px;
+		max-width: 218px;
+		width: 100%;
+		&-inner {
+			display: flex;
+			flex-direction: column;
+			max-height: 235px;
+			gap: 16px;
+			height: 100%;
+			&--reputation {
+				justify-content: center;
+			}
+		}
+		&--avatar {
+			max-width: 235px;
+			button {
+				max-width: 220px;
+				margin: 0 auto;
+			}
+		}
+		&--hidden > &-inner {
+			pointer-events: none;
+			filter: blur(14px);
+			user-select: none;
+		}
+	}
+	&__address {
+		margin-top: 13px;
+	}
+	&__item {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+		&--mobile {
+			display: none;
+		}
+		&--karma {
+			flex-direction: row;
+			justify-content: space-between;
+		}
+	}
+	&__text {
+		font-family: 'Montserrat';
+	}
+	&__footer {
+		display: flex;
+		gap: 20px;
+		align-items: flex-end;
+	}
+	&__button {
+		cursor: pointer;
+	}
+
+	@include screen(767.98px) {
+		align-items: center;
+		flex-direction: column;
+		margin-top: 30px;
+		&__achivments {
+			justify-content: center;
+		}
+		&__avatar {
+			width: 225px !important;
+			height: 225px !important;
+			max-width: 225px !important;
+			max-height: 225px !important;
+			min-width: 225px !important;
+			min-height: 225px !important;
+		}
+		&__column {
+			margin-top: 10px;
+			align-items: center;
+			gap: 10px;
+			max-width: 100%;
+			&-inner {
+				gap: 10px;
+				&--reputation {
+					max-width: 100%;
+					width: 100%;
+					.user-info__item {
+						display: flex;
+					}
+				}
+			}
+		}
+		&__item {
+			display: none;
+			&--mobile {
+				display: flex;
+			}
+			&--karma {
+				gap: 40px;
+				justify-content: center;
+			}
+		}
+		&__footer {
+			margin-top: 10px;
+			justify-content: center;
+		}
+		&__id {
+			display: none;
+		}
+	}
+}
+
+.user-controlls {
+	display: flex;
+	gap: 20px 40px;
+	align-items: center;
+	flex-wrap: wrap;
+	&__button {
+		width: 100%;
+	}
+	&--mobile {
+		display: none;
+	}
+	@include screen(767.98px) {
+		display: none;
+		&__button {
+			max-width: 100%;
+			&--pc {
+				display: none;
+			}
+		}
+		&--mobile {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}
+</style>
