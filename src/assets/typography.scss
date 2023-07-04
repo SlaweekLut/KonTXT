@@ -94,11 +94,11 @@ span,b {
 
 .text-main-small {
 	font-family: 'Montserrat';
-	font-size: 12px;
+	font-size: 10px;
 	font-weight: 500;
 	color: var(--color-dynamic-black);
 	@include screen(767.98px) {
-		font-size: 14px;
+		font-size: 12px;
 	}
 }
 

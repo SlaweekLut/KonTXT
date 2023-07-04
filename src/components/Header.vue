@@ -9,13 +9,13 @@
 		
 				<ThemeSwitcher class="header__theme"/>
 				<router-link to="/" v-if="isAuth" class="header__message">
-					<Icon :name="IconNotification"/>
+					<Icon :name="IconNotification" :size="24"/>
 				</router-link>
 				<router-link to="/" v-if="isAuth" class="header__home">
-					<Avatar :src="userInfo.src" alt="Go to main" :size="32"/>
+					<Avatar :src="userInfo.src" alt="Go to main" :size="24"/>
 				</router-link>
 				<button class="header__burger" @click="nav = true">
-					<Icon :name="IconBurger" :size="30"/>
+					<Icon :name="IconBurger" :size="24"/>
 				</button>
 				<Button class="header__button" :text="$t('button.logIn')" @click="login = true" v-if="!isAuth"/>
 			</div>
@@ -294,13 +294,14 @@ const auth = () => {
 	&__link {
 		text-decoration: none;
 		color: var(--color-dynamic-gray);
+		font-family: 'Montserrat';
 		&--active {
 			color: var(--color-dynamic-black);
 		}
 	}
 	&__home, &__message {
-		width: 32px;
-		height: 32px;
+		width: 24px;
+		height: 24px;
 	}
 	&__burger {
 		display: block;
@@ -338,7 +339,7 @@ const auth = () => {
 		&__mobile {
 			max-width: 673px;
 			width: 100%;
-			padding: 14px 20px;
+			padding: 14px 33px 14px 27px;
 			display: flex;
 			justify-content: space-between;
 			margin: 0 auto;
@@ -346,6 +347,7 @@ const auth = () => {
 		}
 	}
 	@include screen(767.98px) {
+		padding-right: 37px;
 		&__link {
 			font-size: 12px;
 		}
@@ -366,6 +368,9 @@ const auth = () => {
 		&--mobile {
 			max-width: 100%;
 			background-color: var(--color-black);
+			position: sticky;
+			top: 55px;
+			z-index: 2;
 		}
 		&--placeholder {
 			background-color: var(--color-black);

@@ -90,7 +90,7 @@ const path = computed(() => route.path);
 	}
 	&__title {
 		font-size: 14px;
-		font-family: 'Inter';
+		font-family: 'Montserrat';
 		font-weight: 500;
 		text-decoration: none;
 		color: var(--color-dynamic-gray);

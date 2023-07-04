@@ -1,14 +1,17 @@
 <template>
 	<label class="note">
-		<textarea class="note__input text-main" @input="$emit('update:value', $event.target.value)" placeholder="Создать заметку">{{ value }}</textarea>
-		<Icon :name="IconEdit" class="note__icon"/>
+		<textarea class="note__input text-main" ref="textarea" :disabled="disabled" @input="$emit('update:value', $event.target.value)" placeholder="Создать заметку">{{ value }}</textarea>
+		<Icon :name="IconEdit" @click="disabled = false; textarea.focus()" class="note__icon"/>
 	</label>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import Icon from './Icon.vue';
 import IconEdit from './icons/IconEdit.vue';
 
+const disabled = ref(true);
+const textarea = ref(null);
 defineProps({
 	value: {
 		type: String,
@@ -43,6 +46,7 @@ defineEmits(['update:value'])
 		position: absolute;
 		right: 30px;
 		top: 30px;
+		cursor: pointer;
 	}
 }
 </style>

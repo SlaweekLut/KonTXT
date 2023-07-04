@@ -61,37 +61,43 @@ export const useUserStore = defineStore('user', () => {
 				src: "sertificate-03.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
-				date: "2020"
+				date: "2020",
+				height: '120'
 			},
 			{
 				src: "sertificate-01.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
-				date: "2020"
+				date: "2020",
+				height: '120'
 			},
 			{
 				src: "sertificate-02.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
-				date: "2020"
+				date: "2020",
+				height: '240'
+			},
+			{
+				src: "sertificate-03.jpg",
+				title: "HarvardX's Computer Science for Game Development",
+				company: "edx",
+				date: "2020",
+				height: '240'
 			},
 			{
 				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
-				date: "2020"
+				date: "2020",
+				height: '120'
 			},
 			{
 				src: "sertificate-04.jpg",
 				title: "HarvardX's Computer Science for Game Development",
 				company: "edx",
-				date: "2020"
-			},
-			{
-				src: "sertificate-04.jpg",
-				title: "HarvardX's Computer Science for Game Development",
-				company: "edx",
-				date: "2020"
+				date: "2020",
+				height: '120'
 			},
 		],
 		notes: {
@@ -188,7 +194,7 @@ export const useUserStore = defineStore('user', () => {
 		}
 	})
 
-	const addNotes = (id, notes) => {
+	const setNote = (id, notes) => {
 		userInfo.value.notes[id] = notes
 	}
 
@@ -200,5 +206,5 @@ export const useUserStore = defineStore('user', () => {
 		isAuth.value = true
 	}
 
-  return { userInfo, isAuth, setAuth }
+  return { userInfo, isAuth, setAuth, setNote }
 })

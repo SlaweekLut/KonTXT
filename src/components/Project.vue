@@ -126,6 +126,7 @@ const onHide = () => state.visible = false
 		min-width: 33%;
 		object-fit: cover;
 		object-position: center;
+		border-radius: 10px;
 	}
 	&__row {
 		display: flex;

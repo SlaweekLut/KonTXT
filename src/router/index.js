@@ -4,6 +4,9 @@ import ReputationView from '../views/ReputationView.vue'
 
 import { useUserStore } from '@/stores/user'
 import { computed } from 'vue'
+import { changeMetaTags } from '../utils'
+import Users from '../database/users'
+
 const isAuth = computed(() => {
   return useUserStore().isAuth
 })
@@ -71,6 +74,10 @@ const router = createRouter({
       component: ReputationView,
     }
   ]
+})
+
+router.beforeEach((to, from) => {
+  changeMetaTags(to.params)
 })
 
 export default router

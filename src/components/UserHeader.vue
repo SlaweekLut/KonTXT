@@ -6,7 +6,7 @@
 <div class="user-info">
 	<div class="user-info__column user-info__column--avatar">
 		<Avatar :src="userInfo.src" :size="235" :alt="userInfo.name" class="user-info__avatar"/>
-		<Button class="user-controlls__button user-controlls__button--pc" :text="$t('button.write')" />
+		<Button class="user-controlls__button user-controlls__button--pc" v-if="isAuth" :text="$t('button.write')" />
 	</div>
 	<div class="user__header user__header--mobile" v-if="windowWidth <= 767.98">
 		<h1 class="text-username user__name">{{ userInfo.name }}</h1>
@@ -46,7 +46,7 @@
 				</button>
 			</div>
 		</div>
-		<Button class="user-controlls__button user-controlls__button--pc" type="secondary" :text="$t('button.save')" />
+		<Button class="user-controlls__button user-controlls__button--pc" v-if="isAuth" type="secondary" :text="$t('button.save')" />
 	</div>
 	<div class="user-info__column" :class="!isAuth ? 'user-info__column--hidden' : ''" v-else>
 		<div class="user-info__column-inner user-info__column-inner--reputation">
@@ -62,7 +62,7 @@
 				<donars :value="userInfo.donars" :hidden="!isAuth"/>
 			</div>
 		</div>
-		<Button class="user-controlls__button user-controlls__button--pc" type="secondary" :text="$t('button.save')" />
+		<Button class="user-controlls__button user-controlls__button--pc" v-if="isAuth" type="secondary" :text="$t('button.save')" />
 	</div>
 </div>
 </template>
@@ -83,6 +83,7 @@ import AchivementList from './AchivementList.vue';
 import Karma from './Karma.vue';
 import Reputation from './Reputation.vue';
 import donars from './Donars.vue';
+import Info from './Info.vue';
 
 const route = useRoute()
 const id = computed(() => route.params.id)
@@ -125,15 +126,15 @@ defineEmits(['openShare', 'openQR'])
 	@include screen(767.98px) {
 		&__header {
 			gap: 10px;
-			margin-top: 20px;
+			margin-top: 0px;
 		}
 	}
 }
 .user-info {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
+	gap: 20px 50px;
 	margin-top: 40px;
-	
 	&__column {
 		display: flex;
 		flex-direction: column;
@@ -148,6 +149,7 @@ defineEmits(['openShare', 'openQR'])
 			height: 100%;
 			&--reputation {
 				justify-content: center;
+				gap: 29px;
 			}
 		}
 		&--avatar {
@@ -189,7 +191,11 @@ defineEmits(['openShare', 'openQR'])
 	&__button {
 		cursor: pointer;
 	}
-
+	&__title {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
 	@include screen(767.98px) {
 		align-items: center;
 		flex-direction: column;
@@ -215,6 +221,7 @@ defineEmits(['openShare', 'openQR'])
 				&--reputation {
 					max-width: 100%;
 					width: 100%;
+					gap: 20px;
 					.user-info__item {
 						display: flex;
 					}
@@ -229,6 +236,11 @@ defineEmits(['openShare', 'openQR'])
 			&--karma {
 				gap: 40px;
 				justify-content: center;
+			}
+			&--donars {
+				max-width: 302px;
+				width: 100%;
+				margin: 20px auto 0;
 			}
 		}
 		&__footer {

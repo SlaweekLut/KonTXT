@@ -9,7 +9,7 @@
 			/>
 		</div>
 		<div class="karma-slider" ref="slider">
-			<input type="range" min="-50" max="50" step="10" :style="`width: ${stopsWidth};`" class="karma-slider__range" v-model="x" @touchend="x = valueBuffer" @mousemove="x = valueBuffer" @mouseup="x = valueBuffer">
+			<input type="range" min="-50" max="50" step="10" class="karma-slider__range" v-model="x" @touchend="x = valueBuffer" @mousemove="x = valueBuffer" @mouseup="x = valueBuffer">
 			<div 
 				class="karma-slider__thumb" 
 				:style="`transform: translateY(-50%); left: calc(${(Number(x) / 10 + 5) * stopsGap}px + 9px + ${(Number(x) / 10 + 5) * 2}px);`" 
@@ -29,9 +29,9 @@
 			</div>
 		</div>
 		<div class="karma-slider__values" :style="`width: calc(${stopsWidth} + 18px);`">
-			<p class="text-comment-small">-50</p>
+			<!-- <p class="text-comment-small">-50</p>
 			<p class="text-comment-small">0</p>
-			<p class="text-comment-small">50</p>
+			<p class="text-comment-small">50</p> -->
 		</div>
 	</div>
 
@@ -97,10 +97,10 @@ watch(x, () => {
 	}
 	&__range {
 		position: absolute;
-		width: calc(100% - 18px);
+		width: 100%;
 		height: 100%;
 		top: 0;
-		left: 9px;
+		left: 0px;
 		opacity: 0;
 		cursor: pointer;
 	}
@@ -131,9 +131,28 @@ watch(x, () => {
 			width: 2px;
 			height: 14px;
 			background: linear-gradient(180deg, var(--color-dynamic-black) 0%, rgba(20, 24, 31, 0.00) 100%);
-			// background: var(--color-dynamic-black);
 			display: flex;
 			border-radius: 2px;
+			position: relative;
+			&:first-child, &:nth-child(6), &:last-child {
+				&::after {
+					content: '-50';
+					position: absolute;
+					font-family: 'Inter';
+					font-size: 10px;
+					font-weight: 500;
+					color: var(--color-dynamic-gray);
+					top: 100%;
+					left: 50%;
+					transform: translate(-50%, 100%);
+				}
+			}
+			&:nth-child(6)::after {
+				content: '0';
+			}
+			&:last-child::after {
+				content: '50';
+			}
 		}
 	}
 	&__thumb {

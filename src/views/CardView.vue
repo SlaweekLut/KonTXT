@@ -22,7 +22,7 @@ import IconEnvelop from '../components/icons/IconEnvelop.vue';
 import IconFacebook from '../components/icons/IconFacebook.vue';
 import IconVK from '../components/icons/IconVK.vue';
 import { useRoute, useRouter } from 'vue-router';
-import {useHead} from 'unhead'
+// import {useHead} from 'unhead'
 
 import Users from '../database/users.js';
 import Modal from '../components/Modal.vue';
@@ -55,18 +55,34 @@ const modalShare = ref(false)
 const url = computed(() => {return window.location.href})
 
 const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
-useHead({
-	title: userInfo.value.name,
-	meta: [
-		{ property: 'og:title', content: userInfo.value.name },
-		{ property: 'og:description', content: userInfo.value.description },
-		{ property: 'og:image', content: getSrc(userInfo.value.src) },
-		{ property: 'og:url', content: window.location.href },
-	]
-})
+// useHead({
+// 	title: userInfo.value.name,
+// 	meta: [
+// 		{ property: 'og:title', content: userInfo.value.name },
+// 		{ property: 'og:description', content: userInfo.value.description },
+// 		{ property: 'og:image', content: getSrc(userInfo.value.src) },
+// 		{ property: 'og:url', content: window.location.href },
+// 	]
+// })
+
+// import { useMeta } from 'vue-meta'
+
+// const meta = useMeta(
+// 	computed(() => ({
+// 		title: userInfo.value.name ?? 'KonTXT',
+// 		meta: [
+// 			{ property: 'og:title', content: userInfo.value.name },
+// 			{ property: 'og:description', content: userInfo.value.description },
+// 			{ property: 'og:image', content: getSrc(userInfo.value.src) },
+// 			{ property: 'og:url', content: window.location.href },
+// 		]
+// 	}))
+// )
+// console.log(meta.meta)
 </script>
 
 <template>
+
 	<main class="user">
 		<UserHeader @openShare="modalShare = true" @openQR="modalQR = true" />
 		<div class="user__content">
@@ -76,7 +92,7 @@ useHead({
 			</div>
 			<div class="user-note" v-if="id && isAuth">
 				<p class="user-note__title text-h1">{{ $t('note') }}</p>
-				<UserNote @update:value="noteAboutUser" :value="noteAboutUser"/>
+				<UserNote @update:value="(e) => noteAboutUser = e" :value="noteAboutUser"/>
 			</div>
 			<div class="user-about">
 				<p class="user-about__title text-h1">{{ $t('titles.about') }}</p>
@@ -103,7 +119,7 @@ useHead({
 					</div>
 				</div>
 			</div>
-			<div class="user-controlls">
+			<div class="user-controlls user-controlls--footer">
 				<Button class="user-controlls__button" :text="$t('button.savetophone')" />
 				<Button class="user-controlls__button" type="secondary" :text="$t('button.save')" v-if="!isAuth" />
 			</div>
@@ -273,6 +289,7 @@ useHead({
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
+		gap: 16px 0;
 	}
 }
 .modal {
@@ -291,14 +308,22 @@ useHead({
 
 .user-controlls {
 	display: flex;
-	gap: 20px 40px;
+	gap: 20px 30px;
 	align-items: center;
 	flex-wrap: wrap;
-	&__button {
-		width: 100%;
-	}
 	&--mobile {
 		display: none;
+	}
+	&--footer {
+		.user-controlls__button {
+			max-width: 100%;
+			width: auto;
+			flex-grow: 1;
+			min-width: 200px;
+			&:first-child:last-child {
+				max-width: 220px;
+			}
+		}
 	}
 	@include screen(767.98px) {
 		display: none;
@@ -308,9 +333,15 @@ useHead({
 				display: none;
 			}
 		}
-		&--mobile {
+		&--mobile, &--footer {
 			display: flex;
 			flex-direction: column;
+			.user-controlls__button {
+				width: 100%;
+				&:first-child:last-child {
+					max-width: 100%;
+				}
+			}
 		}
 	}
 }

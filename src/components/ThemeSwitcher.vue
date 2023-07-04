@@ -1,10 +1,10 @@
 <template>
 	<Transition name="fade-slide-up" mode="out-in">
 		<button class="theme" v-if="isDark" @click="switchTheme()">
-			<Icon :name="IconLightTheme"/>
+			<Icon :name="IconLightTheme" :size="24"/>
 		</button>
 		<button class="theme" v-else @click="switchTheme()">
-			<Icon :name="IconDarkTheme"/>
+			<Icon :name="IconDarkTheme" :size="24"/>
 		</button>
 	</Transition>
 </template>

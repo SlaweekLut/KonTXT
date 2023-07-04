@@ -96,6 +96,11 @@ defineEmits(['close'])
 		align-items: center;
 		max-width: calc(457px + 48px);
 		max-height: 515px;
+		height: auto;
+		overflow: auto;
+		.modal__header {
+			top: -3px;
+		}
 	}
 	&--login {
 		height: auto;

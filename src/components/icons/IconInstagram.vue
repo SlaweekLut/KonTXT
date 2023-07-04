@@ -5,11 +5,5 @@
 <circle cx="25.5" cy="6.5" r="2.15" stroke="#14181F" stroke-width="0.7"/>
 <rect x="0.5" y="0.5" width="31" height="31" rx="3.5" stroke="#14181F"/>
 </g>
-<defs>
-<clipPath id="clip0_141_1148">
-<rect width="32" height="32" fill="white"/>
-</clipPath>
-</defs>
 </svg>
-
 </template>

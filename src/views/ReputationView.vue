@@ -227,11 +227,11 @@ window.addEventListener('resize', () => {
 				</div>
 				<div class="user-content">
 					<p class="user-content__title user-content__title--sertificates text-h1">{{ $t('titles.sertificates') }} <span class="text-comment-small">{{ "4 / " + userInfo.sertificates.length }}</span></p>
-					<div class="user-content__grid">
-						<template v-for="(sertificate, i) in userInfo.sertificates.slice(0, 4)" :key="i">
-							<Sertificate  :sertificate="sertificate" grid @click="sertificateZoom(i)"/>
+					<masonry-wall :items="userInfo.sertificates.slice(0, 4)" :ssr-columns="windowWidth <= 563 ? 2 : 3" :column-width="windowWidth <= 386 ? 156 : 168" :gap="windowWidth <= 386 ? 8 : 10">
+						<template #default="{item, index}">
+							<Sertificate  :sertificate="item" :style="{ height: `${item.height}px` }" grid @click="sertificateZoom(index)"/>
 						</template>
-					</div>
+					</masonry-wall>
 					<Button :text="$t('button.more')" @click="modals.sertificate = true" class="user-content__more" />
 				</div>
 				<div class="user-content">
@@ -245,12 +245,15 @@ window.addEventListener('resize', () => {
 				</div>
 				<div class="user-content">
 					<p class="user-content__title text-h1">{{ $t('titles.workExperience') }} <span class="text-comment-small">{{ "2 / " + userInfo.works.length }}</span></p>
-					<div class="user-content__projects">
+					<div class="user-content__projects user-content__projects--works">
 						<template v-for="(work, i) in userInfo.works.slice(0,2)" :key="i">
 							<Work :work="work"/>
 						</template>
 					</div>
 					<Button :text="$t('button.more')" @click="modals.works = true" class="user-content__more" />
+				</div>
+				<div class="user-controlls user-controlls--footer">
+					<Button class="user-controlls__button" type="secondary" :text="$t('button.savetophone')" v-if="isAuth" />
 				</div>
 
 				<Modal :open="modals.review" @close="modals.review = false">
@@ -321,6 +324,7 @@ window.addEventListener('resize', () => {
 				</Modal>
 				<vue-easy-lightbox :visible="sertificateState.visible" :index="sertificateState.index" :imgs="sertificateImgs" @hide="sertificateState.visible = false"></vue-easy-lightbox>
 			</template>
+			
 		</div>
 	</main>
 </template>
@@ -337,6 +341,18 @@ window.addEventListener('resize', () => {
 	&--mobile {
 		display: none;
 	}
+	&--footer {
+		.user-controlls__button {
+			max-width: 100%;
+			width: auto;
+			flex-grow: 1;
+			min-width: 200px;
+			&:first-child:last-child {
+				width: 100%;
+				max-width: 220px;
+			}
+		}
+	}
 	@include screen(767.98px) {
 		display: none;
 		&__button {
@@ -345,9 +361,14 @@ window.addEventListener('resize', () => {
 				display: none;
 			}
 		}
-		&--mobile {
+		&--mobile, &--footer {
 			display: flex;
 			flex-direction: column;
+			.user-controlls__button {
+				&:first-child:last-child {
+					max-width: 100%;
+				}
+			}
 		}
 	}
 }
@@ -532,10 +553,15 @@ window.addEventListener('resize', () => {
 }
 .user-noauth {
 	display: flex;
-	gap: 12px 20px;
+	gap: 40px 20px;
 	align-items: center;
+	&__text {
+		color: #898989;
+
+	}
 	@include screen(767.98px) {
 		flex-direction: column;
+		margin-top: 20px;
 		&__text {
 			padding: 0px 7px;
 		}
@@ -546,6 +572,9 @@ window.addEventListener('resize', () => {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	&__item {
+		font-family: 'Montserrat';
+	}
 	&__row {
 		display: flex;
 		gap: 20px 40px;
@@ -555,6 +584,7 @@ window.addEventListener('resize', () => {
 	}
 	&__text {
 		max-width: 307px;
+		font-family: 'Montserrat';
 		user-select: none;
 	}
 	&__col {
@@ -606,6 +636,7 @@ window.addEventListener('resize', () => {
 		width: 100%;
 	}
 	&__text {
+		font-family: 'Montserrat';
 		max-width: 197px;
 		user-select: none;
 	}
@@ -660,7 +691,7 @@ window.addEventListener('resize', () => {
 	&__grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		grid-template-areas: 'a b d' 'a c d';
+		grid-template-rows: masonry;
 		gap: 10px;
 		div:nth-child(1) {
 			grid-area: a;
@@ -707,6 +738,9 @@ window.addEventListener('resize', () => {
 	@include screen(767.98px) {
 		&__projects {
 			gap: 0;
+			&--works {
+				gap: 35px;
+			}
 		}
 		&__sertificates {
 			&-col {
