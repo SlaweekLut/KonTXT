@@ -1,33 +1,36 @@
 <template>
-	<aside class="aside" v-if="isAuth">
-		<div class="aside-item" :class="{'router-link-active': path === '/cutaway' || path === '/reputation'}">
-			<RouterLink to="/" class="aside-item__header">
-				<Icon :name="IconCircle" class="aside-item__icon" />
-				<p class="aside-item__title">{{$t('header.profile')}}</p>
+	<aside class="aside" itemscope itemtype="http://schema.org/SiteNavigationElement" v-if="isAuth">
+		<nav class="aside">
+			<meta itemprop="name" content="Навигационное Меню">
+			<div class="aside-item" :class="{'router-link-active': path === '/cutaway' || path === '/reputation'}">
+				<RouterLink itemprop="url"  to="/" class="aside-item__header">
+					<Icon :name="IconCircle" class="aside-item__icon" />
+					<p itemprop="name" class="aside-item__title">{{$t('header.profile')}}</p>
+				</RouterLink>
+				<div class="aside-item__sublist" v-if="path === '/cutaway' || path === '/reputation'">
+					<RouterLink class="aside-item__link" itemprop="url" to="/cutaway"><span itemprop="name">{{$t("card")}}</span></RouterLink>
+					<RouterLink class="aside-item__link" itemprop="url" to="/reputation"><span itemprop="name">{{$t("reputation")}}</span></RouterLink>
+				</div>
+			</div>
+			<RouterLink itemprop="url"  to="/contacts" disabled class="aside-item">
+				<div class="aside-item__header">
+					<Icon :name="IconSquare" class="aside-item__icon" />
+					<p itemprop="name" class="aside-item__title">{{$t('header.contacts')}}</p>
+				</div>
 			</RouterLink>
-			<div class="aside-item__sublist" v-if="path === '/cutaway' || path === '/reputation'">
-				<RouterLink class="aside-item__link" to="/cutaway">{{$t("card")}}</RouterLink>
-				<RouterLink class="aside-item__link" to="/reputation">{{$t("reputation")}}</RouterLink>
-			</div>
-		</div>
-		<RouterLink to="/contacts" disabled class="aside-item">
-			<div class="aside-item__header">
-				<Icon :name="IconSquare" class="aside-item__icon" />
-				<p class="aside-item__title">{{$t('header.contacts')}}</p>
-			</div>
-		</RouterLink>
-		<RouterLink to="/meets" disabled class="aside-item">
-			<div class="aside-item__header">
-				<Icon :name="IconCross" class="aside-item__icon" />
-				<p class="aside-item__title">{{$t('header.meets')}}</p>
-			</div>
-		</RouterLink>
-		<RouterLink to="/knowledge" disabled class="aside-item">
-			<div class="aside-item__header">
-				<Icon :name="IconTriangle" class="aside-item__icon" />
-				<p class="aside-item__title">{{$t('header.knowledge')}}</p>
-			</div>
-		</RouterLink>
+			<RouterLink itemprop="url"  to="/meets" disabled class="aside-item">
+				<div class="aside-item__header">
+					<Icon :name="IconCross" class="aside-item__icon" />
+					<p itemprop="name" class="aside-item__title">{{$t('header.meets')}}</p>
+				</div>
+			</RouterLink>
+			<RouterLink itemprop="url"  to="/knowledge" disabled class="aside-item">
+				<div class="aside-item__header">
+					<Icon :name="IconTriangle" class="aside-item__icon" />
+					<p itemprop="name" class="aside-item__title">{{$t('header.knowledge')}}</p>
+				</div>
+			</RouterLink>
+		</nav>
 	</aside>
 </template>
 

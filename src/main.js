@@ -12,7 +12,8 @@ import { createMetaManager } from 'vue-meta'
 import App from './App.vue'
 import router from './router'
 import Popper from "vue3-popper";
-// import { createHead } from "unhead"
+import { SchemaOrgUnheadPlugin } from '@vueuse/schema-org'
+import { createHead } from "@vueuse/head"
 
 const i18n = createI18n({
 	locale: 'ru',
@@ -24,7 +25,17 @@ const i18n = createI18n({
 })
 
 const app = createApp(App)
-// const head = createHead()
+const head = createHead()
+head.use(SchemaOrgUnheadPlugin({
+  // config
+  host: 'https://KonTXT.me',
+}, () => {
+  const route = router.currentRoute.value
+  return {
+    path: route.path,
+    ...route.meta,
+  }
+}))
 
 app.component("Popper", Popper);
 app.use(createPinia())
@@ -33,5 +44,6 @@ app.use(MasonryWall)
 app.use(VueEasyLightbox)
 app.use(i18n)
 app.use(router)
+app.use(head)
 
 app.mount('#app')

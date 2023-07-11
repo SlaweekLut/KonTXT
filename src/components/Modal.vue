@@ -75,7 +75,9 @@ defineEmits(['close'])
 	padding: 50px 67px;
 	background-color: var(--color-dynamic-white);
 	border-radius: 30px;
-	
+	&__container {
+		overflow: auto;
+	}
 	&__close {
 		position: absolute;
 		right: -32px;

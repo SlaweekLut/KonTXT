@@ -125,6 +125,42 @@ const userInfo = computed(() => {
 			}
 		}
 	}
+
+	@include screen(1199.98px) {
+		&:not(.donars--projects) {
+			gap: 10px;
+			.donars__more {
+					margin-left: 2px;
+					width: 58px;
+					height: 58px;
+					min-width: 58px !important;
+					min-height: 58px !important;
+					&::before {
+						right: -19px;
+					}
+					&::after {
+						right: -35px;
+					}
+			}
+			.donar {
+				:deep(.avatar) {
+					max-width: 58px !important;
+					max-height: 58px !important;
+					min-width: 58px !important;
+					min-height: 58px !important;
+					width: 58px;
+					height: 58px;
+				}
+			}
+		}
+	}
+	@include screen(767.98px) {
+		&:not(.donars--projects) {
+			.donars__more {
+				margin-left: 10px;
+			}
+		}
+	}
 }
 
 .modal {
@@ -134,12 +170,19 @@ const userInfo = computed(() => {
 		align-items: center;
 		margin-bottom: 32px;
 		padding-bottom: 8px;
-		position: sticky;
-		top: -1px;
+		position: relative;
 		z-index: 1;
 		background: var(--color-dynamic-white);
 	}
 	&__content {
+		overflow: auto;
+		height: calc(100% - 67px);
+		&::-webkit-scrollbar {
+			display: none;
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
 		& > * {
 			position: relative;
 			padding-bottom: 40px;

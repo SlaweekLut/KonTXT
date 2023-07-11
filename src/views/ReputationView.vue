@@ -111,6 +111,19 @@ window.addEventListener('resize', () => {
 	windowWidth.value = window.innerWidth
 })
 
+import { definePerson, useSchemaOrg, defineWebPage } from '@vueuse/schema-org'
+
+useSchemaOrg([
+	definePerson({
+		name: userInfo.value.name,
+		image: getSrc(userInfo.value.src),
+		address: userInfo.value.address,
+		jobTitle: userInfo.value.job,
+		description: userInfo.value.description,
+		worksFor: userInfo.value.company,
+	})
+])
+
 </script>
 
 <template>
@@ -159,15 +172,15 @@ window.addEventListener('resize', () => {
 						</div>
 					</div>
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.groups.length > 0">
 					<p class="user-content__title text-h1">{{ $t('titles.communities') }}</p>
 					<InterestsList :interests="userInfo.groups"/>
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.events.length > 0">
 					<p class="user-content__title text-h1">{{ $t('titles.events') }}</p>
 					<InterestsList :interests="userInfo.events"/>
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.reviews.length > 0">
 					<p class="user-content__title text-h1">{{ $t('titles.reviews') }} <span class="text-comment-small">{{ currentReview + " / " + userInfo.reviews.length }}</span></p>
 					<div class="review-wrapper">
 						<button class="review__button" ref="prevReview">
@@ -194,7 +207,7 @@ window.addEventListener('resize', () => {
 					</div>
 					<Button :text="$t('button.more')" @click="modals.review = true" class="user-content__more" />
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.videoReviews.length > 0">
 					<p class="user-content__title text-h1">{{ $t('titles.videoReviews') }} <span class="text-comment-small">{{ currentVideoReview + " / " + userInfo.videoReviews.length }}</span></p>
 					<div class="review-wrapper review-wrapper--video">
 						<button class="review__button review__button--video" ref="prevVideoReview">
@@ -225,7 +238,7 @@ window.addEventListener('resize', () => {
 					</div>
 					<Button :text="$t('button.more')" @click="modals.videoReview = true" class="user-content__more" />
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.sertificates.length > 0">
 					<p class="user-content__title user-content__title--sertificates text-h1">{{ $t('titles.sertificates') }} <span class="text-comment-small">{{ "4 / " + userInfo.sertificates.length }}</span></p>
 					<masonry-wall :items="userInfo.sertificates.slice(0, 4)" :ssr-columns="windowWidth <= 563 ? 2 : 3" :column-width="windowWidth <= 386 ? 156 : 168" :gap="windowWidth <= 386 ? 8 : 10">
 						<template #default="{item, index}">
@@ -234,7 +247,7 @@ window.addEventListener('resize', () => {
 					</masonry-wall>
 					<Button :text="$t('button.more')" @click="modals.sertificate = true" class="user-content__more" />
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.projects.length > 0">
 					<p class="user-content__title text-h1">{{ $t('titles.projects') }} <span class="text-comment-small">{{ "2 / " + userInfo.projects.length }}</span></p>
 					<div class="user-content__projects">
 						<template v-for="(project, i) in userInfo.projects.slice(0,2)" :key="i">
@@ -243,7 +256,7 @@ window.addEventListener('resize', () => {
 					</div>
 					<Button :text="$t('button.more')" @click="modals.project = true" class="user-content__more" />
 				</div>
-				<div class="user-content">
+				<div class="user-content" v-if="userInfo.works.length > 0">
 					<p class="user-content__title text-h1">{{ $t('titles.workExperience') }} <span class="text-comment-small">{{ "2 / " + userInfo.works.length }}</span></p>
 					<div class="user-content__projects user-content__projects--works">
 						<template v-for="(work, i) in userInfo.works.slice(0,2)" :key="i">
@@ -379,12 +392,19 @@ window.addEventListener('resize', () => {
 		align-items: center;
 		margin-bottom: 32px;
 		padding-bottom: 8px;
-		position: sticky;
-		top: -1px;
+		position: relative;
 		z-index: 1;
 		background: var(--color-dynamic-white);
 	}
 	&__content {
+		overflow: auto;
+		height: calc(100% - 67px);
+		&::-webkit-scrollbar {
+			display: none;
+			opacity: 0;
+			width: 0;
+			height: 0;
+		}
 		& > * {
 			position: relative;
 			padding-bottom: 40px;
@@ -574,6 +594,7 @@ window.addEventListener('resize', () => {
 	gap: 20px;
 	&__item {
 		font-family: 'Montserrat';
+		font-size: 10px;
 	}
 	&__row {
 		display: flex;
@@ -586,6 +607,7 @@ window.addEventListener('resize', () => {
 		max-width: 307px;
 		font-family: 'Montserrat';
 		user-select: none;
+		font-size: 10px;
 	}
 	&__col {
 		display: flex;
@@ -598,11 +620,13 @@ window.addEventListener('resize', () => {
 		display: flex;
 		align-items: center;
 		gap: 20px;
+		font-size: 16px;
 	}
 	&__list-title {
 		display: flex;
 		align-items: center;
 		gap: 20px;
+		font-size: 12px;
 	}
 	&__list {
 		list-style: none;
@@ -610,11 +634,27 @@ window.addEventListener('resize', () => {
 
 	@include screen(1199.98px) {
 		&__col {
-			max-width: 100%;
+			max-width: 198px;
 			width: 100%;
+		}
+		&__row {
+			justify-content: center;
+			column-gap: 34px;
+		}
+		&__list-title {
+			font-size: 14px;
+		}
+		&__item {
+			font-size: 12px;
+		}
+		&__text {
+			font-size: 12px;
 		}
 	}
 	@include screen(767.98px) {
+		&__col {
+			max-width: 100%;
+		}
 		&__text {
 			max-width: 100%;
 			width: 100%;
@@ -639,13 +679,20 @@ window.addEventListener('resize', () => {
 		font-family: 'Montserrat';
 		max-width: 197px;
 		user-select: none;
+		font-size: 10px;
 	}
 	&__title {
 		display: flex;
 		align-items: center;
 		gap: 20px;
+		font-size: 16px;
 	}
 
+	@include screen(1199.98px) {
+		&__text {
+			font-size: 12px;
+		}
+	}
 	@include screen(767.98px) {
 		&__text,&__slider {
 			max-width: 100%;

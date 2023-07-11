@@ -79,6 +79,18 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 // 	}))
 // )
 // console.log(meta.meta)
+import { definePerson, useSchemaOrg } from '@vueuse/schema-org'
+
+useSchemaOrg([
+	definePerson({
+		name: userInfo.value.name,
+		image: getSrc(userInfo.value.src),
+		address: userInfo.value.address,
+		jobTitle: userInfo.value.job,
+		description: userInfo.value.description,
+		worksFor: userInfo.value.company,
+	})
+])
 </script>
 
 <template>

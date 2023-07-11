@@ -179,6 +179,9 @@ defineEmits(['openShare', 'openQR'])
 			flex-direction: row;
 			justify-content: space-between;
 		}
+		&--donars {
+			gap: 8px;
+		}
 	}
 	&__text {
 		font-family: 'Montserrat';
@@ -212,7 +215,6 @@ defineEmits(['openShare', 'openQR'])
 			min-height: 225px !important;
 		}
 		&__column {
-			margin-top: 10px;
 			align-items: center;
 			gap: 10px;
 			max-width: 100%;
@@ -238,7 +240,8 @@ defineEmits(['openShare', 'openQR'])
 				justify-content: center;
 			}
 			&--donars {
-				max-width: 302px;
+				max-width: 100%;
+				gap: 10px;
 				width: 100%;
 				margin: 20px auto 0;
 			}
@@ -249,6 +252,14 @@ defineEmits(['openShare', 'openQR'])
 		}
 		&__id {
 			display: none;
+		}
+	}
+	@include screen(424.98px) {
+		&__item {
+			&--donars {
+				max-width: 100%;
+				margin: 20px 0 0;
+			}
 		}
 	}
 }

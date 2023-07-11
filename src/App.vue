@@ -24,6 +24,9 @@ const currentName = computed(() => route.name)
   margin: 40px auto 0;
   width: 100%;
   padding: 0px 20px 60px;
+  @include screen(1199.98px) {
+    max-width: calc(620px + 40px);
+  }
 }
 .aside {
   position: fixed;

@@ -14,7 +14,7 @@
 				<router-link to="/" v-if="isAuth" class="header__home">
 					<Avatar :src="userInfo.src" alt="Go to main" :size="24"/>
 				</router-link>
-				<button class="header__burger" @click="nav = true">
+				<button class="header__burger" v-if="isAuth || windowWidth <= 1199.98" @click="nav = true">
 					<Icon :name="IconBurger" :size="24"/>
 				</button>
 				<Button class="header__button" :text="$t('button.logIn')" @click="login = true" v-if="!isAuth"/>
@@ -33,7 +33,7 @@
 					</router-link>
 					<ThemeSwitcher class="header-modal__theme"/>
 					<router-link to="/" v-if="isAuth" class="header-modal__message">
-						<Icon :name="IconNotification"/>
+						<Icon :name="IconNotification" :size="24"/>
 					</router-link>
 					<button class="header-modal__burger" @click="nav = false">
 						<Icon :name="IconCross" :size="24"/>
@@ -155,7 +155,7 @@ import IconEnvelop from './icons/IconEnvelop.vue';
 import IconWeb from './icons/IconWeb.vue';
 import Login from './Login.vue';
 
-
+const windowWidth = ref(window.innerWidth)
 const userStore = useUserStore()
 const userInfo = computed(() => userStore.userInfo)
 const isAuth = computed(() => userStore.isAuth)
@@ -165,6 +165,10 @@ const currentPath = computed(() => route.path)
 const currentId = computed(() => route.params.id)
 const nav = ref(false)
 const login = ref(false)
+
+window.addEventListener('resize', () => {
+	windowWidth.value = window.innerWidth
+})
 
 const auth = () => {
 	localStorage.setItem('auth', localStorage.getItem('auth') === 'true' ? false : true)
@@ -196,13 +200,17 @@ const auth = () => {
 	}
 }
 .header-modal {
+	&__message, &__burger, &__theme {
+		width: 24px;
+		height: 24px;
+	}
 	&__top {
 		display: flex;
 		align-items: center;
 		gap: 30px;
 	}
 	.logo {
-		height: 22px;
+		height: 28px;
 		&__link {
 			margin-right: auto;
 		}
@@ -275,7 +283,6 @@ const auth = () => {
 	}
 	&__button {
 		width: 228px;
-		margin-left: 30px;
 	}
 	&__bottom {
 		display: flex;
@@ -312,6 +319,7 @@ const auth = () => {
 	}
 	@include screen(1199.98px) {
 		padding: 14px 20px;
+		padding-right: 43px;
 		max-width: 673px;
 		&__burger {
 			:deep(path) {
@@ -328,7 +336,7 @@ const auth = () => {
 			display: none;
 		}
 		.logo {
-			height: 22px;
+			height: 28px;
 			:deep(path) {
 				fill: var(--color-white);
 			}
@@ -347,10 +355,13 @@ const auth = () => {
 		}
 	}
 	@include screen(767.98px) {
-		padding-right: 37px;
+		padding-right: 45px;
 		&__link {
 			font-size: 12px;
 		}
+	}
+	@include screen(424.98px) {
+		padding-right: 37px;
 	}
 }
 .header-wrapper {

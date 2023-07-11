@@ -40,10 +40,13 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 	position: relative;
 	&__img {
 		border-radius: 10px;
-		border: 1px solid var(--color-dynamic-gray);
+		border: 1px solid #e7e7e7;
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		.dark & {
+			border-color: #333333;
+		}
 	}
 	&__info {
 		display: flex;
@@ -98,6 +101,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 			}
 		}
 	}
+	
 	@include ui-mouse {
 		&:hover &__info--hover {
 			opacity: 1;

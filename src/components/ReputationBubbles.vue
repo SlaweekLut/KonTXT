@@ -14,7 +14,9 @@ import Reputation from './Reputation.vue';
 
 let stepSize = 500;
 let currentList = ref(null)
-let maxSizes = [70, 70, 60, 70, 50, 40]
+let maxSizesPc = [70, 70, 60, 70, 50, 40]
+let maxSizesTablet = [40, 40, 30, 40, 30, 35]
+let maxSizes = window.innerWidth <= 1199.98 ? [...maxSizesTablet] : [...maxSizesPc]
 const props = defineProps({
 	value: {
 		type: Object,
@@ -27,6 +29,14 @@ const props = defineProps({
 })
 
 defineEmits(['getList'])
+
+window.addEventListener('resize', () => {
+	if(window.innerWidth <= 1199.98) {
+		maxSizes = [...maxSizesTablet]
+	} else {
+		maxSizes = [...maxSizesPc]
+	}
+})
 
 const progress = (n) => {
 	return Math.floor(props.reputation - stepSize * n > 0 ? 100 : (stepSize + (props.reputation - stepSize * n)) / (stepSize / 100))
@@ -51,6 +61,10 @@ const progressSize = (n) => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	@include screen(1199.98px) {
+		max-width: 308px;
+		height: 251px;
+	}
 }
 .bubble {
 	position: absolute;
@@ -180,6 +194,91 @@ const progressSize = (n) => {
 			opacity: 1;
 		}
 	}
+	@include screen(1199.98px) {
+		&:nth-child(1) {
+			top: 21px;
+			left: 52px;
+		}
+		&:nth-child(2) {
+			top: 0px;
+			left: 90px;
+		}
+		&:nth-child(3) {
+			top: 11px;
+			left: 187px;
+		}
+		&:nth-child(4) {
+			top: 102px;
+			right: 60px;
+		}
+		&:nth-child(5) {
+			bottom: 33px;
+			right: 82px;
+		}
+		&:nth-child(6) {
+			min-width: 4px;
+			min-height: 4px;
+			width: 4px;
+			height: 4px;
+			bottom: 51px;
+			left: 156px;
+		}
+		&:nth-child(7) {
+			min-width: 4px;
+			min-height: 4px;
+			width: 4px;
+			height: 4px;
+			bottom: 66px;
+			left: 15px;
+		}
+		&:nth-child(8) {
+			top: 111px;
+			left: 20px;
+		}
+		&:nth-child(9) {
+			top: 47px;
+			left: 0;
+		}
+		&:nth-child(10) {
+			top: 33px;
+			right: 6px;
+		}
+		&:nth-child(11) {
+			bottom: 68px;
+			right: 43px;
+		}
+		&:nth-child(12) {
+			bottom: 0px;
+			right: 94px;
+		}
+		&:nth-child(13) {
+			bottom: 17px;
+			left: 93px;
+		}
+		&:nth-child(14) {
+			bottom: 45px;
+			left: 36px;
+		}
+	}
+	@include screen(767.98px) {
+		&:nth-child(6) {
+			left: 150px;
+			bottom: 52px;
+		}
+		&:nth-child(7) {
+			left: 8px;
+			bottom: 54px;
+		}
+		&:nth-child(13) {
+			bottom: 21px;
+			left: 80px;
+		}
+		&:nth-child(14) {
+			bottom: 51px;
+			left: 31px;
+		}
+
+	}
 }
 .bubble-container {
 	display: flex;
@@ -195,5 +294,9 @@ const progressSize = (n) => {
 	height: 154px;
 	border-radius: 50%;
 	border: 3px solid var(--color-dynamic-black);
+	@include screen(1199.98px) {
+		top: 26px;
+		left: 56px;
+	}
 }
 </style>
