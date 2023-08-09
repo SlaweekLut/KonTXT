@@ -41,6 +41,7 @@ const switchTheme = () => {
 <style scoped lang="scss">
 .theme {
 	cursor: pointer;
+	height: 24px;
 }
 
 .fade-slide-up-enter-active,

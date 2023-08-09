@@ -1,8 +1,8 @@
 <template>
 	<div class="project">
 		<div class="project__header">
-			<p class="project__title">{{ project.title }}</p>
-			<p class="project__date text-comment">{{ project.date }}</p>
+			<p class="project__title" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? project.title.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : project.title }}</p>
+			<p class="project__date text-comment" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? project.date.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : project.date }}</p>
 		</div>
 		<div class="project__images">
 			<button class="project__button" ref="prev">
@@ -17,6 +17,7 @@
 				}"
 				space-between="20"
 				class="project__swiper"
+				:class="status === 'blur' ? 'blur' : ''"
 			>
 				<swiper-slide v-for="(image, id) in project.images" :key="id">
 					<img :src="getSrc(image)" class="project__image" :key="id" @click="() => {show(id)}"/>
@@ -30,23 +31,23 @@
 			<div class="project__col">
 				<p class="project__col-title text-main">{{ $t('projects.results') }}:</p>
 				<ul class="project__results">
-					<li class="project__result text-main-small" v-for="(result, i) in project.results" :key="i">{{ result }}</li>
+					<li class="project__result text-main-small" v-for="(result, i) in project.results" :key="i" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? result.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : result }}</li>
 				</ul>
 			</div>
 			<div class="project__col project__col--member">
 				<p class="project__col-title text-comment-small">{{ $t('members') }}:</p>
 				<div class="project__members">
-					<Donars :value="project.members" :size="29" title="Участники" projects/>
+					<Donars :value="project.members" :size="29" :status="status" title="Участники" projects/>
 				</div>
 			</div>
 		</div>
 		<div class="project__col" v-if="project.description">
 			<p class="project__col-title text-main">{{ $t('projects.description') }}:</p>
-			<p class="project__col-text text-main-small">{{ project.description }}</p>
+			<p class="project__col-text text-main-small" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? project.description.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : project.description }}</p>
 		</div>
 		<div class="project__col" v-if="project.link">
 			<p class="project__col-title text-main">{{ $t('projects.link') }}:</p>
-			<p class="project__col-text text-main-small">{{ project.link }}</p>
+			<p class="project__col-text text-main-small" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? project.link.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : project.link }}</p>
 		</div>
 	</div>
 	<teleport to="body">
@@ -74,6 +75,9 @@ const props = defineProps({
 	project: {
 		type: Object,
 		required: true
+	},
+	status: {
+		type: String,
 	}
 })
 
@@ -91,6 +95,11 @@ const onHide = () => state.visible = false
 </script>
 
 <style scoped lang="scss">
+.blur {
+	filter: blur(7px);
+	user-select: none;
+	pointer-events: none;
+}
 .project {
 	padding: 10px 0px;
 	display: flex;
@@ -111,9 +120,13 @@ const onHide = () => state.visible = false
 		}
 	}
 	&__title {
-		font-size: 18px;
+		font-size: 14px;
 		font-weight: 600;
 		color: var(--color-dynamic-black);
+	}
+	&__date {
+		font-family: 'Montserrat', sans-serif;
+		font-size: 10px;
 	}
 	&__images {
 		display: flex;
@@ -147,6 +160,9 @@ const onHide = () => state.visible = false
 			margin-left: auto;
 			align-items: flex-end;
 		}
+	}
+	&__col-title {
+		font-family: 'Montserrat', sans-serif;
 	}
 	&__col-text {
 		max-width: 396px;

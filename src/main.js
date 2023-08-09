@@ -7,7 +7,8 @@ import en from './locales/en'
 import VueEasyLightbox from 'vue-easy-lightbox'
 import MasonryWall from '@yeger/vue-masonry-wall'
 import { createMetaManager } from 'vue-meta'
-
+import PerfectScrollbar from 'vue3-perfect-scrollbar'
+import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css'
 
 import App from './App.vue'
 import router from './router'
@@ -41,6 +42,12 @@ app.component("Popper", Popper);
 app.use(createPinia())
 app.use(createMetaManager())
 app.use(MasonryWall)
+app.use(PerfectScrollbar, {
+  watchOptions: true,
+  options: {
+    suppressScrollX: true
+  }
+})
 app.use(VueEasyLightbox)
 app.use(i18n)
 app.use(router)

@@ -1,12 +1,12 @@
 <template>
 	<div class="work" :class="{'work--nonline': nonline}">
 		<div class="work-aside">
-			<div class="work-aside__logo">
+			<div class="work-aside__logo" :class="status === 'blur' ? 'blur' : ''">
 				<img :src="getSrc(work.src)" :alt="work.title">
 			</div>
 			<div class="work-aside__reputation">
-				<p class="work-aside__reputation-title">
-					{{ work.reputation }}
+				<p class="work-aside__reputation-title" :class="status === 'blur' ? 'blur' : ''">
+					{{ status === 'blur' ? new Array(work.reputation.length).fill('0', 0, work.reputation.length).join('') : work.reputation }}
 				</p>
 				<Icon :name="IconReputation" :size="16"/>
 			</div>
@@ -14,13 +14,17 @@
 		<div class="work__content">
 			<div class="work__header">
 				<div class="work__info">
-					<p class="work__title">{{ work.title }} <Icon :name="IconVerify" :size="24" v-if="work.isVerified"/> </p>
-					<p class="work__subtitle text-main">{{ work.job }}</p>
+					<p class="work__title" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? new Array(work.job.length).fill('A', 0, work.job.length).join('') : work.title }} <Icon :name="IconVerify" :size="24" v-if="work.isVerified"/> </p>
+					<p class="work__subtitle text-main" :class="status === 'blur' ? 'blur' : ''">{{ status === 'blur' ? new Array(work.job.length).fill('A', 0, work.job.length).join('') : work.job }}</p>
 				</div>
-				<p class="work__time text-comment-small">{{ work.dateStart }} - {{ work.dateEnd }}</p>
+				<p class="work__time text-comment-small" :class="status === 'blur' ? 'blur' : ''">
+					{{ status === 'blur' ? new Array(work.dateStart.length).fill('0', 0, work.dateStart.length).join('') : work.dateStart }}
+					- 
+					{{ status === 'blur' ? new Array(work.dateEnd.length).fill('0', 0, work.dateEnd.length).join('') : work.dateEnd }}
+				</p>
 			</div>
-			<p class="work__body text-main">
-				{{ work.description }}
+			<p class="work__body text-main" :class="status === 'blur' ? 'blur' : ''">
+				{{ status === 'blur' ? work.description.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : work.description }}
 			</p>
 		</div>
 	</div>
@@ -39,6 +43,9 @@ const props = defineProps({
 	nonline: {
 		type: Boolean,
 		default: false
+	},
+	status: {
+		type: String,
 	}
 })
 
@@ -47,6 +54,11 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 </script>
 
 <style scoped lang="scss">
+.blur {
+	filter: blur(7px);
+	pointer-events: none;
+	user-select: none;
+}
 .work {
 	display: flex;
 	gap: 40px;
@@ -56,7 +68,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 		width: 100%;
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
+		gap: 10px;
 	}
 	&__header {
 		display: flex;
@@ -68,14 +80,24 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 		display: flex;
 		align-items: center;
 		gap: 10px;
-		font-size: 18px;
+		font-size: 16px;
 		font-weight: 600;
 		color: var(--color-dynamic-black);
+	}
+	&__time {
+		font-family: Montserrat;
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 12px;
+		letter-spacing: 0em;
 	}
 	&__info {
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+	}
+	&__body {
+		font-size: 10px;
 	}
 	&::after {
 		content: '';

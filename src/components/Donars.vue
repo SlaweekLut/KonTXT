@@ -1,9 +1,9 @@
 <template>
-	<div class="donars" :class="{'donars--projects': projects}">
-		<RouterLink :to="`/user/${donar.id}/cutaway`" class="donar" v-for="donar of visibleUsers" :key="donar">
+	<div class="donars" :class="{'donars--projects': projects}" v-if="Object.keys(users).length > 0">
+		<RouterLink :class="{ 'donars--blur': status === 'blur' }" :to="`/user/${donar.id}/cutaway`" class="donar" v-for="donar of visibleUsers" :key="donar">
 			<Avatar :src="donar.src" :alt="donar.name" :size="size"/>
 		</RouterLink>
-		<p class="donars__more text-menu-up" @click="modal = true" :style="`width: ${size}px; height: ${size}px; min-width: ${size}px; min-height: ${size}px;`" v-if="Object.keys(users).length - 3 > 0">
+		<p :class="{ 'donars--blur': status === 'blur' }" class="donars__more text-menu-up" @click="modal = true" :style="`width: ${size}px; height: ${size}px; min-width: ${size}px; min-height: ${size}px;`" v-if="Object.keys(users).length - 3 > 0">
 			+{{ Object.keys(users).length - 3 }} 
 		</p>
 		<Modal :open="modal" @close="modal = false">
@@ -18,6 +18,9 @@
 			</div>
 		</Modal>
 	</div>
+	<div class="donars donars--text" v-else>
+		<p class="donars__text">{{$t('withOutDonars')}}</p>
+	</div>
 </template>
 
 <script setup>
@@ -31,8 +34,10 @@ import Donar from './Donar.vue';
 import {useUserStore} from '@/stores/user';
 const users = ref({})
 
-for (const key of props.value) {
-	users.value[key] = usersList[key];
+if(props.value) {
+	for (const key of props.value) {
+		users.value[key] = usersList[key];
+	}
 }
 
 const visibleUsers = computed(() => {
@@ -58,6 +63,9 @@ const props = defineProps({
 	projects: {
 		type: Boolean,
 		default: false
+	},
+	status: {
+		type: String
 	}
 })
 
@@ -79,6 +87,11 @@ const userInfo = computed(() => {
 .donars {
 	display: flex;
 	gap: 10px;
+	&--blur {
+		filter: blur(7px);
+		user-select: none;
+		pointer-events: none;
+	}
 	&__more {
 		display: flex;
 		align-items: center;
@@ -160,6 +173,16 @@ const userInfo = computed(() => {
 				margin-left: 10px;
 			}
 		}
+	}
+
+	&__text {
+		margin-top: 15px;
+		font-family: Montserrat;
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 14px;
+		letter-spacing: 0em;
+		color: var(--color-dynamic-gray)
 	}
 }
 

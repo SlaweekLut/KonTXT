@@ -14,30 +14,45 @@
 	</div>
 	<div class="user-info__column" v-if="!isReputation">
 		<div class="user-info__column-inner">
-			<div class="user-info__item">
+			<div class="user-info__item" v-if="userInfo.profession && userInfo.profession.status !== 'hidden'">
 				<p class="user-info__title text-h2">{{ $t('profession') }}</p>
-				<p class="user-info__text text-uppart">{{ userInfo.profession }}</p>
+				<p class="user-info__text text-uppart" :class="userInfo.profession.status === 'blur' ? 'user-info__text--blur' : ''">{{ userInfo.profession.status === 'blur' ? new Array(userInfo.profession.value.length).fill('A', 0, userInfo.profession.value.length).join('') : userInfo.profession.value }}</p>
 			</div>
-			<div class="user-info__item">
+			<div class="user-info__item" v-if="userInfo.job && userInfo.job.status !== 'hidden'">
 				<p class="user-info__title text-h2">{{ $t('job') }}</p>
-				<p class="user-info__text text-uppart">{{ userInfo.job }}</p>
+				<p class="user-info__text text-uppart" :class="userInfo.job.status === 'blur' ? 'user-info__text--blur' : ''">{{ userInfo.job.status === 'blur' ? new Array(userInfo.job.value.length).fill('A', 0, userInfo.job.value.length).join('') : userInfo.job.value }}</p>
 			</div>
-			<div class="user-info__item">
+			<div class="user-info__item" v-if="userInfo.company && userInfo.company.status !== 'hidden'">
 				<p class="user-info__title text-h2">{{ $t('company') }}</p>
-				<p class="user-info__text text-uppart">{{ userInfo.company }}</p>
-				<p class="user-info__address text-main">{{ userInfo.address }}</p>
+				<p class="user-info__text text-uppart" :class="userInfo.company.status === 'blur' ? 'user-info__text--blur' : ''">{{ userInfo.company.status === 'blur' ? new Array(userInfo.company.value.length).fill('A', 0, userInfo.company.value.length).join('') : userInfo.company.value }}</p>
+				<p class="user-info__address text-main" :class="userInfo.address.status === 'blur' ? 'user-info__text--blur' : ''">{{ userInfo.address.status === 'blur' ? new Array(userInfo.address.value.length).fill('A', 0, userInfo.address.value.length).join('') : userInfo.address.value }}</p>
 			</div>
 			<div class="user-info__item user-info__item--mobile">
-				<p class="user-info__title text-main">{{ userInfo.profession }}, {{ userInfo.address.split(', ')[1] }}</p>
+				<p class="user-info__title text-main">
+					<span v-if="userInfo.profession && userInfo.profession.status !== 'hidden'" :class="userInfo.profession.status === 'blur' ? 'user-info__text--blur' : ''">
+						{{ userInfo.profession.status === 'blur' ? new Array(userInfo.profession.value.length).fill('A', 0, userInfo.profession.value.length).join('') : `${ userInfo.profession.value },`}}
+					</span>
+					<span v-if="userInfo.address && userInfo.address.status !== 'hidden'" :class="userInfo.address.status === 'blur' ? 'user-info__text--blur' : ''">
+						{{ userInfo.address.status === 'blur' ? new Array(userInfo.address.value.split(', ')[1].length).fill('A', 0, userInfo.address.value.split(', ')[1].length).join('') : userInfo.address.value.split(', ')[1] }}
+					</span>
+				</p>
 			</div>
 			<div class="user-info__item user-info__item--mobile">
-				<p class="user-info__title text-main">{{ userInfo.job }} {{ $t('in') }} {{ userInfo.company }}</p>
+				<p class="user-info__title text-main">
+					<span v-if="userInfo.job && userInfo.job.status !== 'hidden'" :class="userInfo.job.status === 'blur' ? 'user-info__text--blur' : ''">
+						{{ userInfo.job.status === 'blur' ? new Array(userInfo.job.value.length).fill('A', 0, userInfo.job.value.length).join('') : userInfo.job.value }} 
+					</span>
+					<span v-if="userInfo.company && userInfo.company.status !== 'hidden'">
+						{{ $t('in') }}
+						<span :class="userInfo.company.status === 'blur' ? 'user-info__text--blur' : ''">
+							{{ userInfo.company.status === 'blur' ? new Array(userInfo.company.value.length).fill('A', 0, userInfo.company.value.length).join('') : userInfo.company.value }}
+						</span>
+					</span>
+				</p>
 			</div>
 			<div class="user-info__footer">
 				<p class="user-info__id text-comment-small">id{{ userInfo.id }}</p>
-				<button class="user-info__button">
-					<Copy/>
-				</button>
+				<Copy class="user-info__button"/>
 				<button class="user-info__button" @click="canShare ? Navigator.share({url: url}) : $emit('openShare')">
 					<Icon :name="IconShare" :size="24"/>
 				</button>
@@ -50,16 +65,16 @@
 	</div>
 	<div class="user-info__column" :class="!isAuth ? 'user-info__column--hidden' : ''" v-else>
 		<div class="user-info__column-inner user-info__column-inner--reputation">
-			<div class="user-info__item">
-				<AchivementList :achivements="userInfo.achivements" class="user-info__achivments" />
+			<div class="user-info__item" v-if="userInfo.achivements.value.length > 0 && userInfo.achivements.status !== 'hidden'">
+				<AchivementList :achivements="userInfo.achivements.value" :status="userInfo.achivements.status" class="user-info__achivments" />
 			</div>
-			<div class="user-info__item user-info__item--karma">
-				<Karma :value="isAuth ? userInfo.karma : NaN"/>
-				<Reputation :value="isAuth ? userInfo.reputation : NaN"/>
+			<div class="user-info__item user-info__item--karma" >
+				<Karma v-if="userInfo.karma.status !== 'hidden'" :value="isAuth ? userInfo.karma.value : NaN" :status="userInfo.karma.status"/>
+				<Reputation v-if="userInfo.reputation.status !== 'hidden'" :value="isAuth ? userInfo.reputation.value : NaN" :status="userInfo.reputation.status"/>
 			</div>
-			<div class="user-info__item user-info__item--donars">
+			<div class="user-info__item user-info__item--donars" v-if="userInfo.donars.status !== 'hidden'">
 				<p class="user-info__title text-h1">{{ $t('donars') }} <Info :text="$t('info.donars')" /></p>
-				<donars :value="userInfo.donars" :hidden="!isAuth"/>
+				<donars :value="userInfo.donars.value" :status="userInfo.donars.status" :hidden="!isAuth"/>
 			</div>
 		</div>
 		<Button class="user-controlls__button user-controlls__button--pc" v-if="isAuth" type="secondary" :text="$t('button.save')" />
@@ -144,6 +159,7 @@ defineEmits(['openShare', 'openQR'])
 		&-inner {
 			display: flex;
 			flex-direction: column;
+			justify-content: flex-end;
 			max-height: 235px;
 			gap: 16px;
 			height: 100%;
@@ -165,6 +181,9 @@ defineEmits(['openShare', 'openQR'])
 			user-select: none;
 		}
 	}
+	&__id {
+		margin-right: 10px;
+	}
 	&__address {
 		margin-top: 13px;
 	}
@@ -185,6 +204,10 @@ defineEmits(['openShare', 'openQR'])
 	}
 	&__text {
 		font-family: 'Montserrat';
+		&--blur {
+			filter: blur(7px);
+			user-select: none;
+		}
 	}
 	&__footer {
 		display: flex;
@@ -193,6 +216,8 @@ defineEmits(['openShare', 'openQR'])
 	}
 	&__button {
 		cursor: pointer;
+		width: 24px;
+		height: 24px;
 	}
 	&__title {
 		display: flex;

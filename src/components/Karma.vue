@@ -1,8 +1,8 @@
 <template>
-	<div class="karma" :class="{'karma--small': small}">
+	<div class="karma" :class="{'karma--small': small, 'karma--slider': slider}">
 		<div class="karma__header">
-			<p class="karma__title">
-				{{ value }}
+			<p class="karma__title" :class="{ 'karma__title--blur': status === 'blur' }">
+				{{ status === 'blur' ? new Array(`${value}`.length).fill('0', 0, `${value}`.length).join('') : value }}
 			</p>
 			<Icon :name="IconKarma" :size="small ? 16 : 26" class="karma__icon"/>
 		</div>
@@ -25,6 +25,9 @@ defineProps({
 	small: {
 		type: Boolean,
 		default: false,
+	},
+	status: {
+		type: String,
 	}
 });
 
@@ -44,6 +47,11 @@ defineProps({
 		font-size: 26px;
 		font-weight: 600;
 		color: var(--color-dynamic-black);
+		&--blur {
+			filter: blur(7px);
+			user-select: none;
+			pointer-events: none;
+		}
 	}
 	&__subtitle {
 		font-size: 14px;
@@ -54,6 +62,11 @@ defineProps({
 	&--small & {
 		&__title {
 			font-size: 20px;
+			font-weight: 500;
+		}
+	}
+	&--slider & {
+		&__title {
 			font-weight: 500;
 		}
 	}

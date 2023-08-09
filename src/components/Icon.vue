@@ -25,6 +25,14 @@ defineProps({
 	:deep(rect[fill]) {
 		fill: var(--color-dynamic-black);
 	}
+	:deep(path[fill="white"]),
+	:deep(ellipse[fill="white"]),
+	:deep(circle[fill="white"]),
+	:deep(line[fill="white"]),
+	:deep(polygon[fill="white"]),
+	:deep(rect[fill="white"]) {
+		fill: var(--color-dynamic-white);
+	}
 	:deep(path[stroke]),
 	:deep(ellipse[stroke]),
 	:deep(circle[stroke]),

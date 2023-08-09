@@ -30,6 +30,9 @@ const copy = () => {
 .button {
 	cursor: pointer;
 	position: relative;
+	display: block;
+	width: 24px;
+	height: 24px;
 }
 
 .tooltip {

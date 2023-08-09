@@ -9,7 +9,7 @@
 		
 				<ThemeSwitcher class="header__theme"/>
 				<router-link to="/" v-if="isAuth" class="header__message">
-					<Icon :name="IconNotification" :size="24"/>
+					<Icon :name="IconNotification" :class="{hasNotification: 'header__message--active'}" :size="24"/>
 				</router-link>
 				<router-link to="/" v-if="isAuth" class="header__home">
 					<Avatar :src="userInfo.src" alt="Go to main" :size="24"/>
@@ -32,8 +32,11 @@
 						<IconLogo class="logo" />
 					</router-link>
 					<ThemeSwitcher class="header-modal__theme"/>
-					<router-link to="/" v-if="isAuth" class="header-modal__message">
-						<Icon :name="IconNotification" :size="24"/>
+					<router-link to="/" v-if="isAuth" class="header__message">
+						<Icon :name="IconNotification" :class="{hasNotification: 'header__message--active'}" :size="24"/>
+					</router-link>
+					<router-link to="/" v-if="isAuth && windowWidth > 767.98" class="header__home">
+						<Avatar :src="userInfo.src" alt="Go to main" :size="24"/>
 					</router-link>
 					<button class="header-modal__burger" @click="nav = false">
 						<Icon :name="IconCross" :size="24"/>
@@ -84,14 +87,10 @@
 						</div>
 					</div>
 					<div class="header-modal__footer-bottom">
-						<div class="header-modal__row">
 							<RouterLink :to="`/`" class="header-modal__link-small text-comment">{{$t('header.terms')}}</RouterLink>
-							<p class="text-comment">© KonTxT 2023</p>
-						</div>
-						<div class="header-modal__row">
 							<RouterLink :to="`/`" class="header-modal__link-small text-comment">{{$t('header.policy')}}</RouterLink>
+							<p class="text-comment">© KonTxT 2023</p>
 							<p class="text-comment">Beta-build 0.1</p>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -121,7 +120,7 @@
 			</RouterLink>
 		</div>
 	</div>
-	<div class="header__bottom" :class="{'header__bottom--mobile': isAuth && (currentPage === 'cutaway' || currentPage === 'reputation')}" v-if="!isAuth || (currentPage === 'cutaway' || currentPage === 'reputation') || (currentPage === 'userCutaway' || currentPage === 'userReputation')">
+	<div class="header__bottom" :class="{'header__bottom--mobile': currentPage === 'cutaway' || currentPage === 'reputation'}" v-if="!isAuth || (currentPage === 'cutaway' || currentPage === 'reputation') || (currentPage === 'userCutaway' || currentPage === 'userReputation')">
 		<RouterLink :to="(currentPage !== 'reputation' && currentPage !== 'cutaway') ? `/user/${currentId}/cutaway` : '/cutaway'" class="header__link text-h2" :class="{'header__link--active': currentPage === 'cutaway' || currentPage === 'userCutaway'}">{{$t("card")}}</RouterLink>
 		<hr class="header__line">
 		<RouterLink :to="(currentPage !== 'reputation' && currentPage !== 'cutaway') ? `/user/${currentId}/reputation` : '/reputation'" class="header__link text-h2" :class="{'header__link--active': currentPage === 'reputation' || currentPage === 'userReputation'}">{{$t("reputation")}}</RouterLink>
@@ -173,6 +172,8 @@ window.addEventListener('resize', () => {
 const auth = () => {
 	localStorage.setItem('auth', localStorage.getItem('auth') === 'true' ? false : true)
 }
+
+let hasNotification = ref(false)
 </script>
 
 <style scoped lang="scss">
@@ -203,6 +204,8 @@ const auth = () => {
 	&__message, &__burger, &__theme {
 		width: 24px;
 		height: 24px;
+		display: block;
+		cursor: pointer;
 	}
 	&__top {
 		display: flex;
@@ -257,28 +260,66 @@ const auth = () => {
 			align-items: center;
 		}
 		&-bottom {
-			display: flex;
+			display: grid;
+			gap: 10px 0;
+			grid-template-columns: auto auto;
+			grid-template-areas: 'terms date' 'policy version';
 			flex-direction: column;
+			align-items: center;
 			gap: 10px;
+			*:nth-child(1) {grid-area: terms;}
+			*:nth-child(2) {grid-area: policy;}
+			*:nth-child(3) {grid-area: date; text-align: right;}
+			*:nth-child(4) {grid-area: version; text-align: right;}
 		}
 	}
-	&__row {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+	@include screen(767.98px, min-width) {
+		.logo {display: none;}
+		.locale {display: none;}
+		&__nav {
+			margin-top: 60px;
+			margin-bottom: 60px;
+		}
+		&__link {
+			flex-direction: row-reverse;
+			gap: 22px;
+			font-size: 16px;
+		}
+		&__socials {
+			gap: 30px;
+			width: 100%;
+			justify-content: flex-end;
+		}
+		&__footer {
+			gap: 20px;
+			&-bottom {
+				justify-content: flex-end;
+				text-align: right;
+				gap: 10px 26px;
+				grid-template-areas: 'terms terms' 'policy policy' 'version date';
+				*:nth-child(3),*:nth-child(4) {
+					margin-top: 10px;
+					text-align: left;
+				}
+			}
+			p {
+				font-size: 14px;
+				font-weight: 500;
+			}
+		}
 	}
 }
 .header {
 	width: 100%;
 	margin: 0 auto;
-	padding: 14px 40px;
+	padding: 23px 40px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	gap: 14px;
 	&__top {
 		display: flex;
-		gap: 25px;
+		gap: 30px;
 		align-items: center;
 	}
 	&__button {
@@ -310,8 +351,19 @@ const auth = () => {
 		width: 24px;
 		height: 24px;
 	}
+	&__message {
+		:deep(circle) {
+			display: none;
+		}
+		&--active {
+			:deep(circle) {
+				display: block;
+			}
+		}
+	}
 	&__burger {
 		display: block;
+		height: 24px;
 		cursor: pointer;
 	}
 	&__mobile {
@@ -329,8 +381,19 @@ const auth = () => {
 		&__bottom {
 			margin-top: 30px;
 			&--mobile {
+				max-width: 360px;
+				padding-left: 81px;
+				padding-right: 63px;
+				margin-left: auto;
+				margin-right: auto;
 				display: flex;
+				gap: 95px;
 			}
+		}
+		&__line {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
 		}
 		&__button {
 			display: none;

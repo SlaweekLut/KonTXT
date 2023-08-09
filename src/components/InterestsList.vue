@@ -1,6 +1,6 @@
 <template>
 	<div class="interests-list">
-		<Interes v-for="interest in interests" :text="interest" />
+		<Interes v-for="interest in interests" :text="interest" :status="status"/>
 	</div>
 </template>
 
@@ -11,6 +11,9 @@ defineProps({
 	interests: {
 		type: Array,
 		required: true
+	},
+	status: {
+		type: String,
 	}
 });
 

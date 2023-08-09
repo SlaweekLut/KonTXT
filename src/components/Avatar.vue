@@ -35,7 +35,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 
 <style scoped lang="scss">
 .avatar {
-	background: var(--color-dynamic-gray);
+	// background: var(--color-dynamic-gray);
 	border-radius: 50%;
 	overflow: hidden;
 	max-width: 250px;
@@ -44,7 +44,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 	height: 100%;
 	&__img {
 		border-radius: 50%;
-		background: var(--color-dynamic-gray);
+		// background: var(--color-dynamic-gray);
 		width: 100%;
 		height: 100%;
 		display: flex;
@@ -53,6 +53,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
     text-align: center;
     line-height: 250px;
 		font-size: 0;
+		object-fit: cover;
 	}
 }
 </style>

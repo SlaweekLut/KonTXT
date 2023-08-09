@@ -64,7 +64,7 @@ span,b {
 
 .text-h1 {
 	font-family: 'Inter';
-	font-size: 16px;
+	font-size: 18px;
 	font-weight: 600;
 	color: var(--color-dynamic-black);
 	@include screen(767.98px) {
@@ -127,9 +127,11 @@ span,b {
 	color: var(--color-dynamic-black);
 	@include screen(1199.98px) {
 		font-size: 14px;
+		line-height: 20px;
 	}
 	@include screen(767.98px) {
 		font-size: 12px;
+		line-height: 17px;
 	}
 }
 

@@ -44,6 +44,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		object-position: top;
 		.dark & {
 			border-color: #333333;
 		}

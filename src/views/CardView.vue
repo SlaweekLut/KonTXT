@@ -91,6 +91,16 @@ useSchemaOrg([
 		worksFor: userInfo.value.company,
 	})
 ])
+
+const socials = computed(() => {
+	return mainInfo.value.socials.filter(social => social.status !== 'primary' && social.type !== 'phone')
+})
+const socialPhone = computed(() => {
+	return mainInfo.value.socials.filter(social => social.type === 'phone')[0]
+})
+const socialPrimary = computed(() => {
+	return mainInfo.value.socials.filter(social => social.status === 'primary')[0]
+})
 </script>
 
 <template>
@@ -106,29 +116,24 @@ useSchemaOrg([
 				<p class="user-note__title text-h1">{{ $t('note') }}</p>
 				<UserNote @update:value="(e) => noteAboutUser = e" :value="noteAboutUser"/>
 			</div>
-			<div class="user-about">
+			<div class="user-about" v-if="userInfo.description.status !== 'hidden'">
 				<p class="user-about__title text-h1">{{ $t('titles.about') }}</p>
-				<p class="user-about__text text-main">{{ userInfo.description }}</p>
+				<p class="user-about__text text-main" :class="userInfo.description.status === 'blur' ? 'user-about__text--blur' : ''">
+					{{ userInfo.description.status === 'blur' ? userInfo.description.value.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')) : userInfo.description.value }}
+				</p>
 			</div>
-			<div class="user-interes">
+			<div class="user-interes" v-if="userInfo.interests.status !== 'hidden'">
 				<div class="user-interes__title text-h1">{{ $t('titles.interes') }}</div>
-				<InterestsList :interests="userInfo.interests"/>
+				<InterestsList :interests="userInfo.interests.value" :status="userInfo.interests.status" />
 			</div>
 			<div class="user-contacts">
 				<p class="user-contacts__title text-h1">{{ $t('titles.contacts') }}</p>
-				<Social :icon="IconPhone" hidden :title="$t('telephone')" link="+7 (495) 123-45-67"/>
-				<Social :icon="IconFilledTelegram" :title="`${$t('preffered')} - Telegram`" link="@maria.tverdh007"/>
-				<div class="user-contacts__row">
-					<div class="user-contacts__column">
-						<Social :icon="IconTelegram" title="Telegram" link="@maria.tverdh007"/>
-						<Social :icon="IconEmail" title="Почта" link="maria.tverdh@gmail.com"/>
-						<Social :icon="IconLinkedIn" title="LinkedIn" link="maria-tverdh-651909224"/>
-					</div>
-					<div class="user-contacts__column" v-if="isAuth">
-						<Social :icon="IconTelegram" title="Telegram" link="@maria.tverdh007"/>
-						<Social :icon="IconEmail" title="Почта" link="maria.tverdh@gmail.com"/>
-						<Social :icon="IconLinkedIn" title="LinkedIn" link="maria-tverdh-651909224"/>
-					</div>
+				<!-- <Social type="phone" :status="item.type" :title="" link="+7 (495) 123-45-67"/> -->
+				<!-- <Social :icon="IconFilledTelegram" :title="`${$t('preffered')} - Telegram`" link="@maria.tverdh007"/> -->
+				<Social v-if="socialPhone" :type="socialPhone.type" :link="socialPhone.href" :messenger="socialPhone.messenger" :status="socialPhone.status" :text="socialPhone.text"/>
+				<Social v-if="socialPrimary" :type="socialPrimary.type" :link="socialPrimary.href" status="primary" :text="socialPrimary.text"/>
+				<div class="user-contacts__all user-contacts__all--more" >
+					<Social v-for="(item, i) in socials" :key="i" :type="item.type" :link="item.href" :status="item.status" :text="item.text"/>
 				</div>
 			</div>
 			<div class="user-controlls user-controlls--footer">
@@ -141,14 +146,16 @@ useSchemaOrg([
 				<p class="user-content__title text-h1">QR-код вашего профиля</p>
 			</div>
 			<div class="modal__content qr">
-				<div class="qr__row">
-					<Avatar :src="userInfo.src" :alt="userInfo.name" :size="61"/>
+				<!-- <div class="qr__row">
 					<div class="qr__info">
 						<p class="text-main">{{ userInfo.name }}</p>
 						<p class="text-comment-small">{{ userInfo.job }}, {{ userInfo.company }}</p>
 					</div>
+				</div> -->
+				<div class="qr__qr">
+					<Avatar :src="userInfo.src" :alt="userInfo.name" :size="74" class="qr__avatar"/>
+					<img src="@/assets/images/qr.png" alt="qr">
 				</div>
-				<img src="@/assets/images/qr.png" alt="qr">
 				<div class="qr__actions">
 					<button class="qr__action">
 						<Icon :name="IconDownload"/>
@@ -227,16 +234,25 @@ useSchemaOrg([
 	flex-direction: column;
 	align-items: center;
 	gap: 20px;
-	&__row {
-		display: flex;
-		gap: 20px;
+	&__qr {
+		position: relative;
 	}
-	&__info {
-		padding-top: 4px;
-		display: flex;
-		flex-direction: column;
-		gap: 2px;
+	&__avatar {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
+	// &__row {
+	// 	display: flex;
+	// 	gap: 20px;
+	// }
+	// &__info {
+	// 	padding-top: 4px;
+	// 	display: flex;
+	// 	flex-direction: column;
+	// 	gap: 2px;
+	// }
 	&__actions {
 		margin-top: 20px;
 		display: flex;
@@ -286,16 +302,30 @@ useSchemaOrg([
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
+	&__text {
+		&--blur {
+			user-select: none;
+			filter: blur(7px);
+		}
+	}
 }
 
 .user-contacts {
-	&__column {
+	&__all {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: 20px;
 		width: 100%;
-		max-width: calc(50% - 10px);
-		min-width: 250px;
+		&--more {
+			display: grid;
+			grid-template-columns: repeat(2, 200px);
+			justify-content: space-between;
+			@include screen(767.98px) {
+				display: flex;
+				flex-direction: column;
+				
+			}
+		}
 	}
 	&__row {
 		display: flex;

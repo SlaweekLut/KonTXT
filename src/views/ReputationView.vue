@@ -61,8 +61,14 @@ const modals = ref({
 	works: false,
 	sertificate: false,
 	videoReview: false,
+	videoReviewOnly: false,
 	review: false,
 	login: false,
+})
+const onlyReview = ref({
+	id: '000001',
+	src: null,
+	round: false,
 })
 
 const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).href
@@ -95,7 +101,7 @@ watch(currentReputationList, () => {
 })
 
 const sertificateImgs = computed(() => {
-	return userInfo.value.sertificates.filter((img, i) => i < 4).map((img) => {
+	return userInfo.value.sertificates.value.filter((img, i) => i < 4).map((img) => {
 		return {src: getSrc(img.src), title: img.title}
 	})
 })
@@ -145,19 +151,19 @@ useSchemaOrg([
 				<div class="user-karma">
 					<p class="user-karma__title text-h1">{{ $t('karma') }} <Info :text="$t('info.karma')" /></p>
 					<div class="user-karma__row">
-						<p class="user-karma__text text-comment" v-if="testedKarma > 0">{{ $t('karmaDesc.positive', {value: `${testedKarma}`}) }}</p>
-						<p class="user-karma__text text-comment" v-else-if="testedKarma === 0">{{ $t('karmaDesc.neutral') }}</p>
-						<p class="user-karma__text text-comment" v-else>{{ $t('karmaDesc.negative', {value: testedKarma, valueb: -testedKarma}) }}</p>
-						<KarmaSlider @tested="testedKarma = $event" class="user-karma__slider" :value="userInfo.karma" />
+						<p class="user-karma__text text-comment" v-if="testedKarma.value > 0">{{ $t('karmaDesc.positive', {value: `${testedKarma.value}`}) }}</p>
+						<p class="user-karma__text text-comment" v-else-if="testedKarma.value === 0">{{ $t('karmaDesc.neutral') }}</p>
+						<p class="user-karma__text text-comment" v-else>{{ $t('karmaDesc.negative', {value: testedKarma.value, valueb: -testedKarma.value}) }}</p>
+						<KarmaSlider @tested="testedKarma.value = $event" class="user-karma__slider" :value="userInfo.karma.value" />
 					</div>
 				</div>
 				<div class="user-reputation" v-if="userInfo.reputationInfo">
 					<p class="user-reputation__title text-h1">{{ $t('reputation') }} <Info :text="$t('info.reputation')" /></p>
 					<div class="user-reputation__row">
-						<ReputationBubbles @getList="(n) => currentReputationListId = n === null ? null : n - 1" :value="userInfo.reputationInfo" :reputation="userInfo.reputation" />
+						<ReputationBubbles @getList="(n) => currentReputationListId = n === null ? null : n - 1" :value="userInfo.reputationInfo" :reputation="userInfo.reputation.value" />
 						<div class="user-reputation__col" v-if="currentReputationListId !== null">
 							<p class="user-reputation__list-title text-main">
-								{{ $t(`reputationChart.${Object.keys(userInfo.reputationInfo)[currentReputationListId]}`) }} <Reputation :value="currentReputationListAll" small/>
+								{{ $t(`reputationChart.${Object.keys(userInfo.reputationInfo)[currentReputationListId]}`) }} <Reputation :value="currentReputationListAll" bubble/>
 							</p>
 							<ul class="user-reputation__list">
 								<li class="user-reputation__item text-comment" v-for="(item,i) in currentReputationList" :key="i">
@@ -172,17 +178,17 @@ useSchemaOrg([
 						</div>
 					</div>
 				</div>
-				<div class="user-content" v-if="userInfo.groups.length > 0">
+				<div class="user-content" v-if="userInfo.groups.value.length > 0 && userInfo.groups.status !== 'hidden'">
 					<p class="user-content__title text-h1">{{ $t('titles.communities') }}</p>
-					<InterestsList :interests="userInfo.groups"/>
+					<InterestsList :interests="userInfo.groups.value" :status="userInfo.groups.status"/>
 				</div>
-				<div class="user-content" v-if="userInfo.events.length > 0">
+				<div class="user-content" v-if="userInfo.events.value.length > 0 && userInfo.events.status !== 'hidden'">
 					<p class="user-content__title text-h1">{{ $t('titles.events') }}</p>
-					<InterestsList :interests="userInfo.events"/>
+					<InterestsList :interests="userInfo.events.value" :status="userInfo.events.status"/>
 				</div>
-				<div class="user-content" v-if="userInfo.reviews.length > 0">
-					<p class="user-content__title text-h1">{{ $t('titles.reviews') }} <span class="text-comment-small">{{ currentReview + " / " + userInfo.reviews.length }}</span></p>
-					<div class="review-wrapper">
+				<div class="user-content" v-if="userInfo.reviews.value.length > 0 && userInfo.reviews.status !== 'hidden'">
+					<p class="user-content__title text-h1">{{ $t('titles.reviews') }} <span class="text-comment-small">{{ currentReview + " / " + userInfo.reviews.value.length }}</span></p>
+					<div class="review-wrapper" :class="userInfo.reviews.status === 'blur' ? 'review-wrapper--blur' : ''">
 						<button class="review__button" ref="prevReview">
 							<Icon :name="IconChevron" :size="32"/>
 						</button>
@@ -197,19 +203,19 @@ useSchemaOrg([
 							space-between="16"
 							@slideChange="currentReview = $event.realIndex + 1"
 						>
-							<swiper-slide v-for="({text, id}) in userInfo.reviews" :key="id">
-								<Review :review="Users[id]" :text="text"/>
+							<swiper-slide v-for="({text, id}) in userInfo.reviews.value" :key="id">
+								<Review :review="Users[id]" :text="text" :status="userInfo.reviews.status"/>
 							</swiper-slide>
 						</swiper>
 						<button class="review__button review__button--next" ref="nextReview">
 							<Icon :name="IconChevron" :size="32"/>
 						</button>
 					</div>
-					<Button :text="$t('button.more')" @click="modals.review = true" class="user-content__more" />
+					<Button :text="$t('button.more')" v-if="userInfo.reviews.status === 'visible'" @click="modals.review = true" class="user-content__more" />
 				</div>
-				<div class="user-content" v-if="userInfo.videoReviews.length > 0">
-					<p class="user-content__title text-h1">{{ $t('titles.videoReviews') }} <span class="text-comment-small">{{ currentVideoReview + " / " + userInfo.videoReviews.length }}</span></p>
-					<div class="review-wrapper review-wrapper--video">
+				<div class="user-content" v-if="userInfo.videoReviews.value.length > 0 && userInfo.videoReviews.status !== 'hidden'">
+					<p class="user-content__title text-h1">{{ $t('titles.videoReviews') }} <span class="text-comment-small">{{ currentVideoReview + " / " + userInfo.videoReviews.value.length }}</span></p>
+					<div class="review-wrapper review-wrapper--video" :class="userInfo.videoReviews.status === 'blur' ? 'review-wrapper--blur' : ''">
 						<button class="review__button review__button--video" ref="prevVideoReview">
 							<Icon :name="IconChevron" :size="24"/>
 						</button>
@@ -228,42 +234,46 @@ useSchemaOrg([
 							space-between="30"
 							@slideChange="currentVideoReview = $event.realIndex + 1"
 						>
-							<swiper-slide v-for="({id}) in userInfo.videoReviews" :key="id">
-								<VideoReview :review="Users[id]"/>
+							<swiper-slide v-for="({id, src, round}) in userInfo.videoReviews.value" :key="id" >
+								<VideoReview :review="Users[id]" :src="src" :round="round" @click="
+								modals.videoReviewOnly = true; 
+								onlyReview.id = id
+								onlyReview.src = src
+								onlyReview.round = round"/>
 							</swiper-slide>
 						</swiper>
 						<button class="review__button review__button--video review__button--next" ref="nextVideoReview">
 							<Icon :name="IconChevron" :size="24"/>
 						</button>
 					</div>
-					<Button :text="$t('button.more')" @click="modals.videoReview = true" class="user-content__more" />
+					<Button :text="$t('button.more')" v-if="userInfo.videoReviews.status === 'visible'" @click="modals.videoReview = true" class="user-content__more" />
 				</div>
-				<div class="user-content" v-if="userInfo.sertificates.length > 0">
-					<p class="user-content__title user-content__title--sertificates text-h1">{{ $t('titles.sertificates') }} <span class="text-comment-small">{{ "4 / " + userInfo.sertificates.length }}</span></p>
-					<masonry-wall :items="userInfo.sertificates.slice(0, 4)" :ssr-columns="windowWidth <= 563 ? 2 : 3" :column-width="windowWidth <= 386 ? 156 : 168" :gap="windowWidth <= 386 ? 8 : 10">
-						<template #default="{item, index}">
-							<Sertificate  :sertificate="item" :style="{ height: `${item.height}px` }" grid @click="sertificateZoom(index)"/>
+				<div class="user-content" v-if="userInfo.sertificates.value.length > 0 && userInfo.sertificates.status !== 'hidden'">
+					<p class="user-content__title user-content__title--sertificates text-h1">{{ $t('titles.sertificates') }} <span class="text-comment-small">{{ "4 / " + userInfo.sertificates.value.length }}</span></p>
+					<div class="sertificates" :class="userInfo.sertificates.status === 'blur' ? 'sertificates--blur' : ''">
+						<template v-for="item in userInfo.sertificates.value.slice(0, 6)">
+							<Sertificate :sertificate="item" :style="{ height: `${item.height}px` }" grid @click="sertificateZoom(index)"/>
 						</template>
-					</masonry-wall>
-					<Button :text="$t('button.more')" @click="modals.sertificate = true" class="user-content__more" />
+					</div>
+					<Button :text="$t('button.more')" v-if="userInfo.sertificates.status === 'visible'" @click="modals.sertificate = true" class="user-content__more" />
 				</div>
-				<div class="user-content" v-if="userInfo.projects.length > 0">
-					<p class="user-content__title text-h1">{{ $t('titles.projects') }} <span class="text-comment-small">{{ "2 / " + userInfo.projects.length }}</span></p>
+				<div class="user-content" v-if="userInfo.projects.value.length > 0 && userInfo.projects.status !== 'hidden'">
+					<p class="user-content__title text-h1">{{ $t('titles.projects') }} <span class="text-comment-small">{{ "2 / " + userInfo.projects.value.length }}</span></p>
 					<div class="user-content__projects">
-						<template v-for="(project, i) in userInfo.projects.slice(0,2)" :key="i">
-							<Project  :project="project"/>
+						<template v-for="(project, i) in userInfo.projects.value.slice(0,2)" :key="i">
+							<Project  :project="project" :status="userInfo.projects.status"/>
 						</template>
 					</div>
-					<Button :text="$t('button.more')" @click="modals.project = true" class="user-content__more" />
+					<Button :text="$t('button.more')" v-if="userInfo.projects.status === 'visible'" @click="modals.project = true" class="user-content__more" />
 				</div>
-				<div class="user-content" v-if="userInfo.works.length > 0">
-					<p class="user-content__title text-h1">{{ $t('titles.workExperience') }} <span class="text-comment-small">{{ "2 / " + userInfo.works.length }}</span></p>
+				<div class="user-content" v-if="userInfo.works.value.length > 0 && userInfo.works.status !== 'hidden'">
+					<p class="user-content__title text-h1">{{ $t('titles.workExperience') }} <span class="text-comment-small">{{ "2 / " + userInfo.works.value.length }}</span></p>
 					<div class="user-content__projects user-content__projects--works">
-						<template v-for="(work, i) in userInfo.works.slice(0,2)" :key="i">
-							<Work :work="work"/>
+						<template v-for="(work, i) in userInfo.works.value.slice(0,2)" :key="i">
+							<Work :work="work" :status="userInfo.works.status"/>
 						</template>
 					</div>
-					<Button :text="$t('button.more')" @click="modals.works = true" class="user-content__more" />
+					<Button v-if="userInfo.works.status === 'visible'" :text="$t('button.more')" @click="modals.works = true" class="user-content__more" />
 				</div>
 				<div class="user-controlls user-controlls--footer">
 					<Button class="user-controlls__button" type="secondary" :text="$t('button.savetophone')" v-if="isAuth" />
@@ -275,7 +285,7 @@ useSchemaOrg([
 						<ActionModalBar/>
 					</div>
 					<div class="modal__content user-content__projects">
-						<template v-for="({text, id}) in userInfo.reviews" :key="id">
+						<template v-for="({text, id}) in userInfo.reviews.value" :key="id">
 							<Review full :review="Users[id]" :text="text"/>
 						</template>
 					</div>
@@ -286,9 +296,21 @@ useSchemaOrg([
 						<ActionModalBar/>
 					</div>
 					<div class="modal__content user-content__projects">
-						<template v-for="({id}) in userInfo.videoReviews" :key="id">
-							<VideoReview full :review="Users[id]"/>
+						<template v-for="({id, src, round}) in userInfo.videoReviews.value" :key="id">
+							<VideoReview full :review="Users[id]" :src="src" :round="round" @openOnly="() => {
+								modals.videoReview = false
+								modals.videoReviewOnly = true
+							}"/>
 						</template>
+					</div>
+				</Modal>
+				<Modal :open="modals.videoReviewOnly" review @close="modals.videoReviewOnly = false">
+					<div class="modal__header">
+						<p class="user-content__title text-h1">{{ $t('titles.videoReviews') }}</p>
+						<ActionModalBar only-plus/>
+					</div>
+					<div class="modal__content modal__content--nonline user-content__projects">
+						<VideoReview full :review="Users[onlyReview.id]" :src="onlyReview.src" :round="onlyReview.round"/>
 					</div>
 				</Modal>
 				<Modal :open="modals.sertificate" @close="modals.sertificate = false">
@@ -297,17 +319,17 @@ useSchemaOrg([
 					</div>
 					<div class="modal__content user-content__sertificates">
 						<div class="user-content__sertificates-col">
-							<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
+							<template v-for="(sertificate, i) in userInfo.sertificates.value" :key="i">
 								<Sertificate  :sertificate="sertificate"/>
 							</template>
 						</div>
 						<div class="user-content__sertificates-col">
-							<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
+							<template v-for="(sertificate, i) in userInfo.sertificates.value" :key="i">
 								<Sertificate  :sertificate="sertificate" v-if="i % 2 === 0"/>
 							</template>
 						</div>
 						<div class="user-content__sertificates-col">
-							<template v-for="(sertificate, i) in userInfo.sertificates" :key="i">
+							<template v-for="(sertificate, i) in userInfo.sertificates.value" :key="i">
 								<Sertificate  :sertificate="sertificate" v-if="i % 2 !== 0"/>
 							</template>
 						</div>
@@ -319,7 +341,7 @@ useSchemaOrg([
 						<ActionModalBar/>
 					</div>
 					<div class="modal__content user-content__projects">
-						<template v-for="(project, i) in userInfo.projects" :key="i">
+						<template v-for="(project, i) in userInfo.projects.value" :key="i">
 							<Project  :project="project"/>
 						</template>
 					</div>
@@ -330,11 +352,12 @@ useSchemaOrg([
 						<ActionModalBar/>
 					</div>
 					<div class="modal__content user-content__projects">
-						<template v-for="(work, i) in userInfo.works" :key="i">
+						<template v-for="(work, i) in userInfo.works.value" :key="i">
 							<Work :work="work" nonline/>
 						</template>
 					</div>
 				</Modal>
+				
 				<vue-easy-lightbox :visible="sertificateState.visible" :index="sertificateState.index" :imgs="sertificateImgs" @hide="sertificateState.visible = false"></vue-easy-lightbox>
 			</template>
 			
@@ -405,7 +428,7 @@ useSchemaOrg([
 			width: 0;
 			height: 0;
 		}
-		& > * {
+		&:not(&--nonline) > * {
 			position: relative;
 			padding-bottom: 40px;
 			&::after {
@@ -470,6 +493,13 @@ useSchemaOrg([
 	align-items: start;
 	&--video {
 		gap: 12px;
+	}
+	&--blur {
+		.swiper {
+			filter: blur(7px);
+			pointer-events: none;
+			user-select: none;
+		}
 	}
 	@include screen(767.98px) {
 		gap: 20px;
@@ -600,7 +630,7 @@ useSchemaOrg([
 		display: flex;
 		gap: 20px 40px;
 		justify-content: space-between;
-		flex-wrap: wrap;
+		flex-wrap: wrap-reverse;
 		align-items: center;
 	}
 	&__text {
@@ -620,7 +650,6 @@ useSchemaOrg([
 		display: flex;
 		align-items: center;
 		gap: 20px;
-		font-size: 16px;
 	}
 	&__list-title {
 		display: flex;
@@ -685,7 +714,6 @@ useSchemaOrg([
 		display: flex;
 		align-items: center;
 		gap: 20px;
-		font-size: 16px;
 	}
 
 	@include screen(1199.98px) {
@@ -723,11 +751,17 @@ useSchemaOrg([
 		color: var(--color-dynamic-gray);
 		margin: 20px auto 0;
 		font-size: 12px;
+		height: 24px;
 		font-family: 'Inter';
-		font-weight: 500;
+		box-sizing: content-box;
 		display: inline-flex;
-		padding: 8px 40px;
+		align-items: center;
+		padding: 0 40px;
 		width: auto;
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 12px;
+		letter-spacing: 0.01em;
 		@include ui-mouse {
 			&:hover {
 				color: var(--color-dynamic-gray);
@@ -799,6 +833,30 @@ useSchemaOrg([
 				}
 			}
 		}
+	}
+}
+
+.sertificates {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 120px);
+	gap: 8px;
+	grid-template-areas: 'a b c' 'a d c' 'e d f';
+	*:nth-child(1) {grid-area: a;}
+	*:nth-child(2) {grid-area: b;}
+	*:nth-child(3) {grid-area: c;}
+	*:nth-child(4) {grid-area: d;}
+	*:nth-child(5) {grid-area: e;}
+	*:nth-child(6) {grid-area: f;}
+	&--blur {
+		filter: blur(7px);
+		user-select: none;
+		pointer-events: none;
+	}
+	@include screen(767.98px) {
+		grid-template-rows: repeat(4, 120px);
+		grid-template-columns: repeat(2, 1fr);
+		grid-template-areas: 'a b' 'a c' 'd e' 'f e';
 	}
 }
 </style>

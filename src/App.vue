@@ -3,20 +3,44 @@ import { RouterLink, RouterView, useRoute } from 'vue-router'
 import Header from '@/components/Header.vue'
 import LocaleSwitcher from './components/LocaleSwitcher.vue';
 import Aside from './components/Aside.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { watch } from 'vue';
 
 const route = useRoute()
 const currentName = computed(() => route.name)
 </script>
 
 <template>
-  <Header/>
-  <div class="main-container">
-    <RouterView />
-  </div>
-  <Aside class="aside" :class="{'aside--main': currentName === 'reputation' || currentName === 'cutaway'}"/>
-  <LocaleSwitcher class="locale"/>
+  <perfect-scrollbar>
+    <Header/>
+    <div class="main-container">
+      <RouterView />
+    </div>
+    <Aside class="aside" :class="{'aside--main': currentName === 'reputation' || currentName === 'cutaway'}"/>
+    <LocaleSwitcher class="locale"/>
+  </perfect-scrollbar>
 </template>
+
+<style lang="scss">
+body {
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+.ps {
+  max-height: 100vh;
+  .ps__thumb-y {
+    opacity: 0;
+    transition: background-color .2s linear, width .2s ease-in-out, opacity .2s ease-in-out;
+  }
+  &--scrolling-y {
+    .ps__thumb-y {
+      opacity: 1;
+    }
+  }
+}
+</style>
 
 <style scoped lang="scss">
 .main-container {

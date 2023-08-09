@@ -2,7 +2,8 @@
 	<div class="achivement-list">
 		<Popper 
 			v-for="achivement in achivements" 
-			class="achivement" 
+			class="achivement"
+			:class="status === 'blur' ? 'achivement--blur' : ''" 
 			:content="$t(`achivements.${achivementList[achivement].text}`)" 
 			placement="top-start" 
 			hover 
@@ -23,6 +24,9 @@ import IconAchivementCrown from './icons/IconAchivementCrown.vue'
 defineProps({
 	achivements: {
 		type: Array,
+	},
+	status: {
+		type: String,
 	}
 })
 
@@ -51,5 +55,10 @@ const achivementList = {
 .achivement {
 	width: 24px;
 	height: 24px;
+	&--blur {
+		filter: blur(7px);
+		user-select: none;
+		pointer-events: none;
+	}
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="review" :class="{ 'review--full': full }">
-		<p class="text-main review__text">{{ text }}</p>
+		<p class="text-main review__text">{{ status === 'blur' ? text.split(' ').map(e => new Array(e.length).fill('A', 0, e.length).join('')).join(' ') : text }}</p>
 		<div class="review__info">
 			<div class="review__aside">
 				<Avatar :src="review.src" :size="full ? 88 : 50" :alt="review.name"/>
@@ -46,6 +46,9 @@ defineProps({
 	full: {
 		type: Boolean,
 		default: false
+	},
+	status: {
+		type: String,
 	}
 })
 </script>
@@ -74,8 +77,10 @@ defineProps({
 			display: none;
 		}
 	}
-	&__text--mobile {
-		display: none;
+	&__text {
+		&--mobile {
+			display: none;
+		}
 	}
 	&--full {
 		display: flex;

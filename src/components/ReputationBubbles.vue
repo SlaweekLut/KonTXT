@@ -3,7 +3,7 @@
 		<div class="bubble" v-for="n in 8" :class="{'bubble--filled': progress(n) !== 0}"></div>
 		<div class="bubble bubble--clickable" :class="{'bubble--active': currentList === n, 'bubble--filled': progressSize(n) > 0 }" @click="currentList = currentList === n ? null : n; $emit('getList', currentList)" :style="`--progress: calc(8px + ${progressSize(n)}px); max-height: ${maxSizes[n-1]}px; max-width: ${maxSizes[n-1]}px;`" v-for="n in 6"></div>
 		<div class="bubble-container" @click="currentList = null; $emit('getList', currentList)">
-			<Reputation :value="reputation" subtitle-hide/>
+			<Reputation :value="reputation" subtitle-hide bigBubble/>
 		</div>
 	</div>
 </template>

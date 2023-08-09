@@ -1,8 +1,8 @@
 <template>
 	<div class="locale">
-		<button class="locale__button text-h2" :class="{'locale__button--active': currentLocale === 'ru'}" @click="switchLocale('ru')">RU</button>
+		<button class="locale__button" :class="{'locale__button--active': currentLocale === 'ru'}" @click="switchLocale('ru')">RU</button>
 		<hr class="locale__line">
-		<button class="locale__button text-h2" :class="{'locale__button--active': currentLocale === 'en'}" @click="switchLocale('en')">EN</button>
+		<button class="locale__button" :class="{'locale__button--active': currentLocale === 'en'}" @click="switchLocale('en')">EN</button>
 	</div>
 </template>
 
@@ -31,7 +31,7 @@ const switchLocale = (lang) => {
 <style scoped lang="scss">
 .locale {
 	display: flex;
-	gap: 20px;
+	gap: 15px;
 	&__line {
 		height: 25px;
 		width: 0;
@@ -39,9 +39,24 @@ const switchLocale = (lang) => {
 	}
 	&__button {
 		transition: .3s ease;
+		font-family: 'Montserrat';
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 17px;
+		letter-spacing: 0.01em;
 		cursor: pointer;
+		color: var(--color-dynamic-gray);
 		&--active {
 			color: var(--color-dynamic-black);
+		}
+	}
+	@include screen(1199.98px, max-width) {
+		&__button {
+			font-family: 'Inter';
+			font-size: 16px;
+			font-weight: 500;
+			line-height: 19px;
+			letter-spacing: 0.01em;
 		}
 	}
 }

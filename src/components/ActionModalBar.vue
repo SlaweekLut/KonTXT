@@ -7,10 +7,10 @@
 			:class="{'bar__search--hide': searchHide}"
 			@focusout="() => {if(searchValue.length === 0) searchHide = true}"
 		>
-		<button class="bar__action" @click="searchHide = false; search.focus()">
+		<button class="bar__action" v-if="!onlyPlus" @click="searchHide = false; search.focus()">
 			<Icon :name="IconSearch" :size="24"/>
 		</button>
-		<button class="bar__action">
+		<button class="bar__action" v-if="!onlyPlus">
 			<Icon :name="IconFilter" :size="24"/>
 		</button>
 		<button class="bar__action">
@@ -29,6 +29,10 @@ import { ref } from 'vue';
 defineProps({
 	addable: {
 		type: Boolean,
+	},
+	onlyPlus: {
+		type: Boolean,
+		default: false
 	}
 })
 

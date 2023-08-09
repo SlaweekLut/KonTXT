@@ -1,8 +1,8 @@
 <template>
 	<Teleport to="body">
-		<Transition :name="mobile ? 'slideInDown' : 'fade'">
+		<Transition :name="mobile ? 'mobile' : 'fade'">
 			<div class="modal-wrapper" v-if="open" @click.self="$emit('close')">
-				<div class="modal" :class="{'modal--small': small, 'modal--mobile': mobile, 'modal--login': login, 'modal--share': share}">
+				<div class="modal" :class="{'modal--small': small, 'modal--mobile': mobile, 'modal--login': login, 'modal--share': share, 'modal--review': review}">
 					<Icon :name="IconCross" @click="$emit('close')" class="modal__close"/>
 					<div class="modal__container" v-bind="$attrs">
 						<slot/>
@@ -35,6 +35,10 @@ const props = defineProps({
 		default: false
 	},
 	share: {
+		type: Boolean,
+		default: false
+	},
+	review: {
 		type: Boolean,
 		default: false
 	}
@@ -76,21 +80,18 @@ defineEmits(['close'])
 	background-color: var(--color-dynamic-white);
 	border-radius: 30px;
 	&__container {
-		overflow: auto;
-	}
-	&__close {
-		position: absolute;
-		right: -32px;
-		top: -32px;
-		cursor: pointer;
-	}
-	&:not(:is(&--small)) &__container {
 		overflow-x: hidden;
 		overflow-y: auto;
 		height: 100%;
 		&::-webkit-scrollbar {
 			display: none;
 		}
+	}
+	&__close {
+		position: absolute;
+		right: -32px;
+		top: -32px;
+		cursor: pointer;
 	}
 	&--small {
 		box-sizing: border-box;
@@ -103,6 +104,13 @@ defineEmits(['close'])
 		.modal__header {
 			top: -3px;
 		}
+	}
+	&--review {
+		box-sizing: border-box;
+		padding: 50px 55px;
+		align-items: center;
+		max-height: 415px;
+		height: auto;
 	}
 	&--login {
 		height: auto;
@@ -128,6 +136,19 @@ defineEmits(['close'])
 				margin: 0 auto;
 			}
 		}
+		@include screen(767.98px, min-width) {
+			max-width: 350px;
+			padding: 20px 20px 30px 30px;
+			top: 14px;
+			right: 20px;
+			left: auto;
+			border-radius: 30px;
+			.modal {
+				&__container {
+					padding: 0;
+				}
+			}
+		}
 	}
 	&--share {
 		max-width: 362px;
@@ -138,11 +159,11 @@ defineEmits(['close'])
 	@include screen(767.98px) {
 		padding: 20px 30px;
 		border-radius: 15px;
-		&:not(:is(&--login, &--mobile, &--share, &--small)) {
+		&:not(:is(&--login, &--mobile, &--share, &--small, &--review)) {
 			height: 100%;
 			max-height: 80vh;
 		}
-		&:not(:is(&--share, &--login, &--mobile, &--small)).modal__container {
+		&:not(:is(&--share, &--login, &--mobile, &--small, &--review)).modal__container {
 			height: 100%;
 			display: flex;
 			flex-direction: column;
@@ -186,18 +207,24 @@ defineEmits(['close'])
 	}
 }
 
-.slideInDown-enter-active,
-.slideInDown-leave-active {
+.mobile-enter-active,
+.mobile-leave-active {
 	transition: all 0.3s ease;
 	.modal {
 		transition: all 0.3s ease;
 	}
+	
 }
-.slideInDown-enter-from,
-.slideInDown-leave-to {
+.mobile-enter-from,
+.mobile-leave-to {
 	opacity: 0;
 	.modal {
 		transform: translateY(-100%);
+	}
+	@include screen(767.98px, min-width) {
+		.modal {
+			transform: translateX(100%);
+		}
 	}
 }
 </style>
