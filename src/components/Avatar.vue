@@ -46,7 +46,7 @@ const getSrc = (src) => new URL(`/src/assets/images/${src}`, import.meta.url).hr
 		// border-radius: 50%;
 		// background: var(--color-dynamic-gray);
 		width: 100%;
-		height: 100%;
+		// height: 100%;
 		display: flex;
     align-items: center;
     justify-content: center;
