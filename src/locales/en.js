@@ -14,6 +14,7 @@ export default {
 	primarySocial: 'Preferred method',
 	withOutDonars: "This is our new user, //and here is some text like let's be friends with him and meet to help him adapt, etc.//",
 	noAuth: 'This information and more than 80 elements of reputation are hidden - log in to view more',
+	otherSocial: 'Other social',
 	achivements: {
 		magnet: 'Rewards for 10 successful meetings',
 		target: 'Rewards for 100 successful meetings',

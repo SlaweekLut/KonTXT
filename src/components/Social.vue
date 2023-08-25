@@ -1,13 +1,16 @@
 <template>
-	<a class="social" @click="() => {if(status !== 'hidden') copy()}" :href="link">
+	<a class="social" @click="() => {if(status !== 'blur') copy()}" :href="link" v-if="status !== 'hidden'">
 		<Icon :name="icon" :size="iconSize"/>
 		<div class="social__info">
 			<Transition name="fade-slide-up">
 				<div class="tooltip text-main-small" v-if="copied">{{ $t('copy') }}</div>
 			</Transition>
-			<p class="text-comment-small">{{ status === 'primary' ? `${$t('primarySocial')} - ${title}` : title }}</p>
-			<p class="text-main social__text" :class="{'hidden': status === 'hidden'}">
-				{{ status === 'hidden' ? 'This is text filler' : text }}
+			<p class="text-comment-small">{{ 
+				status === 'primary' ? 
+				`${$t('primarySocial')} - ${title === 'Телефон' ? $t('telephone') : title === 'Другая соц. сеть' ? $t('otherSocial') : title}` 
+				: title === 'Телефон' ? $t('telephone') : title === 'Другая соц. сеть' ? $t('otherSocial') : title }}</p>
+			<p class="text-main social__text" :class="{'blur': status === 'blur'}">
+				{{ status === 'blur' ? 'This is text filler' : text }}
 				<Icon v-if="messenger" v-for="social in messenger" :key="social" :size="14" :name="getIcon(social)"/> 
 			</p>
 		</div>
@@ -29,9 +32,22 @@ import IconCompanyWebsite from './icons/IconCompanyWebsite.vue';
 import IconTwitter from './icons/IconTwitter.vue';
 import IconOther from './icons/IconOther.vue';
 import IconPhone from './icons/IconPhone.vue';
-import IconFilledTelegram from './icons/IconFilledTelegram.vue';
-import IconFilledWhatsapp from './icons/IconFilledWhatsapp.vue';
+
 import IconFilledViber from './icons/IconFilledViber.vue';
+import IconFilledWhatsapp from './icons/IconFilledWhatsapp.vue';
+
+import IconFilledTelegram from './icons/IconFilledTelegram.vue';
+import IconFilledLinkedIn from './icons/IconFilledLinkedIn.vue';
+import IconFilledEmail from './icons/IconFilledEmail.vue';
+import IconFilledInstagram from './icons/IconFilledInstagram.vue';
+import IconFilledFacebook from './icons/IconFilledFacebook.vue';
+import IconFilledVK from './icons/IconFilledVk.vue';
+import IconFilledKonTxT from './icons/IconFilledKonTXT.vue';
+import IconFilledWebsite from './icons/IconFilledWebsite.vue';
+import IconFilledCompanyWebsite from './icons/IconFilledCompanyWebsite.vue';
+import IconFilledTwitter from './icons/IconFilledTwitter.vue';
+import IconFilledOther from './icons/IconFilledOther.vue';
+import IconFilledPhone from './icons/IconFilledPhone.vue';
 
 const props = defineProps({
 	iconSize: {
@@ -112,43 +128,44 @@ const title = computed(() => {
 			break;
 	}
 })
+
 const icon = computed(() => {
 	switch (props.type) {
 		case 'telegram':
-			return props.state === 'primary' ? IconTelegram : IconFilledTelegram
+			return props.status === 'primary' ? IconFilledTelegram : IconTelegram
 			break;
 		case 'instagram':
-			return props.state === 'primary' ? IconInstagram : IconInstagram
+			return props.status === 'primary' ? IconFilledInstagram : IconInstagram
 			break;
 		case 'linkedin':
-			return IconLinkedIn
+			return props.status === 'primary' ? IconFilledLinkedIn : IconLinkedIn
 			break;
 		case 'email':
-			return IconEmail
+			return props.status === 'primary' ? IconFilledEmail : IconEmail
 			break;
 		case 'facebook':
-			return IconFacebook
+			return props.status === 'primary' ? IconFilledFacebook : IconFacebook
 			break;
 		case 'website':
-			return IconWebsite
+			return props.status === 'primary' ? IconFilledWebsite : IconWebsite
 			break;
 		case 'vk':
-			return IconVK
+			return props.status === 'primary' ? IconFilledVK : IconVK
 			break;
 		case 'company-website':
-			return IconCompanyWebsite
+			return props.status === 'primary' ? IconFilledCompanyWebsite : IconCompanyWebsite
 			break;
 		case 'twitter':
-			return IconTwitter
+			return props.status === 'primary' ? IconFilledTwitter : IconTwitter
 			break;
 		case 'kontxt':
-			return IconKonTxT
+			return props.status === 'primary' ? IconFilledKonTxT : IconKonTxT
 			break;
 		case 'phone':
-			return IconPhone
+			return props.status === 'primary' ? IconFilledPhone : IconPhone
 			break;
 		default:
-			return IconOther
+			return props.status === 'primary' ? IconFilledOther : IconOther
 			break;
 	}
 })
@@ -184,7 +201,7 @@ const copy = () => {
 		align-items: center;
 		gap: 15px;
 	}
-	.hidden {
+	.blur {
 		position: relative;
 		user-select: none;
 		pointer-events: none;

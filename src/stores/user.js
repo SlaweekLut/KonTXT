@@ -65,10 +65,10 @@ export const useUserStore = defineStore('user', () => {
 			'0000005': 10,
 		},
 		socials: [
-			{type: 'phone', text: '+7 (983) 765 93 21', href: '#', status: 'hidden', messenger: ['telegram', 'whatsapp', 'viber']},
+			{type: 'phone', text: '+7 (983) 765 93 21', href: '#', status: 'blur', messenger: ['telegram', 'whatsapp', 'viber']},
 			{type: 'telegram', text: '@maria.tverdh007', href: '#', status: 'primary'},
-			{type: 'instagram', text: '@maria.tverdh007', href: '#', status: 'visible'},
-			{type: 'other', text: 'maria-tverdh-651909224', href: '#', status: 'hidden'},
+			{type: 'instagram', text: '@maria.tverdh007', href: '#', status: 'hidden'},
+			{type: 'other', text: 'maria-tverdh-651909224', href: '#', status: 'blur'},
 			{type: 'linkedin', text: 'maria-tverdh-651909224', href: '#', status: 'visible'},
 			{type: 'email', text: 'maria.tverdh@gmail.com', href: '#', status: 'visible'},
 			{type: 'facebook', text: 'maria-tverdh-651909224', href: '#', status: 'visible'},

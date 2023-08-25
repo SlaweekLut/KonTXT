@@ -66,7 +66,7 @@ defineProps({
 	&__name {
 		display: flex;
 		flex-direction: column;
-		gap: 2px;
+		gap: 5px;
 	}
 	&__karma {
 		display: flex;

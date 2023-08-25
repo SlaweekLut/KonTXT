@@ -130,7 +130,7 @@ const socialPrimary = computed(() => {
 				<p class="user-contacts__title text-h1">{{ $t('titles.contacts') }}</p>
 				<!-- <Social type="phone" :status="item.type" :title="" link="+7 (495) 123-45-67"/> -->
 				<!-- <Social :icon="IconFilledTelegram" :title="`${$t('preffered')} - Telegram`" link="@maria.tverdh007"/> -->
-				<Social v-if="socialPhone" :type="socialPhone.type" :link="socialPhone.href" :messenger="socialPhone.messenger" :status="socialPhone.status" :text="socialPhone.text"/>
+				<Social v-if="socialPhone && socialPhone.status !== 'primary'" :type="socialPhone.type" :link="socialPhone.href" :messenger="socialPhone.messenger" :status="socialPhone.status" :text="socialPhone.text"/>
 				<Social v-if="socialPrimary" :type="socialPrimary.type" :link="socialPrimary.href" status="primary" :text="socialPrimary.text"/>
 				<div class="user-contacts__all user-contacts__all--more" >
 					<Social v-for="(item, i) in socials" :key="i" :type="item.type" :link="item.href" :status="item.status" :text="item.text"/>

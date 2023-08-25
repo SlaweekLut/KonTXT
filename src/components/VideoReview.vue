@@ -10,7 +10,9 @@
 			</div>
 			<div class="review-video__name">
 				<div class="review-video__col">
-					<p class="text-main review-video__title">{{ review.name }} <Icon :name="IconVerify" :size="24" v-if="review.isVerified && full"/> </p>
+					<p class="text-main review-video__title">
+						<span>{{ review.name }} </span>
+						<Icon :name="IconVerify" :size="24" v-if="review.isVerified && full"/> </p>
 					<p class="text-comment-small">
 						{{ review.profession }}, {{ review.address.split(', ')[1] }}
 					</p>
@@ -86,6 +88,11 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .review-video {
+	&__col {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
 	&__info {
 		display: flex;
 		flex-direction: column;
@@ -105,10 +112,18 @@ onMounted(() => {
 				&__title {
 					font-size: 18px;
 					font-weight: 600;
-					display: flex;
+					display: inline-flex;
+					justify-content: flex-start;
 					align-items: center;
-					gap: 18px;
 					margin-bottom: 10px;
+					line-height: 22px;
+					span {
+						display: inline;
+						width: auto;
+					}
+					svg {
+						margin-left: 10px;
+					}
 				}
 				&__preview {
 					min-height: 180px;
